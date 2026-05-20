@@ -865,7 +865,13 @@ p{margin:0 0 1em}
       <h3>שליחת העיצוב</h3>
       <p style="color:var(--gray-700);font-size:0.95rem;margin-bottom:1.2rem;">מלאו פרטים ולחצו "שלח" — העיצוב והפרטים יישלחו אלינו במייל ונחזור אליכם תוך 24 שעות.</p>
 
-      <form id="design-form">
+      <form id="design-form" action="https://formsubmit.co/ronen12341@gmail.com" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" value="🎨 עיצוב כוס חדש מהאתר">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="https://aspagil.vercel.app/?sent=ok">
+        <input type="hidden" name="_autoresponse" value="קיבלנו את העיצוב שלכם! נחזור אליכם תוך 24 שעות עם הצעת מחיר. - צוות אספגיל">
+
         <div class="form-row">
           <div class="form-group"><label for="d-name">שם מלא</label><input id="d-name" type="text" name="name" required></div>
           <div class="form-group"><label for="d-phone">טלפון</label><input id="d-phone" type="tel" name="phone" required></div>
@@ -881,6 +887,9 @@ p{margin:0 0 1em}
           </select></div>
         </div>
         <div class="form-group"><label for="d-notes">הערות נוספות (אופציונלי)</label><textarea id="d-notes" name="notes" rows="2" placeholder="צבעי מותג, מועד נדרש, פרטים נוספים..."></textarea></div>
+
+        <!-- Hidden file input populated by JavaScript before submission -->
+        <input type="file" name="design" id="design-file-hidden" style="display:none">
 
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:1rem;">
           <button type="submit" class="btn btn-primary" style="flex:1;min-width:220px;justify-content:center;">שלח את העיצוב <span class="arrow">←</span></button>
@@ -1141,55 +1150,70 @@ p{margin:0 0 1em}
     });
   });
 
-  // Submit form
-  document.getElementById('design-form').addEventListener('submit', (e) => {
-    e.preventDefault();
+  // Submit form — standard form submission (works with file attachments)
+  const designForm = document.getElementById('design-form');
+  designForm.addEventListener('submit', (e) => {
     const status = document.getElementById('design-status');
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitBtn = designForm.querySelector('button[type="submit"]');
 
     if (elements.length === 0) {
+      e.preventDefault();
       status.className = 'design-status error';
       status.textContent = 'הוסיפו לפחות אלמנט אחד (טקסט או לוגו) לפני שליחה.';
       return;
     }
 
+    // Prevent the immediate submit so we can attach the design file first
+    e.preventDefault();
+
     submitBtn.disabled = true;
     status.className = 'design-status loading';
-    status.textContent = '⏳ שולח את העיצוב...';
+    status.textContent = '⏳ מכין את העיצוב לשליחה...';
 
     generateCleanPNG((blob) => {
-      const fd = new FormData();
-      fd.append('name', form.name.value);
-      fd.append('phone', form.phone.value);
-      fd.append('email', form.email.value);
-      fd.append('quantity', form.quantity.value);
-      fd.append('notes', form.notes.value || '(אין)');
-      fd.append('_subject', 'עיצוב כוס חדש מהאתר - ' + form.name.value);
-      fd.append('_captcha', 'false');
-      fd.append('_template', 'box');
-      fd.append('design', blob, 'cup-design.png');
+      try {
+        const file = new File([blob], 'cup-design-' + Date.now() + '.png', { type: 'image/png' });
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('design-file-hidden').files = dt.files;
 
-      fetch('https://formsubmit.co/ronen12341@gmail.com', {
-        method: 'POST',
-        body: fd
-      })
-      .then(r => {
-        if (r.ok) {
-          status.className = 'design-status success';
-          status.innerHTML = '✓ העיצוב נשלח בהצלחה! נחזור אליכם תוך 24 שעות.';
-          form.reset();
-        } else {
-          throw new Error('Network error');
-        }
-      })
-      .catch(err => {
+        // Save form data to sessionStorage so we can show success on return
+        sessionStorage.setItem('aspagilLastSubmit', JSON.stringify({
+          name: designForm.name.value,
+          time: Date.now()
+        }));
+
+        status.textContent = '⏳ שולח...';
+        // Now submit the form for real (this triggers normal HTML form POST)
+        designForm.submit();
+      } catch (err) {
+        submitBtn.disabled = false;
         status.className = 'design-status error';
-        status.innerHTML = '⚠ שגיאה בשליחה. אנא נסו שוב או צרו קשר ישירות בוואטסאפ: <a href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" style="color:#C73838;text-decoration:underline;">לחצו כאן</a>';
-      })
-      .finally(() => { submitBtn.disabled = false; });
+        status.innerHTML = '⚠ שגיאה. נסו שוב או שלחו בוואטסאפ: <a href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" style="color:#C73838;text-decoration:underline;">לחצו כאן</a>';
+      }
     });
   });
+
+  // Check if user just returned from a successful submission
+  if (window.location.search.indexOf('sent=ok') !== -1) {
+    const status = document.getElementById('design-status');
+    const saved = sessionStorage.getItem('aspagilLastSubmit');
+    let name = '';
+    if (saved) {
+      try { name = JSON.parse(saved).name || ''; } catch(e) {}
+    }
+    status.className = 'design-status success';
+    status.innerHTML = '✓ העיצוב נשלח בהצלחה' + (name ? ', ' + name : '') + '! נחזור אליכם תוך 24 שעות עם הצעת מחיר והדמיה.';
+    sessionStorage.removeItem('aspagilLastSubmit');
+    // Scroll to the template section after a moment
+    setTimeout(() => {
+      document.getElementById('template').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+    // Clean the URL
+    if (window.history.replaceState) {
+      window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+    }
+  }
 
   // Initial render
   render();
