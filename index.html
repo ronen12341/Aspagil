@@ -251,6 +251,9 @@ p{margin:0 0 1em}
 .reveal.is-visible{opacity:1;transform:translateY(0)}
 .reveal.d1{transition-delay:0.08s}.reveal.d2{transition-delay:0.16s}.reveal.d3{transition-delay:0.24s}.reveal.d4{transition-delay:0.32s}
 
+/* About grid responsive */
+@media (max-width:820px){.about-grid{grid-template-columns:1fr !important;gap:2rem !important;}}
+
 /* Section heading */
 .section-head{text-align:center;max-width:680px;margin:0 auto}
 .section-head h2{margin-bottom:0.7rem}
@@ -272,6 +275,7 @@ p{margin:0 0 1em}
       <a href="#home" class="is-active">בית</a>
       <a href="#gallery">גלריית עיצובים</a>
       <a href="#how">איך זה עובד</a>
+      <a href="#about">אודות</a>
       <a href="#testimonials">המלצות</a>
       <a href="#contact">צור קשר</a>
     </nav>
@@ -637,6 +641,66 @@ p{margin:0 0 1em}
   </div>
 </section>
 
+<!-- ============== ABOUT ============== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">אודות אספגיל</span>
+      <h2>מפעל ישראלי, ניסיון של שנים</h2>
+      <p>מאז 1995 אנחנו מתמחים בהדפסת כוסות נייר מעוצבות לעסקים, מסעדות ואירועים. מאות לקוחות חוזרים, אלפי הזמנות שהגיעו ליעד בזמן ובאיכות.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;margin-top:2.5rem;align-items:center;" class="about-grid">
+      <div class="reveal">
+        <h3 style="font-size:1.4rem;margin-bottom:0.8rem;">מפעל אחד, התמחות אחת, שירות אישי</h3>
+        <p style="color:var(--gray-700);font-size:1.05rem;line-height:1.7;">אספגיל הוקמה מתוך אמונה שהדפסה על כוסות חד פעמיות היא יותר ממה שזה נראה. כל כוס שלקוח מחזיק היא רגע — רגע של חיבור בין המותג והאדם שצורך אותו.</p>
+        <p style="color:var(--gray-700);font-size:1.05rem;line-height:1.7;">אנחנו לא סוכנים, לא מתווכים — אנחנו עובדים במפעל שלנו בבני ברק, מנהלים בעצמנו את הייצור, את ההדפסה ואת השירות ללקוחות. זה אומר שאתם מקבלים מענה ישיר, שאלות מקבלות תשובות מהר, ופתרונות שלא תקבלו ממי שרק מעביר את ההזמנה הלאה.</p>
+
+        <h3 style="font-size:1.15rem;margin-top:1.5rem;margin-bottom:0.6rem;">במה אנחנו מאמינים</h3>
+        <ul style="list-style:none;padding:0;margin:0;">
+          <li style="padding:8px 0;padding-right:28px;position:relative;color:var(--gray-700);">
+            <span style="position:absolute;right:0;top:14px;width:18px;height:18px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">✓</span>
+            איכות שלא מתפשרים עליה — חומרי גלם מאושרים, צבעים בטוחים למזון
+          </li>
+          <li style="padding:8px 0;padding-right:28px;position:relative;color:var(--gray-700);">
+            <span style="position:absolute;right:0;top:14px;width:18px;height:18px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">✓</span>
+            שירות אישי — מענה אנושי, לא תפריט קולי
+          </li>
+          <li style="padding:8px 0;padding-right:28px;position:relative;color:var(--gray-700);">
+            <span style="position:absolute;right:0;top:14px;width:18px;height:18px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">✓</span>
+            עמידה בלוחות זמנים — מתחייבים ומקיימים
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal d1" style="background:var(--orange-soft);border-radius:var(--radius-lg);padding:2rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+          <div style="text-align:center;padding:1rem 0.5rem;background:#fff;border-radius:12px;">
+            <div style="font-size:2rem;font-weight:900;color:var(--orange);line-height:1;">25+</div>
+            <div style="font-size:0.85rem;color:var(--gray-700);margin-top:6px;">שנות פעילות</div>
+          </div>
+          <div style="text-align:center;padding:1rem 0.5rem;background:#fff;border-radius:12px;">
+            <div style="font-size:2rem;font-weight:900;color:var(--orange);line-height:1;">500+</div>
+            <div style="font-size:0.85rem;color:var(--gray-700);margin-top:6px;">לקוחות עסקיים</div>
+          </div>
+          <div style="text-align:center;padding:1rem 0.5rem;background:#fff;border-radius:12px;">
+            <div style="font-size:2rem;font-weight:900;color:var(--orange);line-height:1;">10M+</div>
+            <div style="font-size:0.85rem;color:var(--gray-700);margin-top:6px;">כוסות הודפסו</div>
+          </div>
+          <div style="text-align:center;padding:1rem 0.5rem;background:#fff;border-radius:12px;">
+            <div style="font-size:2rem;font-weight:900;color:var(--orange);line-height:1;">24ש'</div>
+            <div style="font-size:0.85rem;color:var(--gray-700);margin-top:6px;">להחזרת הצעה</div>
+          </div>
+        </div>
+        <div style="margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid #FFD3B8;font-size:0.92rem;color:var(--gray-700);">
+          <strong style="color:var(--ink);">המפעל שלנו:</strong><br>
+          רחוב הירקון 39, בני ברק — קומה 3
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============== TESTIMONIALS ============== -->
 <section class="section section--gray" id="testimonials">
   <div class="container">
@@ -718,9 +782,10 @@ p{margin:0 0 1em}
       <div>
         <h4>החברה</h4>
         <ul>
-          <li><a href="about.html">אודות</a></li>
-          <li><a href="contact.html">צור קשר</a></li>
-          <li><a href="about.html#accessibility">הצהרת נגישות</a></li>
+          <li><a href="#about">אודות</a></li>
+          <li><a href="#contact">צור קשר</a></li>
+          <li><a href="#how">איך זה עובד</a></li>
+          <li><a href="#testimonials">המלצות</a></li>
         </ul>
       </div>
       <div>
