@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מעצב כוסות אונליין | עיצוב כוסות נייר ממותגות בחינם | אספגיל</title>
+<meta name="description" content="מעצב כוסות אונליין חינמי - הוסיפו טקסט, העלו לוגו ועצבו את הכוס שלכם במלבן ההדפסה האמיתי (170×96 מ"מ). שלחו אלינו ונחזור עם הצעת מחיר תוך 24 שעות.">
+<meta name="keywords" content="מעצב כוסות אונליין, עיצוב כוסות נייר, כלי עיצוב כוסות, כוסות עם לוגו עיצוב, אספגיל">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.gilcups.com/designer.html">
+<meta property="og:title" content="מעצב כוסות אונליין | אספגיל">
+<meta property="og:description" content="עצבו את הכוס שלכם בדפדפן - חינם, בלי תוכנות. הוסיפו טקסט ולוגו ושלחו אלינו.">
+<meta property="og:locale" content="he_IL">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><div><div class="brand-name">אספגיל</div><div class="brand-tag">כוסות נייר מעוצבות · מאז 1995</div></div></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">בית</a>
+      <a href="paper-cups.html">כוסות נייר ממותגות</a>
+      <a href="cardboard-cups.html">כוסות קרטון</a>
+      <a href="printing.html">הדפסה</a>
+      <a href="designer.html" class="is-active">מעצב אונליין</a>
+      <a href="about.html">אודות</a>
+      <a href="contact.html">צור קשר</a>
+    </nav>
+    <div class="header-cta">
+      <a class="phone-link" href="tel:0542150090">054-2150090</a>
+      <a class="btn btn-primary" href="contact.html#quote">הצעת מחיר</a>
+      <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="subhero">
+  <div class="container">
+    <p class="crumbs"><a href="index.html">בית</a> ← מעצב אונליין</p>
+    <h1>מעצב <span style="color:var(--orange)">כוסות אונליין</span></h1>
+    <p class="lead">עצבו את הכוס שלכם בדפדפן — בלי תוכנות, בלי הורדות. הוסיפו טקסט, העלו לוגו, ושלחו לנו ישירות במייל. נחזור עם הצעת מחיר והדמיה תוך 24 שעות.</p>
+  </div>
+</section>
+
+<section class="section section--gray" id="template">
+  <div class="container">
+    <div class="designer-layout">
+      <div class="designer-canvas-wrap">
+        <div class="canvas-label">170 × 96 מ"מ</div>
+        <canvas id="design-canvas" class="designer-canvas" width="800" height="452"></canvas>
+        <p class="canvas-size-info">אזור ההדפסה האמיתי על הכוס · גודל 9oz · גררו אלמנטים למיקום הרצוי</p>
+      </div>
+
+      <div class="designer-controls">
+        <div class="control-group">
+          <h4>הוספת טקסט</h4>
+          <input type="text" id="text-input" placeholder="הקלידו טקסט להוספה...">
+          <div class="control-row">
+            <select id="font-size">
+              <option value="24">קטן</option>
+              <option value="40" selected>בינוני</option>
+              <option value="60">גדול</option>
+              <option value="80">ענק</option>
+            </select>
+            <input type="color" id="text-color" value="#1A1A1A" title="צבע">
+            <button type="button" class="btn-mini" id="add-text">+ הוסף</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <h4>העלאת לוגו / תמונה</h4>
+          <input type="file" id="logo-upload" accept="image/png,image/jpeg,image/svg+xml">
+          <div class="control-row" style="margin-top:8px;">
+            <button type="button" class="btn-mini" id="add-logo" disabled style="flex:1;">בחרו קובץ קודם</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <h4>אלמנטים בעיצוב</h4>
+          <div class="element-list" id="element-list">
+            <p style="color:var(--gray-500);font-size:0.85rem;text-align:center;padding:0.6rem 0;margin:0;">אין עדיין אלמנטים<br>הוסיפו טקסט או לוגו</p>
+          </div>
+          <div class="control-row" style="margin-top:10px;">
+            <button type="button" class="btn-mini secondary" id="clear-canvas" style="flex:1;">נקה הכל</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="design-submit">
+      <h3>שליחת העיצוב</h3>
+      <p style="color:var(--gray-700);font-size:0.95rem;margin-bottom:1.2rem;">מלאו פרטים ולחצו "שלח" — העיצוב והפרטים יישלחו אלינו ונחזור אליכם תוך 24 שעות.</p>
+
+      <form id="design-form" action="https://formsubmit.co/ronen12341@gmail.com" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" value="🎨 עיצוב כוס חדש מהאתר">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="https://aspagil.vercel.app/designer.html?sent=ok">
+        <input type="hidden" name="_autoresponse" value="קיבלנו את העיצוב שלכם! נחזור אליכם תוך 24 שעות עם הצעת מחיר. - צוות אספגיל">
+
+        <div class="form-row">
+          <div class="form-group"><label for="d-name">שם מלא</label><input id="d-name" type="text" name="name" required></div>
+          <div class="form-group"><label for="d-phone">טלפון</label><input id="d-phone" type="tel" name="phone" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="d-email">אימייל</label><input id="d-email" type="email" name="email" required></div>
+          <div class="form-group"><label for="d-qty">כמות יחידות</label><select id="d-qty" name="quantity" required>
+            <option value="">בחרו כמות...</option>
+            <option>200</option><option>500</option><option>1000</option><option>2000</option><option>3000</option>
+            <option>5000</option><option>10000</option><option>20000</option><option>50000</option><option>100000</option><option>100000+</option>
+          </select></div>
+        </div>
+        <div class="form-group"><label for="d-notes">הערות (אופציונלי)</label><textarea id="d-notes" name="notes" rows="2" placeholder="צבעי מותג, מועד נדרש..."></textarea></div>
+
+        <input type="file" name="design" id="design-file-hidden" style="display:none">
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:1rem;">
+          <button type="submit" class="btn btn-primary" style="flex:1;min-width:220px;justify-content:center;">שלח את העיצוב <span class="arrow">←</span></button>
+          <button type="button" class="btn btn-outline" id="download-png">הורד עיצוב כתמונה</button>
+        </div>
+        <div class="design-status" id="design-status"></div>
+      </form>
+    </div>
+
+    <div style="margin-top:2rem;padding:1.4rem 1.6rem;background:#fff;border:1px dashed var(--gray-300);border-radius:var(--radius-lg);text-align:center;">
+      <p style="margin:0;color:var(--gray-700);">יש לכם מעצב מקצועי? <a href="cup-template.pdf" download="תבנית-כוסות-אספגיל.pdf" style="color:var(--orange);font-weight:700;">הורידו את תבנית ה-PDF</a> · פורמטים מועדפים: PDF / AI / EPS / SVG · 300dpi+ · CMYK</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">אספגיל</div>
+        <p class="footer-tag">מפעל ישראלי להדפסה על כוסות נייר וכוסות קרטון. מאז 1995.</p>
+        <p><a href="tel:0542150090" style="color:var(--orange-light);font-weight:700;font-size:1.1rem;">054-2150090</a></p>
+      </div>
+      <div><h4>שירותים</h4><ul>
+        <li><a href="paper-cups.html">כוסות נייר ממותגות</a></li>
+        <li><a href="cardboard-cups.html">כוסות קרטון</a></li>
+        <li><a href="printing.html">הדפסה על כוסות</a></li>
+        <li><a href="designer.html">מעצב אונליין</a></li>
+      </ul></div>
+      <div><h4>החברה</h4><ul>
+        <li><a href="about.html">אודות</a></li>
+        <li><a href="contact.html">צור קשר</a></li>
+        <li><a href="contact.html#quote">הצעת מחיר</a></li>
+      </ul></div>
+      <div><h4>יצירת קשר</h4><ul>
+        <li>רחוב הירקון 39, בני ברק</li>
+        <li>קומה 3</li>
+        <li><a href="tel:0542150090">054-2150090</a></li>
+        <li><a href="mailto:sales@aspagil.com">sales@aspagil.com</a></li>
+        <li><a href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> אספגיל — כל הזכויות שמורות</div>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+</a>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+const t=document.getElementById('menuToggle'),n=document.getElementById('mainNav');
+t.addEventListener('click',()=>{n.classList.toggle('is-open');});
+
+(function(){
+  const canvas=document.getElementById('design-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const CANVAS_W=800,CANVAS_H=452;
+  let elements=[],selectedId=null,nextId=1,dragState=null,pendingImage=null;
+
+  function render(){
+    ctx.clearRect(0,0,CANVAS_W,CANVAS_H);
+    ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+    ctx.strokeStyle='#F0EFE8';ctx.lineWidth=1;
+    for(let x=80;x<CANVAS_W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,CANVAS_H);ctx.stroke();}
+    for(let y=80;y<CANVAS_H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(CANVAS_W,y);ctx.stroke();}
+    elements.forEach(el=>{
+      if(el.type==='text'){
+        ctx.font='bold '+el.fontSize+'px Heebo, sans-serif';
+        ctx.fillStyle=el.color;ctx.textBaseline='top';ctx.direction='rtl';
+        const m=ctx.measureText(el.content);el.w=m.width;el.h=el.fontSize*1.2;
+        ctx.fillText(el.content,el.x,el.y);
+      }else if(el.type==='image'&&el.imgObj){
+        ctx.drawImage(el.imgObj,el.x,el.y,el.w,el.h);
+      }
+      if(el.id===selectedId){
+        ctx.strokeStyle='#E85D2F';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+        ctx.strokeRect(el.x-4,el.y-4,el.w+8,el.h+8);ctx.setLineDash([]);
+      }
+    });
+  }
+  function getCoords(e){
+    const r=canvas.getBoundingClientRect();
+    const cx=e.touches?e.touches[0].clientX:e.clientX;
+    const cy=e.touches?e.touches[0].clientY:e.clientY;
+    return{x:(cx-r.left)*(CANVAS_W/r.width),y:(cy-r.top)*(CANVAS_H/r.height)};
+  }
+  function hitTest(x,y){
+    for(let i=elements.length-1;i>=0;i--){
+      const el=elements[i];
+      if(x>=el.x&&x<=el.x+el.w&&y>=el.y&&y<=el.y+el.h)return el;
+    }
+    return null;
+  }
+  function onDown(e){
+    e.preventDefault();const p=getCoords(e);const hit=hitTest(p.x,p.y);
+    if(hit){selectedId=hit.id;dragState={id:hit.id,offX:p.x-hit.x,offY:p.y-hit.y};}else{selectedId=null;}
+    render();updateList();
+  }
+  function onMove(e){
+    if(!dragState)return;e.preventDefault();const p=getCoords(e);
+    const el=elements.find(x=>x.id===dragState.id);
+    if(el){el.x=Math.max(0,Math.min(CANVAS_W-el.w,p.x-dragState.offX));el.y=Math.max(0,Math.min(CANVAS_H-el.h,p.y-dragState.offY));render();}
+  }
+  function onUp(){dragState=null;}
+  canvas.addEventListener('mousedown',onDown);
+  canvas.addEventListener('mousemove',onMove);
+  canvas.addEventListener('mouseup',onUp);
+  canvas.addEventListener('mouseleave',onUp);
+  canvas.addEventListener('touchstart',onDown,{passive:false});
+  canvas.addEventListener('touchmove',onMove,{passive:false});
+  canvas.addEventListener('touchend',onUp);
+
+  document.getElementById('add-text').addEventListener('click',()=>{
+    const text=document.getElementById('text-input').value.trim();if(!text)return;
+    const fs=parseInt(document.getElementById('font-size').value);
+    const col=document.getElementById('text-color').value;
+    elements.push({id:nextId++,type:'text',x:CANVAS_W/2-80,y:CANVAS_H/2-fs/2,w:160,h:fs*1.2,content:text,fontSize:fs,color:col});
+    document.getElementById('text-input').value='';
+    selectedId=elements[elements.length-1].id;render();updateList();
+  });
+
+  document.getElementById('logo-upload').addEventListener('change',e=>{
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=ev=>{const img=new Image();img.onload=()=>{pendingImage=img;const b=document.getElementById('add-logo');b.disabled=false;b.textContent='+ הוסף את "'+(f.name.length>18?f.name.slice(0,15)+'...':f.name)+'"';};img.src=ev.target.result;};
+    r.readAsDataURL(f);
+  });
+  document.getElementById('add-logo').addEventListener('click',()=>{
+    if(!pendingImage)return;
+    const max=250;let w=pendingImage.naturalWidth,h=pendingImage.naturalHeight;
+    if(w>max||h>max){const ra=Math.min(max/w,max/h);w*=ra;h*=ra;}
+    elements.push({id:nextId++,type:'image',x:CANVAS_W/2-w/2,y:CANVAS_H/2-h/2,w:w,h:h,imgObj:pendingImage});
+    selectedId=elements[elements.length-1].id;pendingImage=null;
+    document.getElementById('logo-upload').value='';
+    const b=document.getElementById('add-logo');b.disabled=true;b.textContent='בחרו קובץ קודם';
+    render();updateList();
+  });
+
+  function updateList(){
+    const list=document.getElementById('element-list');
+    if(elements.length===0){list.innerHTML='<p style="color:var(--gray-500);font-size:0.85rem;text-align:center;padding:0.6rem 0;margin:0;">אין עדיין אלמנטים<br>הוסיפו טקסט או לוגו</p>';return;}
+    list.innerHTML=elements.map(el=>{
+      const lbl=el.type==='text'?'🅰 '+el.content:'🖼 תמונה';
+      const cls=el.id===selectedId?'element-list-item selected':'element-list-item';
+      return '<div class="'+cls+'" data-id="'+el.id+'"><span class="el-name">'+lbl+'</span><button data-del="'+el.id+'" title="מחק">×</button></div>';
+    }).join('');
+    list.querySelectorAll('[data-id]').forEach(node=>{
+      node.addEventListener('click',e=>{if(e.target.hasAttribute('data-del'))return;selectedId=parseInt(node.dataset.id);render();updateList();});
+    });
+    list.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click',e=>{e.stopPropagation();const id=parseInt(btn.dataset.del);elements=elements.filter(x=>x.id!==id);if(selectedId===id)selectedId=null;render();updateList();});
+    });
+  }
+  document.getElementById('clear-canvas').addEventListener('click',()=>{
+    if(elements.length===0||confirm('למחוק את כל האלמנטים?')){elements=[];selectedId=null;render();updateList();}
+  });
+
+  function genPNG(cb){const old=selectedId;selectedId=null;render();canvas.toBlob(b=>{selectedId=old;render();cb(b);},'image/png');}
+
+  document.getElementById('download-png').addEventListener('click',()=>{
+    genPNG(blob=>{
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');
+      a.href=url;a.download='cup-design.png';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    });
+  });
+
+  const form=document.getElementById('design-form');
+  form.addEventListener('submit',e=>{
+    const status=document.getElementById('design-status');
+    const btn=form.querySelector('button[type="submit"]');
+    if(elements.length===0){e.preventDefault();status.className='design-status error';status.textContent='הוסיפו לפחות אלמנט אחד לפני שליחה.';return;}
+    e.preventDefault();btn.disabled=true;status.className='design-status loading';status.textContent='⏳ מכין לשליחה...';
+    genPNG(blob=>{
+      try{
+        const file=new File([blob],'cup-design-'+Date.now()+'.png',{type:'image/png'});
+        const dt=new DataTransfer();dt.items.add(file);
+        document.getElementById('design-file-hidden').files=dt.files;
+        sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:form.name.value,time:Date.now()}));
+        status.textContent='⏳ שולח...';form.submit();
+      }catch(err){btn.disabled=false;status.className='design-status error';status.innerHTML='⚠ שגיאה. שלחו בוואטסאפ: <a href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" style="color:#C73838;text-decoration:underline;">לחצו כאן</a>';}
+    });
+  });
+
+  if(window.location.search.indexOf('sent=ok')!==-1){
+    const status=document.getElementById('design-status');
+    const saved=sessionStorage.getItem('aspagilLastSubmit');
+    let name='';if(saved){try{name=JSON.parse(saved).name||'';}catch(e){}}
+    status.className='design-status success';
+    status.innerHTML='✓ העיצוב נשלח בהצלחה'+(name?', '+name:'')+'! נחזור אליכם תוך 24 שעות.';
+    sessionStorage.removeItem('aspagilLastSubmit');
+    setTimeout(()=>{document.getElementById('template').scrollIntoView({behavior:'smooth'});},200);
+    if(window.history.replaceState)window.history.replaceState({},'',window.location.pathname);
+  }
+  render();
+})();
+</script>
+</body>
+</html>
