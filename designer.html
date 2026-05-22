@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>מעצב כוסות אונליין | עיצוב כוסות נייר ממותגות בחינם | אספגיל</title>
-<meta name="description" content="מעצב כוסות אונליין חינמי - הוסיפו טקסט, העלו לוגו ועצבו את הכוס שלכם במלבן ההדפסה האמיתי (170×96 מ"מ). שלחו אלינו ונחזור עם הצעת מחיר תוך 24 שעות.">
+<meta name="description" content="מעצב כוסות אונליין חינמי - הוסיפו טקסט, העלו לוגו, השתמשו בתבניות מוכנות ועצבו את הכוס שלכם במלבן ההדפסה האמיתי (170×96 מ"מ). שלחו אלינו ונחזור עם הצעת מחיר תוך 24 שעות.">
 <meta name="keywords" content="מעצב כוסות אונליין, עיצוב כוסות נייר, כלי עיצוב כוסות, כוסות עם לוגו עיצוב, אספגיל">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.gilcups.com/designer.html">
@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Rubik:wght@400;500;700;900&family=Assistant:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@500;700;900&family=Suez+One&family=Secular+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,24 +45,75 @@
   <div class="container">
     <p class="crumbs"><a href="index.html">בית</a> ← מעצב אונליין</p>
     <h1>מעצב <span style="color:var(--orange)">כוסות אונליין</span></h1>
-    <p class="lead">עצבו את הכוס שלכם בדפדפן — בלי תוכנות, בלי הורדות. הוסיפו טקסט, העלו לוגו, ושלחו לנו ישירות במייל. נחזור עם הצעת מחיר והדמיה תוך 24 שעות.</p>
+    <p class="lead">עצבו את הכוס שלכם בדפדפן — בלי תוכנות, בלי הורדות. תבניות מוכנות, פונטים מקצועיים, תצוגה תלת-ממדית בזמן אמת. שלחו לנו ישירות במייל ונחזור תוך 24 שעות.</p>
   </div>
 </section>
 
 <section class="section section--gray" id="template">
   <div class="container">
-    <div class="designer-layout">
-      <div class="designer-canvas-wrap">
-        <div class="canvas-label">170 × 96 מ"מ</div>
-        <canvas id="design-canvas" class="designer-canvas" width="800" height="452"></canvas>
-        <p class="canvas-size-info">אזור ההדפסה האמיתי על הכוס · גודל 9oz · גררו אלמנטים למיקום הרצוי</p>
+
+    <div class="designer-v2">
+
+      <!-- LEFT: Canvas + 3D Preview -->
+      <div class="dz-left">
+
+        <div class="designer-canvas-wrap">
+          <div class="canvas-label">170 × 96 מ"מ</div>
+          <canvas id="design-canvas" class="designer-canvas" width="800" height="452"></canvas>
+          <p class="canvas-size-info">אזור ההדפסה האמיתי על הכוס · גודל 9oz · גררו אלמנטים למיקום הרצוי</p>
+        </div>
+
+        <div class="cup-preview-wrap">
+          <h4>תצוגה מקדימה על כוס</h4>
+          <div class="cup-color-picker">
+            <button type="button" class="cup-color-btn active" data-color="#FFFFFF" data-stroke="#0E2A3E" style="background:#FFFFFF" title="לבן"></button>
+            <button type="button" class="cup-color-btn" data-color="#1A1A1A" data-stroke="#000" style="background:#1A1A1A" title="שחור"></button>
+            <button type="button" class="cup-color-btn" data-color="#E85D2F" data-stroke="#8C2F12" style="background:#E85D2F" title="כתום"></button>
+            <button type="button" class="cup-color-btn" data-color="#C73838" data-stroke="#6E1616" style="background:#C73838" title="אדום"></button>
+            <button type="button" class="cup-color-btn" data-color="#2169C8" data-stroke="#08274D" style="background:#2169C8" title="כחול"></button>
+            <button type="button" class="cup-color-btn" data-color="#1F6638" data-stroke="#0F4424" style="background:#1F6638" title="ירוק"></button>
+          </div>
+          <svg id="cup-3d" viewBox="0 0 220 270" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="cupLabelClip">
+                <path d="M40 60 L48 230 L172 230 L180 60 Z"/>
+              </clipPath>
+            </defs>
+            <ellipse cx="110" cy="245" rx="70" ry="6" fill="rgba(0,0,0,0.18)"/>
+            <ellipse cx="110" cy="237" rx="62" ry="5" id="cup-base" fill="#7A7A7A" opacity="0.6"/>
+            <path id="cup-body" d="M40 60 L48 230 L172 230 L180 60 Z" fill="#FFFFFF" stroke="#0E2A3E" stroke-width="1.5"/>
+            <image id="cup-design-img" x="40" y="60" width="140" height="170" preserveAspectRatio="none" clip-path="url(#cupLabelClip)"/>
+            <ellipse cx="110" cy="60" rx="70" ry="9" id="cup-rim" fill="#FFFFFF" stroke="#0E2A3E" stroke-width="1.5"/>
+            <ellipse cx="110" cy="62" rx="63" ry="6.5" id="cup-inner" fill="#0E2A3E"/>
+            <path d="M44 56 Q110 50, 176 56" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
 
-      <div class="designer-controls">
-        <div class="control-group">
-          <h4>הוספת טקסט</h4>
+      <!-- RIGHT: Tabs + Controls -->
+      <div class="designer-controls" style="padding:1.2rem">
+
+        <div class="tab-bar">
+          <button type="button" class="tab-btn active" data-tab="text">טקסט</button>
+          <button type="button" class="tab-btn" data-tab="image">תמונה</button>
+          <button type="button" class="tab-btn" data-tab="templates">תבניות</button>
+          <button type="button" class="tab-btn" data-tab="selected">נבחר</button>
+        </div>
+
+        <!-- TEXT TAB -->
+        <div class="tab-content active" data-tab-pane="text">
           <input type="text" id="text-input" placeholder="הקלידו טקסט להוספה...">
-          <div class="control-row">
+          <div class="dz-row">
+            <select id="font-family" style="font-family:Heebo,sans-serif">
+              <option value="Heebo" style="font-family:Heebo">Heebo (מודרני)</option>
+              <option value="Rubik" style="font-family:Rubik">Rubik (חברותי)</option>
+              <option value="Assistant" style="font-family:Assistant">Assistant (נקי)</option>
+              <option value="Frank Ruhl Libre" style="font-family:'Frank Ruhl Libre'">Frank Ruhl (אלגנטי)</option>
+              <option value="Suez One" style="font-family:'Suez One'">Suez One (חזק)</option>
+              <option value="Secular One" style="font-family:'Secular One'">Secular (קלאסי)</option>
+            </select>
+          </div>
+          <div class="dz-row">
             <select id="font-size">
               <option value="24">קטן</option>
               <option value="40" selected>בינוני</option>
@@ -70,28 +121,96 @@
               <option value="80">ענק</option>
             </select>
             <input type="color" id="text-color" value="#1A1A1A" title="צבע">
-            <button type="button" class="btn-mini" id="add-text">+ הוסף</button>
           </div>
+          <div class="style-row">
+            <button type="button" class="style-btn" id="bold-toggle" title="מודגש"><span class="b-letter">B</span></button>
+            <button type="button" class="style-btn" id="italic-toggle" title="נטוי"><span class="i-letter">I</span></button>
+            <button type="button" class="style-btn active" data-align="right" title="ימין">⊢</button>
+            <button type="button" class="style-btn" data-align="center" title="מרכז">|</button>
+            <button type="button" class="style-btn" data-align="left" title="שמאל">⊣</button>
+          </div>
+          <button type="button" class="btn-add" id="add-text">+ הוסף טקסט</button>
         </div>
-        <div class="control-group">
-          <h4>העלאת לוגו / תמונה</h4>
+
+        <!-- IMAGE TAB -->
+        <div class="tab-content" data-tab-pane="image">
+          <p style="font-size:0.88rem;color:var(--gray-700);margin-bottom:0.6rem;">העלו קובץ לוגו או תמונה (PNG, JPG, SVG)</p>
           <input type="file" id="logo-upload" accept="image/png,image/jpeg,image/svg+xml">
-          <div class="control-row" style="margin-top:8px;">
-            <button type="button" class="btn-mini" id="add-logo" disabled style="flex:1;">בחרו קובץ קודם</button>
+          <button type="button" class="btn-add" id="add-logo" disabled>בחרו קובץ קודם</button>
+        </div>
+
+        <!-- TEMPLATES TAB -->
+        <div class="tab-content" data-tab-pane="templates">
+          <p style="font-size:0.88rem;color:var(--gray-700);margin-bottom:0.6rem;">בחרו תבנית להתחלה מהירה — ערכו אחרי הטעינה:</p>
+          <div class="templates-grid">
+            <button type="button" class="template-card" data-template="cafe">
+              <svg viewBox="0 0 100 50"><rect x="20" y="8" width="60" height="34" rx="3" fill="#C73838"/><text x="50" y="25" text-anchor="middle" fill="#fff" font-family="Heebo" font-weight="900" font-size="11">CAFÉ</text><text x="50" y="36" text-anchor="middle" fill="#fff" font-family="Heebo" font-size="6">EST. 2025</text></svg>
+              <div class="tpl-name">קפה קלאסי</div>
+            </button>
+            <button type="button" class="template-card" data-template="birthday">
+              <svg viewBox="0 0 100 50"><text x="50" y="22" text-anchor="middle" fill="#D63B7C" font-family="'Suez One'" font-size="18">8</text><text x="50" y="35" text-anchor="middle" fill="#1A1A1A" font-family="Heebo" font-weight="700" font-size="8">יום הולדת</text><text x="50" y="44" text-anchor="middle" fill="#D4A24C" font-size="6">★ ★ ★</text></svg>
+              <div class="tpl-name">יום הולדת</div>
+            </button>
+            <button type="button" class="template-card" data-template="wedding">
+              <svg viewBox="0 0 100 50"><text x="50" y="20" text-anchor="middle" fill="#D4A24C" font-family="serif" font-size="9">✦ ✦ ✦</text><text x="50" y="33" text-anchor="middle" fill="#1A1A1A" font-family="'Frank Ruhl Libre'" font-style="italic" font-size="11">דנה & יוסי</text><text x="50" y="43" text-anchor="middle" fill="#5A5A5A" font-family="Heebo" font-size="6">2026</text></svg>
+              <div class="tpl-name">חתונה</div>
+            </button>
+            <button type="button" class="template-card" data-template="foodtruck">
+              <svg viewBox="0 0 100 50"><rect x="15" y="8" width="70" height="12" rx="1" fill="#1A1A1A"/><text x="50" y="17" text-anchor="middle" fill="#E85D2F" font-family="Heebo" font-weight="900" font-size="8">STREET FOOD</text><text x="50" y="32" text-anchor="middle" fill="#1A1A1A" font-family="Heebo" font-weight="700" font-size="9">אצלנו טעים</text><text x="50" y="42" text-anchor="middle" fill="#D4A24C" font-size="7">★ ★ ★ ★ ★</text></svg>
+              <div class="tpl-name">פוד טראק</div>
+            </button>
+            <button type="button" class="template-card" data-template="event">
+              <svg viewBox="0 0 100 50"><rect x="15" y="14" width="70" height="2" fill="#D4A24C"/><text x="50" y="28" text-anchor="middle" fill="#1A1A1A" font-family="'Frank Ruhl Libre'" font-weight="700" font-size="9">CONFERENCE</text><text x="50" y="38" text-anchor="middle" fill="#5A5A5A" font-family="Heebo" font-size="7">2026</text><rect x="15" y="42" width="70" height="2" fill="#D4A24C"/></svg>
+              <div class="tpl-name">כנס / אירוע</div>
+            </button>
+            <button type="button" class="template-card" data-template="minimal">
+              <svg viewBox="0 0 100 50"><text x="50" y="22" text-anchor="middle" fill="#1A1A1A" font-family="'Secular One'" font-size="13">BRAND</text><line x1="35" y1="29" x2="65" y2="29" stroke="#E85D2F" stroke-width="1"/><text x="50" y="40" text-anchor="middle" fill="#5A5A5A" font-family="Heebo" font-size="6" letter-spacing="2">PREMIUM</text></svg>
+              <div class="tpl-name">מינימליסטי</div>
+            </button>
           </div>
         </div>
-        <div class="control-group">
-          <h4>אלמנטים בעיצוב</h4>
-          <div class="element-list" id="element-list">
-            <p style="color:var(--gray-500);font-size:0.85rem;text-align:center;padding:0.6rem 0;margin:0;">אין עדיין אלמנטים<br>הוסיפו טקסט או לוגו</p>
+
+        <!-- SELECTED TAB -->
+        <div class="tab-content" data-tab-pane="selected">
+          <div id="selected-empty" class="selected-empty">לא נבחר אלמנט. לחצו על אלמנט בקנבס לערוך אותו.</div>
+          <div id="selected-controls" style="display:none">
+            <div class="prop-group">
+              <div class="prop-label">תוכן <span class="prop-value" id="sel-type"></span></div>
+              <input type="text" id="sel-text" placeholder="טקסט..." style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-300);border-radius:6px;font-size:0.92rem">
+            </div>
+            <div class="prop-group">
+              <div class="prop-label">גודל <span class="prop-value" id="sel-size-val">40</span></div>
+              <input type="range" id="sel-size" class="prop-slider" min="12" max="200" value="40">
+            </div>
+            <div class="prop-group">
+              <div class="prop-label">סיבוב <span class="prop-value" id="sel-rotation-val">0°</span></div>
+              <input type="range" id="sel-rotation" class="prop-slider" min="-180" max="180" value="0">
+            </div>
+            <div class="prop-group">
+              <div class="prop-label">סדר שכבות</div>
+              <div class="layer-btns">
+                <button type="button" class="layer-btn" id="layer-up">⬆ קדימה</button>
+                <button type="button" class="layer-btn" id="layer-down">⬇ אחורה</button>
+              </div>
+            </div>
+            <div class="prop-group">
+              <button type="button" class="layer-btn" id="delete-selected" style="width:100%;border-color:#C73838;color:#C73838">🗑 מחק אלמנט</button>
+            </div>
           </div>
-          <div class="control-row" style="margin-top:10px;">
-            <button type="button" class="btn-mini secondary" id="clear-canvas" style="flex:1;">נקה הכל</button>
+        </div>
+
+        <!-- ELEMENT LIST (always visible) -->
+        <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:1px dashed var(--gray-200)">
+          <h4 style="margin:0 0 0.5rem;font-size:0.78rem;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.06em;font-weight:700">אלמנטים בעיצוב</h4>
+          <div id="element-list" class="el-list-v2">
+            <p style="color:var(--gray-500);font-size:0.85rem;text-align:center;padding:0.6rem 0;margin:0;">אין עדיין אלמנטים</p>
           </div>
+          <button type="button" class="btn-mini secondary" id="clear-canvas" style="width:100%;margin-top:8px">נקה הכל</button>
         </div>
       </div>
     </div>
 
+    <!-- SUBMIT FORM -->
     <div class="design-submit">
       <h3>שליחת העיצוב</h3>
       <p style="color:var(--gray-700);font-size:0.95rem;margin-bottom:1.2rem;">מלאו פרטים ולחצו "שלח" — העיצוב והפרטים יישלחו אלינו ונחזור אליכם תוך 24 שעות.</p>
@@ -171,42 +290,162 @@
 
 <script>
 document.getElementById('year').textContent=new Date().getFullYear();
-const t=document.getElementById('menuToggle'),n=document.getElementById('mainNav');
-t.addEventListener('click',()=>{n.classList.toggle('is-open');});
+const mt=document.getElementById('menuToggle'),mn=document.getElementById('mainNav');
+mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
 
 (function(){
   const canvas=document.getElementById('design-canvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  const CANVAS_W=800,CANVAS_H=452;
+  const CW=800,CH=452;
   let elements=[],selectedId=null,nextId=1,dragState=null,pendingImage=null;
+  let textState={font:'Heebo',size:40,color:'#1A1A1A',bold:false,italic:false,align:'right'};
 
+  // ============== TABS ==============
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      document.querySelector('[data-tab-pane="'+b.dataset.tab+'"]').classList.add('active');
+    });
+  });
+
+  // ============== CANVAS RENDER ==============
   function render(){
-    ctx.clearRect(0,0,CANVAS_W,CANVAS_H);
-    ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+    ctx.clearRect(0,0,CW,CH);
+    ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,CW,CH);
     ctx.strokeStyle='#F0EFE8';ctx.lineWidth=1;
-    for(let x=80;x<CANVAS_W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,CANVAS_H);ctx.stroke();}
-    for(let y=80;y<CANVAS_H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(CANVAS_W,y);ctx.stroke();}
+    for(let x=80;x<CW;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,CH);ctx.stroke();}
+    for(let y=80;y<CH;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(CW,y);ctx.stroke();}
+
     elements.forEach(el=>{
+      ctx.save();
+      const cx=el.x+el.w/2,cy=el.y+el.h/2;
+      ctx.translate(cx,cy);
+      if(el.rotation)ctx.rotate(el.rotation*Math.PI/180);
+      ctx.translate(-cx,-cy);
+
       if(el.type==='text'){
-        ctx.font='bold '+el.fontSize+'px Heebo, sans-serif';
-        ctx.fillStyle=el.color;ctx.textBaseline='top';ctx.direction='rtl';
-        const m=ctx.measureText(el.content);el.w=m.width;el.h=el.fontSize*1.2;
-        ctx.fillText(el.content,el.x,el.y);
+        let weight=el.bold?'900':'700';
+        let style=el.italic?'italic ':'';
+        ctx.font=style+weight+' '+el.fontSize+'px '+(el.font||'Heebo')+', sans-serif';
+        ctx.fillStyle=el.color;
+        ctx.textBaseline='top';
+        ctx.direction='rtl';
+        const m=ctx.measureText(el.content);
+        el.w=m.width;
+        el.h=el.fontSize*1.2;
+        let drawX=el.x;
+        if(el.align==='center')drawX=el.x;
+        else if(el.align==='left')drawX=el.x;
+        ctx.fillText(el.content,drawX,el.y);
       }else if(el.type==='image'&&el.imgObj){
         ctx.drawImage(el.imgObj,el.x,el.y,el.w,el.h);
       }
+      ctx.restore();
+
       if(el.id===selectedId){
+        ctx.save();
+        ctx.translate(cx,cy);
+        if(el.rotation)ctx.rotate(el.rotation*Math.PI/180);
+        ctx.translate(-cx,-cy);
         ctx.strokeStyle='#E85D2F';ctx.lineWidth=2;ctx.setLineDash([6,4]);
-        ctx.strokeRect(el.x-4,el.y-4,el.w+8,el.h+8);ctx.setLineDash([]);
+        ctx.strokeRect(el.x-4,el.y-4,el.w+8,el.h+8);
+        ctx.setLineDash([]);
+        ctx.restore();
       }
     });
+    update3D();
   }
+
+  // ============== 3D PREVIEW ==============
+  let previewTimer=null;
+  function update3D(){
+    if(previewTimer)clearTimeout(previewTimer);
+    previewTimer=setTimeout(()=>{
+      try{
+        const old=selectedId;selectedId=null;
+        ctx.clearRect(0,0,CW,CH);
+        ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,CW,CH);
+        elements.forEach(el=>{
+          ctx.save();
+          const cx=el.x+el.w/2,cy=el.y+el.h/2;
+          ctx.translate(cx,cy);
+          if(el.rotation)ctx.rotate(el.rotation*Math.PI/180);
+          ctx.translate(-cx,-cy);
+          if(el.type==='text'){
+            let weight=el.bold?'900':'700';
+            let style=el.italic?'italic ':'';
+            ctx.font=style+weight+' '+el.fontSize+'px '+(el.font||'Heebo')+', sans-serif';
+            ctx.fillStyle=el.color;ctx.textBaseline='top';ctx.direction='rtl';
+            ctx.fillText(el.content,el.x,el.y);
+          }else if(el.type==='image'&&el.imgObj){
+            ctx.drawImage(el.imgObj,el.x,el.y,el.w,el.h);
+          }
+          ctx.restore();
+        });
+        const dataUrl=canvas.toDataURL('image/png');
+        document.getElementById('cup-design-img').setAttribute('href',dataUrl);
+        selectedId=old;
+        // Redraw with selection
+        ctx.clearRect(0,0,CW,CH);
+        ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,CW,CH);
+        ctx.strokeStyle='#F0EFE8';ctx.lineWidth=1;
+        for(let x=80;x<CW;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,CH);ctx.stroke();}
+        for(let y=80;y<CH;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(CW,y);ctx.stroke();}
+        elements.forEach(el=>{
+          ctx.save();
+          const cx=el.x+el.w/2,cy=el.y+el.h/2;
+          ctx.translate(cx,cy);
+          if(el.rotation)ctx.rotate(el.rotation*Math.PI/180);
+          ctx.translate(-cx,-cy);
+          if(el.type==='text'){
+            let weight=el.bold?'900':'700';
+            let style=el.italic?'italic ':'';
+            ctx.font=style+weight+' '+el.fontSize+'px '+(el.font||'Heebo')+', sans-serif';
+            ctx.fillStyle=el.color;ctx.textBaseline='top';ctx.direction='rtl';
+            ctx.fillText(el.content,el.x,el.y);
+          }else if(el.type==='image'&&el.imgObj){
+            ctx.drawImage(el.imgObj,el.x,el.y,el.w,el.h);
+          }
+          ctx.restore();
+          if(el.id===selectedId){
+            ctx.save();
+            ctx.translate(cx,cy);
+            if(el.rotation)ctx.rotate(el.rotation*Math.PI/180);
+            ctx.translate(-cx,-cy);
+            ctx.strokeStyle='#E85D2F';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+            ctx.strokeRect(el.x-4,el.y-4,el.w+8,el.h+8);
+            ctx.setLineDash([]);
+            ctx.restore();
+          }
+        });
+      }catch(e){}
+    },150);
+  }
+
+  // ============== CUP COLOR PICKER ==============
+  document.querySelectorAll('.cup-color-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.cup-color-btn').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      const c=btn.dataset.color,s=btn.dataset.stroke;
+      document.getElementById('cup-body').setAttribute('fill',c);
+      document.getElementById('cup-body').setAttribute('stroke',s);
+      document.getElementById('cup-rim').setAttribute('fill',c==='#FFFFFF'?'#F5F1E8':c);
+      document.getElementById('cup-rim').setAttribute('stroke',s);
+      document.getElementById('cup-inner').setAttribute('fill',s);
+      document.getElementById('cup-base').setAttribute('fill',s);
+    });
+  });
+
+  // ============== COORDS / HIT-TEST ==============
   function getCoords(e){
     const r=canvas.getBoundingClientRect();
     const cx=e.touches?e.touches[0].clientX:e.clientX;
     const cy=e.touches?e.touches[0].clientY:e.clientY;
-    return{x:(cx-r.left)*(CANVAS_W/r.width),y:(cy-r.top)*(CANVAS_H/r.height)};
+    return{x:(cx-r.left)*(CW/r.width),y:(cy-r.top)*(CH/r.height)};
   }
   function hitTest(x,y){
     for(let i=elements.length-1;i>=0;i--){
@@ -215,15 +454,27 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
     }
     return null;
   }
+
+  // ============== DRAG ==============
   function onDown(e){
-    e.preventDefault();const p=getCoords(e);const hit=hitTest(p.x,p.y);
-    if(hit){selectedId=hit.id;dragState={id:hit.id,offX:p.x-hit.x,offY:p.y-hit.y};}else{selectedId=null;}
-    render();updateList();
+    e.preventDefault();const p=getCoords(e);const h=hitTest(p.x,p.y);
+    if(h){selectedId=h.id;dragState={id:h.id,oX:p.x-h.x,oY:p.y-h.y};
+      // Auto-switch to selected tab
+      document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+      document.querySelector('[data-tab="selected"]').classList.add('active');
+      document.querySelector('[data-tab-pane="selected"]').classList.add('active');
+    }else{selectedId=null;}
+    updateSelectedPanel();render();updateList();
   }
   function onMove(e){
     if(!dragState)return;e.preventDefault();const p=getCoords(e);
     const el=elements.find(x=>x.id===dragState.id);
-    if(el){el.x=Math.max(0,Math.min(CANVAS_W-el.w,p.x-dragState.offX));el.y=Math.max(0,Math.min(CANVAS_H-el.h,p.y-dragState.offY));render();}
+    if(el){
+      el.x=Math.max(0,Math.min(CW-el.w,p.x-dragState.oX));
+      el.y=Math.max(0,Math.min(CH-el.h,p.y-dragState.oY));
+      render();
+    }
   }
   function onUp(){dragState=null;}
   canvas.addEventListener('mousedown',onDown);
@@ -234,53 +485,203 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
   canvas.addEventListener('touchmove',onMove,{passive:false});
   canvas.addEventListener('touchend',onUp);
 
-  document.getElementById('add-text').addEventListener('click',()=>{
-    const text=document.getElementById('text-input').value.trim();if(!text)return;
-    const fs=parseInt(document.getElementById('font-size').value);
-    const col=document.getElementById('text-color').value;
-    elements.push({id:nextId++,type:'text',x:CANVAS_W/2-80,y:CANVAS_H/2-fs/2,w:160,h:fs*1.2,content:text,fontSize:fs,color:col});
-    document.getElementById('text-input').value='';
-    selectedId=elements[elements.length-1].id;render();updateList();
+  // ============== TEXT TAB CONTROLS ==============
+  document.getElementById('font-family').addEventListener('change',e=>{textState.font=e.target.value;});
+  document.getElementById('font-size').addEventListener('change',e=>{textState.size=parseInt(e.target.value);});
+  document.getElementById('text-color').addEventListener('change',e=>{textState.color=e.target.value;});
+  document.getElementById('bold-toggle').addEventListener('click',e=>{
+    textState.bold=!textState.bold;e.currentTarget.classList.toggle('active');
+  });
+  document.getElementById('italic-toggle').addEventListener('click',e=>{
+    textState.italic=!textState.italic;e.currentTarget.classList.toggle('active');
+  });
+  document.querySelectorAll('[data-align]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-align]').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');textState.align=b.dataset.align;
+    });
   });
 
+  document.getElementById('add-text').addEventListener('click',()=>{
+    const t=document.getElementById('text-input').value.trim();if(!t)return;
+    elements.push({
+      id:nextId++,type:'text',
+      x:CW/2-80,y:CH/2-textState.size/2,w:160,h:textState.size*1.2,
+      content:t,fontSize:textState.size,color:textState.color,
+      font:textState.font,bold:textState.bold,italic:textState.italic,align:textState.align,
+      rotation:0
+    });
+    document.getElementById('text-input').value='';
+    selectedId=elements[elements.length-1].id;
+    render();updateList();updateSelectedPanel();
+  });
+
+  // ============== IMAGE TAB ==============
   document.getElementById('logo-upload').addEventListener('change',e=>{
     const f=e.target.files[0];if(!f)return;
     const r=new FileReader();
-    r.onload=ev=>{const img=new Image();img.onload=()=>{pendingImage=img;const b=document.getElementById('add-logo');b.disabled=false;b.textContent='+ הוסף את "'+(f.name.length>18?f.name.slice(0,15)+'...':f.name)+'"';};img.src=ev.target.result;};
+    r.onload=ev=>{const img=new Image();img.onload=()=>{
+      pendingImage=img;const b=document.getElementById('add-logo');
+      b.disabled=false;b.textContent='+ הוסף את "'+(f.name.length>18?f.name.slice(0,15)+'...':f.name)+'"';
+    };img.src=ev.target.result;};
     r.readAsDataURL(f);
   });
   document.getElementById('add-logo').addEventListener('click',()=>{
     if(!pendingImage)return;
     const max=250;let w=pendingImage.naturalWidth,h=pendingImage.naturalHeight;
     if(w>max||h>max){const ra=Math.min(max/w,max/h);w*=ra;h*=ra;}
-    elements.push({id:nextId++,type:'image',x:CANVAS_W/2-w/2,y:CANVAS_H/2-h/2,w:w,h:h,imgObj:pendingImage});
+    elements.push({id:nextId++,type:'image',x:CW/2-w/2,y:CH/2-h/2,w:w,h:h,imgObj:pendingImage,rotation:0,origW:w,origH:h});
     selectedId=elements[elements.length-1].id;pendingImage=null;
     document.getElementById('logo-upload').value='';
     const b=document.getElementById('add-logo');b.disabled=true;b.textContent='בחרו קובץ קודם';
+    render();updateList();updateSelectedPanel();
+  });
+
+  // ============== TEMPLATES ==============
+  const templates={
+    cafe:[
+      {type:'text',content:'CAFÉ',font:'Heebo',fontSize:80,color:'#C73838',bold:true,italic:false,align:'right',x:300,y:130,rotation:0},
+      {type:'text',content:'ROMA',font:'Heebo',fontSize:80,color:'#C73838',bold:true,italic:false,align:'right',x:300,y:220,rotation:0},
+      {type:'text',content:'EST. 2025',font:'Heebo',fontSize:24,color:'#1A1A1A',bold:false,italic:false,align:'right',x:340,y:320,rotation:0}
+    ],
+    birthday:[
+      {type:'text',content:'★ ★ ★',font:'Heebo',fontSize:40,color:'#D4A24C',bold:false,italic:false,align:'right',x:350,y:70,rotation:0},
+      {type:'text',content:'8',font:'Suez One',fontSize:160,color:'#D63B7C',bold:false,italic:false,align:'right',x:380,y:120,rotation:0},
+      {type:'text',content:'יום הולדת',font:'Heebo',fontSize:40,color:'#1A1A1A',bold:true,italic:false,align:'right',x:320,y:300,rotation:0}
+    ],
+    wedding:[
+      {type:'text',content:'✦ ✦ ✦',font:'Heebo',fontSize:32,color:'#D4A24C',bold:false,italic:false,align:'right',x:350,y:90,rotation:0},
+      {type:'text',content:'דנה & יוסי',font:'Frank Ruhl Libre',fontSize:60,color:'#1A1A1A',bold:true,italic:true,align:'right',x:280,y:180,rotation:0},
+      {type:'text',content:'2026',font:'Heebo',fontSize:28,color:'#5A5A5A',bold:false,italic:false,align:'right',x:370,y:280,rotation:0}
+    ],
+    foodtruck:[
+      {type:'text',content:'STREET FOOD',font:'Heebo',fontSize:48,color:'#E85D2F',bold:true,italic:false,align:'right',x:240,y:120,rotation:0},
+      {type:'text',content:'אצלנו טעים',font:'Heebo',fontSize:50,color:'#1A1A1A',bold:true,italic:false,align:'right',x:300,y:220,rotation:0},
+      {type:'text',content:'★ ★ ★ ★ ★',font:'Heebo',fontSize:30,color:'#D4A24C',bold:false,italic:false,align:'right',x:320,y:310,rotation:0}
+    ],
+    event:[
+      {type:'text',content:'CONFERENCE',font:'Frank Ruhl Libre',fontSize:56,color:'#1A1A1A',bold:true,italic:false,align:'right',x:240,y:160,rotation:0},
+      {type:'text',content:'2026',font:'Heebo',fontSize:36,color:'#5A5A5A',bold:false,italic:false,align:'right',x:360,y:240,rotation:0}
+    ],
+    minimal:[
+      {type:'text',content:'BRAND',font:'Secular One',fontSize:90,color:'#1A1A1A',bold:false,italic:false,align:'right',x:300,y:160,rotation:0},
+      {type:'text',content:'PREMIUM',font:'Heebo',fontSize:22,color:'#5A5A5A',bold:false,italic:false,align:'right',x:340,y:290,rotation:0}
+    ]
+  };
+  document.querySelectorAll('.template-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const tpl=templates[card.dataset.template];if(!tpl)return;
+      if(elements.length>0&&!confirm('זה ימחק את העיצוב הנוכחי. להמשיך?'))return;
+      elements=[];selectedId=null;
+      tpl.forEach(t=>{
+        elements.push({...t,id:nextId++,w:160,h:t.fontSize*1.2});
+      });
+      // Switch to selected tab to allow editing
+      document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+      document.querySelector('[data-tab="selected"]').classList.add('active');
+      document.querySelector('[data-tab-pane="selected"]').classList.add('active');
+      selectedId=elements[elements.length-1].id;
+      updateSelectedPanel();render();updateList();
+    });
+  });
+
+  // ============== SELECTED PANEL ==============
+  function updateSelectedPanel(){
+    const empty=document.getElementById('selected-empty');
+    const ctrls=document.getElementById('selected-controls');
+    const el=elements.find(x=>x.id===selectedId);
+    if(!el){empty.style.display='block';ctrls.style.display='none';return;}
+    empty.style.display='none';ctrls.style.display='block';
+    document.getElementById('sel-type').textContent=el.type==='text'?'(טקסט)':'(תמונה)';
+    const txtInput=document.getElementById('sel-text');
+    txtInput.value=el.type==='text'?el.content:'(תמונה - אין טקסט)';
+    txtInput.disabled=el.type!=='text';
+    const sizeSlider=document.getElementById('sel-size');
+    const sizeVal=document.getElementById('sel-size-val');
+    if(el.type==='text'){
+      sizeSlider.min=12;sizeSlider.max=200;sizeSlider.value=el.fontSize;sizeVal.textContent=el.fontSize+'px';
+    }else{
+      sizeSlider.min=20;sizeSlider.max=500;sizeSlider.value=el.w;sizeVal.textContent=Math.round(el.w)+'px';
+    }
+    document.getElementById('sel-rotation').value=el.rotation||0;
+    document.getElementById('sel-rotation-val').textContent=(el.rotation||0)+'°';
+  }
+  document.getElementById('sel-text').addEventListener('input',e=>{
+    const el=elements.find(x=>x.id===selectedId);if(!el||el.type!=='text')return;
+    el.content=e.target.value;render();updateList();
+  });
+  document.getElementById('sel-size').addEventListener('input',e=>{
+    const el=elements.find(x=>x.id===selectedId);if(!el)return;
+    const v=parseInt(e.target.value);
+    if(el.type==='text'){el.fontSize=v;document.getElementById('sel-size-val').textContent=v+'px';}
+    else{const ratio=v/el.w;el.w=v;el.h=el.h*ratio;document.getElementById('sel-size-val').textContent=v+'px';}
+    render();
+  });
+  document.getElementById('sel-rotation').addEventListener('input',e=>{
+    const el=elements.find(x=>x.id===selectedId);if(!el)return;
+    el.rotation=parseInt(e.target.value);
+    document.getElementById('sel-rotation-val').textContent=el.rotation+'°';
+    render();
+  });
+  document.getElementById('layer-up').addEventListener('click',()=>{
+    const i=elements.findIndex(x=>x.id===selectedId);
+    if(i<0||i>=elements.length-1)return;
+    [elements[i],elements[i+1]]=[elements[i+1],elements[i]];
     render();updateList();
   });
-
-  function updateList(){
-    const list=document.getElementById('element-list');
-    if(elements.length===0){list.innerHTML='<p style="color:var(--gray-500);font-size:0.85rem;text-align:center;padding:0.6rem 0;margin:0;">אין עדיין אלמנטים<br>הוסיפו טקסט או לוגו</p>';return;}
-    list.innerHTML=elements.map(el=>{
-      const lbl=el.type==='text'?'🅰 '+el.content:'🖼 תמונה';
-      const cls=el.id===selectedId?'element-list-item selected':'element-list-item';
-      return '<div class="'+cls+'" data-id="'+el.id+'"><span class="el-name">'+lbl+'</span><button data-del="'+el.id+'" title="מחק">×</button></div>';
-    }).join('');
-    list.querySelectorAll('[data-id]').forEach(node=>{
-      node.addEventListener('click',e=>{if(e.target.hasAttribute('data-del'))return;selectedId=parseInt(node.dataset.id);render();updateList();});
-    });
-    list.querySelectorAll('[data-del]').forEach(btn=>{
-      btn.addEventListener('click',e=>{e.stopPropagation();const id=parseInt(btn.dataset.del);elements=elements.filter(x=>x.id!==id);if(selectedId===id)selectedId=null;render();updateList();});
-    });
-  }
-  document.getElementById('clear-canvas').addEventListener('click',()=>{
-    if(elements.length===0||confirm('למחוק את כל האלמנטים?')){elements=[];selectedId=null;render();updateList();}
+  document.getElementById('layer-down').addEventListener('click',()=>{
+    const i=elements.findIndex(x=>x.id===selectedId);
+    if(i<=0)return;
+    [elements[i],elements[i-1]]=[elements[i-1],elements[i]];
+    render();updateList();
+  });
+  document.getElementById('delete-selected').addEventListener('click',()=>{
+    elements=elements.filter(x=>x.id!==selectedId);selectedId=null;
+    render();updateList();updateSelectedPanel();
   });
 
-  function genPNG(cb){const old=selectedId;selectedId=null;render();canvas.toBlob(b=>{selectedId=old;render();cb(b);},'image/png');}
+  // ============== ELEMENT LIST ==============
+  function updateList(){
+    const list=document.getElementById('element-list');
+    if(elements.length===0){list.innerHTML='<p style="color:var(--gray-500);font-size:0.85rem;text-align:center;padding:0.6rem 0;margin:0;">אין עדיין אלמנטים</p>';return;}
+    list.innerHTML=elements.map((el,idx)=>{
+      const lbl=el.type==='text'?('🅰 '+el.content):'🖼 תמונה';
+      const cls=el.id===selectedId?'el-row sel':'el-row';
+      return '<div class="'+cls+'" data-id="'+el.id+'"><span class="el-lbl">'+lbl+'</span><button data-del="'+el.id+'" class="del" title="מחק">×</button></div>';
+    }).join('');
+    list.querySelectorAll('[data-id]').forEach(node=>{
+      node.addEventListener('click',e=>{
+        if(e.target.hasAttribute('data-del'))return;
+        selectedId=parseInt(node.dataset.id);
+        // switch to selected tab
+        document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+        document.querySelector('[data-tab="selected"]').classList.add('active');
+        document.querySelector('[data-tab-pane="selected"]').classList.add('active');
+        render();updateList();updateSelectedPanel();
+      });
+    });
+    list.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click',e=>{e.stopPropagation();
+        const id=parseInt(btn.dataset.del);elements=elements.filter(x=>x.id!==id);
+        if(selectedId===id)selectedId=null;
+        render();updateList();updateSelectedPanel();
+      });
+    });
+  }
 
+  // ============== CLEAR ==============
+  document.getElementById('clear-canvas').addEventListener('click',()=>{
+    if(elements.length===0||confirm('למחוק את כל האלמנטים?')){elements=[];selectedId=null;
+      render();updateList();updateSelectedPanel();}
+  });
+
+  // ============== EXPORT / SUBMIT ==============
+  function genPNG(cb){
+    const old=selectedId;selectedId=null;render();
+    canvas.toBlob(b=>{selectedId=old;render();cb(b);},'image/png');
+  }
   document.getElementById('download-png').addEventListener('click',()=>{
     genPNG(blob=>{
       const url=URL.createObjectURL(blob);const a=document.createElement('a');
@@ -292,7 +693,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
   form.addEventListener('submit',e=>{
     const status=document.getElementById('design-status');
     const btn=form.querySelector('button[type="submit"]');
-    if(elements.length===0){e.preventDefault();status.className='design-status error';status.textContent='הוסיפו לפחות אלמנט אחד לפני שליחה.';return;}
+    if(elements.length===0){e.preventDefault();status.className='design-status error';status.textContent='הוסיפו לפחות אלמנט אחד.';return;}
     e.preventDefault();btn.disabled=true;status.className='design-status loading';status.textContent='⏳ מכין לשליחה...';
     genPNG(blob=>{
       try{
@@ -301,7 +702,9 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
         document.getElementById('design-file-hidden').files=dt.files;
         sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:form.name.value,time:Date.now()}));
         status.textContent='⏳ שולח...';form.submit();
-      }catch(err){btn.disabled=false;status.className='design-status error';status.innerHTML='⚠ שגיאה. שלחו בוואטסאפ: <a href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" style="color:#C73838;text-decoration:underline;">לחצו כאן</a>';}
+      }catch(err){btn.disabled=false;status.className='design-status error';
+        status.innerHTML='⚠ שגיאה. שלחו בוואטסאפ: <a href="https://api.whatsapp.com/send?phone=972542150090" target="_blank" style="color:#C73838;text-decoration:underline;">לחצו כאן</a>';
+      }
     });
   });
 
