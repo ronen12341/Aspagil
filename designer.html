@@ -342,26 +342,49 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
   // Generate AI background then composite
   async function generateAndComposite(){
     aiBlob=null;finalBlob=null;
-    const bgDesc=document.getElementById('bg-prompt').value.trim()||'decorative ornaments';
+    const bgDesc=document.getElementById('bg-prompt').value.trim()||'decorative ornaments and patterns';
+    const hebrewText=document.getElementById('cup-text').value.trim();
+
     document.getElementById('ai-empty').style.display='none';
     document.getElementById('ai-result').classList.remove('show');
     document.getElementById('ai-error').classList.remove('show');
     document.getElementById('ai-loading').classList.add('show');
 
-    const styleDesc=styleMap[selectedStyle]||styleMap.watercolor;
-    // CRITICAL: NO mention of "cup" - we want FLAT 2D pattern artwork only
-    const prompt='flat 2D wallpaper pattern, '+styleDesc+', '+bgDesc+', wide horizontal banner format, decorative ornamental frame and borders, top edge and bottom edge richly decorated, sides decorated with corner ornaments, completely EMPTY clean WHITE center area for adding text and photo later, isolated artwork on white background, NO cup, NO object, NO container, NO 3D, NO photograph, NO product, NO mockup, just flat 2D decorative artwork pattern like a wedding invitation border, no text no letters no words, scrapbook style';
-
-    const seed=Math.floor(Math.random()*999999);
-    const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1280&height=720&seed='+seed+'&nologo=true&model=flux&enhance=true';
-
     try{
-      // Fetch as blob FIRST (this gives us a proper file to attach)
-      const resp=await fetch(url);
-      if(!resp.ok)throw new Error('AI fetch failed');
-      aiBlob=await resp.blob();
+      // Call our Vercel serverless function (which calls OpenAI DALL-E)
+      const resp=await fetch('/api/generate',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          hebrewText:hebrewText,
+          style:selectedStyle,
+          backgroundDescription:bgDesc,
+          hasLogo:!!logoFile
+        })
+      });
 
-      // Convert blob to image via blob URL (this avoids CORS taint)
+      if(!resp.ok){
+        const errData=await resp.json().catch(()=>({error:'Unknown error'}));
+        throw new Error(errData.message||errData.error||'Generation failed');
+      }
+
+      const data=await resp.json();
+
+      // Get image as blob (either from base64 or URL)
+      if(data.b64_json){
+        // Convert base64 to blob
+        const binaryStr=atob(data.b64_json);
+        const bytes=new Uint8Array(binaryStr.length);
+        for(let i=0;i<binaryStr.length;i++)bytes[i]=binaryStr.charCodeAt(i);
+        aiBlob=new Blob([bytes],{type:'image/png'});
+      }else if(data.url){
+        // Fetch from URL
+        const imgResp=await fetch(data.url);
+        aiBlob=await imgResp.blob();
+      }else{
+        throw new Error('No image data returned');
+      }
+
       const blobUrl=URL.createObjectURL(aiBlob);
       const img=new Image();
       img.onload=()=>{
@@ -378,8 +401,11 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       };
       img.src=blobUrl;
     }catch(err){
+      console.error('Generation error:',err);
       document.getElementById('ai-loading').classList.remove('show');
-      document.getElementById('ai-error').classList.add('show');
+      const errEl=document.getElementById('ai-error');
+      errEl.classList.add('show');
+      errEl.innerHTML='⚠ '+(err.message||'שגיאה ביצירת העיצוב')+'<br><span style="font-size:0.85em;color:#888;">אם זו הפעם הראשונה - וודאו שהוספתם OPENAI_API_KEY ב-Vercel Environment Variables</span>';
       document.getElementById('ai-empty').style.display='block';
     }
   }
@@ -392,125 +418,47 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     const W=canvas.width,H=canvas.height;
     ctx.clearRect(0,0,W,H);
 
-    // Layer 1: AI background (decorative artwork)
+    // Draw AI-generated design (already includes Hebrew text from DALL-E/gpt-image-1)
     ctx.drawImage(lastAIBg,0,0,W,H);
 
-    // Layer 2: Soft white overlay in center to clear space for content
-    const grad=ctx.createRadialGradient(W/2,H/2,W*0.05,W/2,H/2,W*0.4);
-    grad.addColorStop(0,'rgba(255,255,255,0.98)');
-    grad.addColorStop(0.65,'rgba(255,255,255,0.85)');
-    grad.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.fillStyle=grad;
-    ctx.fillRect(W*0.1,H*0.1,W*0.8,H*0.8);
-
-    const text=document.getElementById('cup-text').value.trim();
-    const color=document.getElementById('text-color').value;
-    const hasLogo=!!logoImage;
-    const hasText=!!text;
-
-    // Layer 3: Logo as circular framed photo (elegant cartouche)
-    if(hasLogo){
-      const cx=W/2;
-      const cy=hasText?H*0.32:H*0.5;
-      const radius=hasText?Math.min(W*0.09,H*0.18):Math.min(W*0.14,H*0.28);
+    // If user uploaded a logo/photo - add it as a circular framed element
+    // (DALL-E doesn't accept reference images, so we composite the user's photo on top)
+    if(logoImage){
+      const color=document.getElementById('text-color').value;
+      const cx=W*0.85; // Top-right corner area
+      const cy=H*0.2;
+      const radius=Math.min(W*0.08,H*0.14);
 
       ctx.save();
-      // White outer ring background
+      // White outer ring with shadow
       ctx.beginPath();
-      ctx.arc(cx,cy,radius+10,0,Math.PI*2);
+      ctx.arc(cx,cy,radius+12,0,Math.PI*2);
       ctx.fillStyle='#FFFFFF';
-      ctx.shadowColor='rgba(0,0,0,0.2)';
-      ctx.shadowBlur=15;
+      ctx.shadowColor='rgba(0,0,0,0.3)';
+      ctx.shadowBlur=20;
       ctx.shadowOffsetY=4;
       ctx.fill();
       ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
 
-      // Clip to circle for photo
+      // Clip to circle
       ctx.beginPath();
       ctx.arc(cx,cy,radius,0,Math.PI*2);
       ctx.clip();
 
-      // Draw image filled to circle (cover mode)
       const ar=logoImage.naturalWidth/logoImage.naturalHeight;
       let dw,dh;
       if(ar>=1){dh=radius*2;dw=dh*ar;}else{dw=radius*2;dh=dw/ar;}
       ctx.drawImage(logoImage,cx-dw/2,cy-dh/2,dw,dh);
       ctx.restore();
 
-      // Decorative ring around photo
+      // Decorative ring
       ctx.beginPath();
-      ctx.arc(cx,cy,radius+10,0,Math.PI*2);
+      ctx.arc(cx,cy,radius+12,0,Math.PI*2);
       ctx.strokeStyle=color;
       ctx.lineWidth=3;
       ctx.globalAlpha=0.7;
       ctx.stroke();
-      // Inner thin ring
-      ctx.beginPath();
-      ctx.arc(cx,cy,radius+4,0,Math.PI*2);
-      ctx.lineWidth=1;
-      ctx.globalAlpha=0.5;
-      ctx.stroke();
       ctx.globalAlpha=1;
-    }
-
-    // Layer 4: Text with elegant cartouche/frame
-    if(hasText){
-      const font=document.getElementById('text-font').value;
-      const sizeMul=parseInt(document.getElementById('text-size').value)/42;
-      const fontSize=Math.floor(105*sizeMul);
-      ctx.fillStyle=color;
-      ctx.font='700 '+fontSize+'px "'+font+'", sans-serif';
-      ctx.textBaseline='middle';
-      ctx.textAlign='center';
-      ctx.direction='rtl';
-
-      const maxWidth=W*0.7;
-      const words=text.split(' ');
-      const lines=[];let cur='';
-      words.forEach(w=>{
-        const test=cur?cur+' '+w:w;
-        if(ctx.measureText(test).width>maxWidth&&cur){lines.push(cur);cur=w;}else{cur=test;}
-      });
-      if(cur)lines.push(cur);
-
-      const lineHeight=fontSize*1.2;
-      const textBlockH=lines.length*lineHeight;
-      const textY=hasLogo?H*0.68:H*0.5;
-      const startY=textY-textBlockH/2+lineHeight/2;
-
-      // Measure max line width for the frame
-      let maxLineW=0;
-      lines.forEach(l=>{const m=ctx.measureText(l).width;if(m>maxLineW)maxLineW=m;});
-
-      // Decorative frame around text
-      const padX=W*0.04,padY=H*0.03;
-      const frameX=W/2-maxLineW/2-padX;
-      const frameY=textY-textBlockH/2-padY;
-      const frameW=maxLineW+padX*2;
-      const frameH=textBlockH+padY*2;
-
-      // Subtle white background behind text for readability
-      ctx.fillStyle='rgba(255,255,255,0.7)';
-      roundedRect(ctx,frameX,frameY,frameW,frameH,12);
-      ctx.fill();
-
-      // Decorative double border (cartouche style)
-      ctx.strokeStyle=color;
-      ctx.globalAlpha=0.55;
-      ctx.lineWidth=2.5;
-      roundedRect(ctx,frameX,frameY,frameW,frameH,12);
-      ctx.stroke();
-      ctx.lineWidth=0.8;
-      ctx.globalAlpha=0.35;
-      roundedRect(ctx,frameX+6,frameY+6,frameW-12,frameH-12,8);
-      ctx.stroke();
-      ctx.globalAlpha=1;
-
-      // Draw text
-      ctx.fillStyle=color;
-      lines.forEach((l,i)=>{
-        ctx.fillText(l,W/2,startY+i*lineHeight);
-      });
     }
 
     canvas.toBlob(b=>{finalBlob=b;},'image/png');
