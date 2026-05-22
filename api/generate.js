@@ -39,22 +39,22 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing prompt' });
     }
 
-    // Generate a photorealistic 3D paper cup mockup with the design printed on it
-    const fullPrompt = `Create a photorealistic product photography mockup of a single white paper coffee cup (disposable 9oz size) standing on a clean white or soft neutral background. The cup is shown at a slight 3/4 angle so the design printed on it is clearly visible.
+    // Generate a FLAT 2D print-ready design for paper cup label (170×96mm proportion)
+    const fullPrompt = `Create a FLAT 2D print-ready artwork design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
 
-The design printed on the cup is based on this user request: ${prompt}
+User request: ${prompt}
 
 Critical requirements:
-- Photorealistic 3D paper cup product mockup (NOT flat artwork)
-- Single paper cup, centered, slight angle
-- Clean professional product photography style
-- Soft lighting, subtle shadow under the cup
-- The design WRAPS naturally around the cup surface following its curve
-- Include any Hebrew text mentioned by the user, rendered clearly and beautifully on the cup
-- Match the style, colors and decorative elements the user described
-- High quality, like a professional commercial photograph
-- White or very light neutral background (gray-white)
-- The cup looks tangible and real, like you could pick it up`;
+- FLAT 2D artwork ONLY - absolutely NO 3D cup, NO photo of a cup, NO mockup, NO product photography
+- This is a horizontal rectangular print design (landscape orientation, proportion approximately 170:96, roughly 1.77:1 ratio - wide banner shape)
+- The design should fill the entire rectangle edge-to-edge as a complete graphic composition
+- Include any Hebrew text mentioned by the user, rendered clearly and beautifully (large, readable, properly formed Hebrew letters)
+- Hebrew text must be spelled correctly and look like real Hebrew typography
+- Match the style, colors, mood and decorative elements the user described
+- Professional graphic design quality, suitable for printing on a paper cup wrap
+- Use rich colors, decorative borders, illustrations, ornaments as appropriate to the theme
+- The design should look like a finished print-ready label artwork file
+- NO white empty borders, NO cup shape, NO 3D rendering - flat artwork that fills the entire frame`;
 
     let openaiResponse;
     let modelUsed = '';
@@ -75,7 +75,7 @@ Critical requirements:
         formData.append('image', blob, 'reference.png');
         formData.append('prompt', fullPrompt);
         formData.append('model', 'gpt-image-1');
-        formData.append('size', '1024x1024');
+        formData.append('size', '1536x1024');
         formData.append('quality', 'high');
         formData.append('n', '1');
 
@@ -112,7 +112,7 @@ Critical requirements:
           body: JSON.stringify({
             model: 'gpt-image-1',
             prompt: fullPrompt,
-            size: '1024x1024',
+            size: '1536x1024',
             quality: 'high',
             n: 1
           })
@@ -142,7 +142,7 @@ Critical requirements:
             body: JSON.stringify({
               model: 'dall-e-3',
               prompt: fullPrompt,
-              size: '1024x1024',
+              size: '1792x1024',
               quality: 'hd',
               n: 1,
               response_format: 'b64_json'
