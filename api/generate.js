@@ -1,5 +1,7 @@
 // Vercel Serverless Function
-// Calls OpenAI DALL-E / GPT-Image to generate cup designs
+// Generates TWO images per request:
+//   1. A 3D photorealistic cup mockup (shown to customer on the page)
+//   2. A flat 170×96mm print-ready design (sent to factory via email)
 // Requires OPENAI_API_KEY environment variable in Vercel
 
 export const config = {
@@ -10,19 +12,108 @@ export const config = {
   },
 };
 
+async function callOpenAI(apiKey, prompt, imageBase64, size) {
+  // If user uploaded a reference image, use edits endpoint
+  if (imageBase64) {
+    try {
+      const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
+      const mimeMatch = imageBase64.match(/^data:(image\/\w+);base64,/);
+      const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+
+      const imageBuffer = Buffer.from(base64Data, 'base64');
+      const blob = new Blob([imageBuffer], { type: mime });
+
+      const formData = new FormData();
+      formData.append('image', blob, 'reference.png');
+      formData.append('prompt', prompt);
+      formData.append('model', 'gpt-image-1');
+      formData.append('size', size);
+      formData.append('quality', 'high');
+      formData.append('n', '1');
+
+      const r = await fetch('https://api.openai.com/v1/images/edits', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${apiKey}` },
+        body: formData
+      });
+
+      if (r.ok) {
+        const j = await r.json();
+        return { ok: true, data: j, model: 'gpt-image-1 (edits)' };
+      } else {
+        const errText = await r.text();
+        console.error('edits failed:', r.status, errText.substring(0, 300));
+      }
+    } catch (e) {
+      console.error('edits exception:', e.message);
+    }
+  }
+
+  // Text-to-image: try gpt-image-1
+  try {
+    const r = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'gpt-image-1',
+        prompt: prompt,
+        size: size,
+        quality: 'high',
+        n: 1
+      })
+    });
+    if (r.ok) {
+      const j = await r.json();
+      return { ok: true, data: j, model: 'gpt-image-1' };
+    } else {
+      const errText = await r.text();
+      console.error('gpt-image-1 failed:', r.status, errText.substring(0, 300));
+    }
+  } catch (e) {
+    console.error('gpt-image-1 exception:', e.message);
+  }
+
+  // Fall back to DALL-E 3
+  const dalleSize = size === '1536x1024' ? '1792x1024' : (size === '1024x1536' ? '1024x1792' : '1024x1024');
+  try {
+    const r = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'dall-e-3',
+        prompt: prompt,
+        size: dalleSize,
+        quality: 'hd',
+        n: 1,
+        response_format: 'b64_json'
+      })
+    });
+    if (r.ok) {
+      const j = await r.json();
+      return { ok: true, data: j, model: 'dall-e-3' };
+    } else {
+      const errText = await r.text();
+      console.error('dall-e-3 failed:', r.status, errText.substring(0, 300));
+      return { ok: false, error: `dall-e-3 ${r.status}: ${errText.substring(0, 200)}` };
+    }
+  } catch (e) {
+    return { ok: false, error: `dall-e-3 exception: ${e.message}` };
+  }
+}
+
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed. Use POST.' });
 
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -34,149 +125,78 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, imageBase64 } = req.body || {};
+    if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
-    if (!prompt) {
-      return res.status(400).json({ error: 'Missing prompt' });
-    }
+    // ============================================================
+    // PROMPT 1: FLAT 170×96 PRINT FILE (for factory email)
+    // Clean, modern, edge-to-edge. NO decorative frames or borders.
+    // ============================================================
+    const flatPrompt = `Create a modern, clean, professional flat 2D graphic design for printing on a paper coffee cup. This is a print-ready artwork file, NOT a photo of a cup.
 
-    // Generate a FLAT 2D print-ready design for paper cup label (170×96mm proportion)
-    const fullPrompt = `Create a FLAT 2D print-ready artwork design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
+User's request: ${prompt}
 
-User request: ${prompt}
+Design specifications:
+- Modern minimalist graphic design — clean, contemporary, fresh aesthetic
+- Horizontal landscape rectangle, wide banner proportion (approximately 170:96 ratio)
+- The artwork must fill the ENTIRE rectangle edge-to-edge with NO empty white margins anywhere
+- ABSOLUTELY NO decorative frames, NO ornate borders, NO ribbon banners, NO Victorian/vintage flourishes
+- DO NOT add unnecessary background patterns the user did not ask for
+- Use ONLY the visual elements the user actually described — nothing extra
+- If the user mentioned Hebrew text, render it perfectly: correctly spelled real Hebrew letters, clean modern typography, large and readable
+- Hebrew typography must be authentic — letter shapes must be accurate
+- Smart use of whitespace and clean composition — not cluttered, not busy
+- Contemporary color palette appropriate to the user's described mood
+- Output: a clean, minimal, modern print artwork that looks like it was designed by a professional graphic designer in 2026
+- NO 3D cup, NO mockup, NO product photo — this is a flat print file only`;
 
-Critical requirements:
-- FLAT 2D artwork ONLY - absolutely NO 3D cup, NO photo of a cup, NO mockup, NO product photography
-- This is a horizontal rectangular print design (landscape orientation, proportion approximately 170:96, roughly 1.77:1 ratio - wide banner shape)
-- The design should fill the entire rectangle edge-to-edge as a complete graphic composition
-- Include any Hebrew text mentioned by the user, rendered clearly and beautifully (large, readable, properly formed Hebrew letters)
-- Hebrew text must be spelled correctly and look like real Hebrew typography
-- Match the style, colors, mood and decorative elements the user described
-- Professional graphic design quality, suitable for printing on a paper cup wrap
-- Use rich colors, decorative borders, illustrations, ornaments as appropriate to the theme
-- The design should look like a finished print-ready label artwork file
-- NO white empty borders, NO cup shape, NO 3D rendering - flat artwork that fills the entire frame`;
+    // ============================================================
+    // PROMPT 2: 3D CUP MOCKUP (for customer preview on page)
+    // ============================================================
+    const mockupPrompt = `Create a photorealistic product photography mockup of a single white paper coffee cup (disposable takeaway cup) with a custom design printed on it. Studio product shot.
 
-    let openaiResponse;
-    let modelUsed = '';
-    let errorDetails = '';
+The design printed on the cup is based on this request: ${prompt}
 
-    // CASE 1: User uploaded a reference image - use image edits endpoint
-    if (imageBase64) {
-      try {
-        // Extract base64 data
-        const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
-        const mimeMatch = imageBase64.match(/^data:(image\/\w+);base64,/);
-        const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+Requirements:
+- One single white paper cup, centered in frame, shown at a slight 3/4 angle so the printed design is clearly visible
+- Photorealistic 3D rendering — looks like a real product photograph
+- The design wraps naturally around the cup's curved surface
+- Clean light neutral background (soft white or light gray), subtle natural shadow under the cup
+- Soft professional studio lighting
+- The design must match the style, mood, colors and any Hebrew text the user described
+- Hebrew text on the cup must be spelled correctly with authentic Hebrew letter shapes
+- Modern contemporary aesthetic — NO ornate Victorian borders, NO vintage flourishes unless the user explicitly asked for that style
+- Use ONLY the elements the user described — do not invent extra decorations
+- High-end commercial product photography quality`;
 
-        const imageBuffer = Buffer.from(base64Data, 'base64');
-        const blob = new Blob([imageBuffer], { type: mime });
+    // Run both image generations in parallel for speed
+    const [flatResult, mockupResult] = await Promise.all([
+      callOpenAI(apiKey, flatPrompt, imageBase64, '1536x1024'),
+      callOpenAI(apiKey, mockupPrompt, imageBase64, '1024x1024')
+    ]);
 
-        const formData = new FormData();
-        formData.append('image', blob, 'reference.png');
-        formData.append('prompt', fullPrompt);
-        formData.append('model', 'gpt-image-1');
-        formData.append('size', '1536x1024');
-        formData.append('quality', 'high');
-        formData.append('n', '1');
-
-        const r1 = await fetch('https://api.openai.com/v1/images/edits', {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${apiKey}` },
-          body: formData
-        });
-
-        if (r1.ok) {
-          openaiResponse = await r1.json();
-          modelUsed = 'gpt-image-1 (edits)';
-        } else {
-          const errText = await r1.text();
-          errorDetails = `gpt-image-1 edits: ${r1.status} - ${errText.substring(0, 500)}`;
-          console.error(errorDetails);
-        }
-      } catch (e) {
-        errorDetails = `Edits exception: ${e.message}`;
-        console.error(errorDetails);
-      }
-    }
-
-    // CASE 2: No image OR edits failed - use text-to-image
-    if (!openaiResponse || !openaiResponse.data) {
-      // Try gpt-image-1 first
-      try {
-        const r2 = await fetch('https://api.openai.com/v1/images/generations', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: 'gpt-image-1',
-            prompt: fullPrompt,
-            size: '1536x1024',
-            quality: 'high',
-            n: 1
-          })
-        });
-
-        if (r2.ok) {
-          openaiResponse = await r2.json();
-          modelUsed = 'gpt-image-1';
-        } else {
-          const errText = await r2.text();
-          errorDetails += ` | gpt-image-1: ${r2.status} - ${errText.substring(0, 500)}`;
-          console.error(errorDetails);
-        }
-      } catch (e) {
-        errorDetails += ` | gpt-image-1 exception: ${e.message}`;
-      }
-
-      // Fall back to DALL-E 3
-      if (!openaiResponse || !openaiResponse.data) {
-        try {
-          const r3 = await fetch('https://api.openai.com/v1/images/generations', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model: 'dall-e-3',
-              prompt: fullPrompt,
-              size: '1792x1024',
-              quality: 'hd',
-              n: 1,
-              response_format: 'b64_json'
-            })
-          });
-
-          if (r3.ok) {
-            openaiResponse = await r3.json();
-            modelUsed = 'dall-e-3';
-          } else {
-            const errText = await r3.text();
-            errorDetails += ` | dall-e-3: ${r3.status} - ${errText.substring(0, 500)}`;
-            console.error(errorDetails);
-          }
-        } catch (e) {
-          errorDetails += ` | dall-e-3 exception: ${e.message}`;
-        }
-      }
-    }
-
-    if (!openaiResponse || !openaiResponse.data || !openaiResponse.data[0]) {
+    if (!flatResult.ok && !mockupResult.ok) {
       return res.status(500).json({
-        error: 'Failed to generate image',
-        details: errorDetails || 'Unknown error'
+        error: 'Failed to generate both images',
+        flatError: flatResult.error,
+        mockupError: mockupResult.error
       });
     }
 
-    const imageData = openaiResponse.data[0];
+    const flatImg = flatResult.ok ? flatResult.data.data[0] : null;
+    const mockupImg = mockupResult.ok ? mockupResult.data.data[0] : null;
+
     return res.status(200).json({
       success: true,
-      model: modelUsed,
-      b64_json: imageData.b64_json || null,
-      url: imageData.url || null,
-      revised_prompt: imageData.revised_prompt || null
+      flat: flatImg ? {
+        model: flatResult.model,
+        b64_json: flatImg.b64_json || null,
+        url: flatImg.url || null
+      } : null,
+      mockup: mockupImg ? {
+        model: mockupResult.model,
+        b64_json: mockupImg.b64_json || null,
+        url: mockupImg.url || null
+      } : null
     });
 
   } catch (err) {

@@ -126,7 +126,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         </button>
 
         <div class="info-box">
-          <strong>איך זה עובד?</strong> משתמשים במודל DALL-E של OpenAI (אותה טכנולוגיה שמפעילה את ChatGPT). תוך 15-30 שניות תקבלו הדמיה איכותית. אחר כך תוכלו לשלוח את הבקשה אלינו והמעצב הגרפי יכין קובץ הדפסה מקצועי במידה 170×96 מ"מ.
+          <strong>איך זה עובד?</strong> משתמשים ב-AI של OpenAI (אותה טכנולוגיה שמפעילה את ChatGPT). תוך 15-30 שניות תקבלו הדמיה תלת-ממדית של הכוס שלכם. כשתשלחו את הבקשה — קובץ ההדפסה השטוח במידה 170×96 מ"מ נשלח אוטומטית למעצב הגרפי שלנו.
         </div>
       </div>
 
@@ -145,12 +145,13 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         </div>
 
         <div class="ai-result" id="ai-result">
-          <img id="result-img" class="preview-img" alt="עיצוב הכוס שלכם">
+          <img id="result-img" class="preview-img" alt="הדמיית הכוס שלכם">
+          <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--gray-700);font-weight:600;">🥤 כך הכוס שלכם תיראה</p>
           <div class="ai-actions">
             <button type="button" class="btn btn-outline" id="regenerate-btn">🔄 צרו שוב</button>
             <button type="button" class="btn btn-primary" id="proceed-btn">שלח לאספגיל ←</button>
           </div>
-          <p style="margin-top:0.7rem;font-size:0.82rem;color:var(--gray-500);">📐 הקובץ הסופי להדפסה (170×96 מ"מ) יוכן ע"י המעצב הגרפי שלנו</p>
+          <p style="margin-top:0.7rem;font-size:0.82rem;color:var(--gray-500);">📐 קובץ הדפסה שטוח (170×96 מ"מ) נשלח אוטומטית למעצב הגרפי</p>
         </div>
 
         <div class="ai-error" id="ai-error"></div>
@@ -185,7 +186,8 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         <div class="form-group"><label for="d-notes">הערות נוספות</label><textarea id="d-notes" name="notes" rows="2"></textarea></div>
 
         <input type="file" name="reference_image" id="h-ref-file" style="display:none">
-        <input type="file" name="ai_generated_design" id="h-ai-file" style="display:none">
+        <input type="file" name="print_file_170x96" id="h-flat-file" style="display:none">
+        <input type="file" name="cup_mockup_preview" id="h-mockup-file" style="display:none">
 
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:1.05rem;">שלח לאספגיל <span class="arrow">←</span></button>
 
@@ -238,7 +240,8 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
 
 (function(){
   let refFile=null,refBase64=null;
-  let aiBlob=null;
+  let flatBlob=null;   // flat 170×96 print file (sent to email)
+  let mockupBlob=null; // 3D cup mockup (shown to customer)
 
   // Example pills
   document.querySelectorAll('.example-pill').forEach(p=>{
@@ -276,7 +279,8 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     document.getElementById('ai-result').classList.remove('show');
     document.getElementById('ai-error').classList.remove('show');
     document.getElementById('ai-loading').classList.add('show');
-    aiBlob=null;
+    flatBlob=null;
+    mockupBlob=null;
 
     try{
       const body={prompt:desc};
@@ -294,19 +298,33 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         throw new Error(data.message||data.error||data.details||'Generation failed');
       }
 
-      // Get image as blob
-      if(data.b64_json){
-        const bin=atob(data.b64_json);
-        const bytes=new Uint8Array(bin.length);
-        for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
-        aiBlob=new Blob([bytes],{type:'image/png'});
-        document.getElementById('result-img').src=URL.createObjectURL(aiBlob);
-      }else if(data.url){
-        document.getElementById('result-img').src=data.url;
-        try{const r=await fetch(data.url);aiBlob=await r.blob();}catch(e){}
-      }else{
-        throw new Error('No image data returned');
+      // Helper: convert response image (b64 or url) to a Blob
+      async function imgToBlob(img){
+        if(!img)return null;
+        if(img.b64_json){
+          const bin=atob(img.b64_json);
+          const bytes=new Uint8Array(bin.length);
+          for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+          return new Blob([bytes],{type:'image/png'});
+        }
+        if(img.url){
+          try{const r=await fetch(img.url);return await r.blob();}catch(e){return null;}
+        }
+        return null;
       }
+
+      // Process both images in parallel
+      [mockupBlob,flatBlob]=await Promise.all([
+        imgToBlob(data.mockup),
+        imgToBlob(data.flat)
+      ]);
+
+      // Show the 3D mockup to the customer (priority); fall back to flat if mockup failed
+      const displayBlob=mockupBlob||flatBlob;
+      if(!displayBlob){
+        throw new Error('לא התקבלה תמונה מה-AI');
+      }
+      document.getElementById('result-img').src=URL.createObjectURL(displayBlob);
 
       document.getElementById('ai-loading').classList.remove('show');
       document.getElementById('ai-result').classList.add('show');
@@ -351,10 +369,18 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       document.getElementById('h-ref-file').files=dt1.files;
     }
 
-    if(aiBlob){
-      const f=new File([aiBlob],'ai-design-'+Date.now()+'.png',{type:'image/png'});
+    // The factory needs the FLAT 170×96 print file
+    if(flatBlob){
+      const f=new File([flatBlob],'print-file-170x96-'+Date.now()+'.png',{type:'image/png'});
       const dt2=new DataTransfer();dt2.items.add(f);
-      document.getElementById('h-ai-file').files=dt2.files;
+      document.getElementById('h-flat-file').files=dt2.files;
+    }
+
+    // Also attach the 3D mockup so the team can see what the customer approved
+    if(mockupBlob){
+      const f=new File([mockupBlob],'cup-mockup-preview-'+Date.now()+'.png',{type:'image/png'});
+      const dt3=new DataTransfer();dt3.items.add(f);
+      document.getElementById('h-mockup-file').files=dt3.files;
     }
 
     sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:form.name.value,time:Date.now()}));
