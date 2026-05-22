@@ -148,7 +148,6 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
           <img id="result-img" class="preview-img" alt="הדמיית הכוס שלכם">
           <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--gray-700);font-weight:600;">🥤 כך הכוס שלכם תיראה</p>
           <div class="ai-actions">
-            <button type="button" class="btn btn-outline" id="regenerate-btn">🔄 צרו שוב</button>
             <button type="button" class="btn btn-primary" id="proceed-btn">שלח לאספגיל ←</button>
           </div>
           <p style="margin-top:0.7rem;font-size:0.82rem;color:var(--gray-500);">📐 קובץ הדפסה שטוח (170×96 מ"מ) נשלח אוטומטית למעצב הגרפי</p>
@@ -168,7 +167,9 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_template" value="box">
         <input type="hidden" name="_next" value="https://aspagil.vercel.app/designer.html?sent=ok">
-        <input type="hidden" name="_autoresponse" value="קיבלנו את בקשת העיצוב! המעצב הגרפי שלנו יכין קובץ הדפסה מקצועי וישלח אליכם תוך 24 שעות עם הצעת מחיר. - צוות אספגיל">
+        <input type="hidden" name="_autoresponse" value="תודה ששלחתם לנו הזמנה - אנו ניצור איתכם קשר בהקדם
+
+חברת אספגיל">
         <input type="hidden" name="user_description" id="h-desc">
 
         <div class="form-row">
@@ -340,7 +341,6 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
   }
 
   document.getElementById('generate-btn').addEventListener('click',generateDesign);
-  document.getElementById('regenerate-btn').addEventListener('click',generateDesign);
 
   document.getElementById('proceed-btn').addEventListener('click',()=>{
     document.getElementById('submit-area').scrollIntoView({behavior:'smooth'});
