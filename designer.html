@@ -49,7 +49,7 @@ textarea.ai-input{min-height:75px;resize:vertical}
 @keyframes ai-spin{to{transform:rotate(360deg)}}
 .ai-result{display:none;width:100%}
 .ai-result.show{display:block}
-.preview-canvas{width:100%;max-width:380px;margin:0 auto;display:block;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+.preview-canvas{width:100%;max-width:520px;aspect-ratio:170/96;margin:0 auto;display:block;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);background:#fff}
 .ai-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:1rem}
 .ai-actions .btn{padding:10px 16px;font-size:0.9rem}
 .ai-error{color:#C73838;background:#FCEBEB;border:1px solid #F5C0C0;padding:1rem;border-radius:8px;display:none}
@@ -183,7 +183,7 @@ textarea.ai-input{min-height:75px;resize:vertical}
         </div>
 
         <div class="ai-result" id="ai-result">
-          <canvas id="preview-canvas" class="preview-canvas" width="800" height="800"></canvas>
+          <canvas id="preview-canvas" class="preview-canvas" width="1700" height="960"></canvas>
           <div class="ai-actions">
             <button type="button" class="btn btn-outline" id="regenerate-btn">🔄 רקע אחר</button>
             <button type="button" class="btn btn-primary" id="proceed-btn">להמשך השליחה ←</button>
@@ -349,10 +349,11 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     document.getElementById('ai-loading').classList.add('show');
 
     const styleDesc=styleMap[selectedStyle]||styleMap.watercolor;
-    const prompt='square decorative artwork for a paper cup design, '+styleDesc+', '+bgDesc+', ornamental border pattern around the edges, EMPTY clean center area, NO text, NO letters, NO words, beautiful artistic borders only, white background in center, high quality digital art';
+    const prompt='wide horizontal decorative artwork for a paper cup label (170x96mm rectangle proportion), '+styleDesc+', '+bgDesc+', ornamental border pattern along edges of wide rectangle, EMPTY clean center area, NO text, NO letters, NO words, beautiful artistic borders only, white background in center, high quality digital art, banner layout';
 
     const seed=Math.floor(Math.random()*999999);
-    const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1024&height=1024&seed='+seed+'&nologo=true&model=flux';
+    // Use width=1280 height=720 (close to 170:96 ratio of 1.77:1) - Pollinations supported size
+    const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1280&height=720&seed='+seed+'&nologo=true&model=flux';
 
     try{
       // Fetch as blob FIRST (this gives us a proper file to attach)
@@ -388,27 +389,28 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     if(!lastAIBg)return;
     const canvas=document.getElementById('preview-canvas');
     const ctx=canvas.getContext('2d');
-    const W=canvas.width,H=canvas.height;
+    const W=canvas.width,H=canvas.height; // 1700x960 = 170x96 mm at exact ratio
     ctx.clearRect(0,0,W,H);
 
-    // Draw AI background
+    // Draw AI background stretched to full canvas (170:96 ratio)
     ctx.drawImage(lastAIBg,0,0,W,H);
 
-    // Add slight white overlay in center for text readability
-    const grad=ctx.createRadialGradient(W/2,H/2,W*0.1,W/2,H/2,W*0.45);
-    grad.addColorStop(0,'rgba(255,255,255,0.92)');
-    grad.addColorStop(0.7,'rgba(255,255,255,0.5)');
+    // Add white overlay in center for text readability (wider rectangle now)
+    const grad=ctx.createRadialGradient(W/2,H/2,W*0.05,W/2,H/2,W*0.4);
+    grad.addColorStop(0,'rgba(255,255,255,0.95)');
+    grad.addColorStop(0.6,'rgba(255,255,255,0.6)');
     grad.addColorStop(1,'rgba(255,255,255,0)');
     ctx.fillStyle=grad;
-    ctx.fillRect(W*0.15,H*0.3,W*0.7,H*0.4);
+    ctx.fillRect(W*0.15,H*0.15,W*0.7,H*0.7);
 
-    // Draw logo (above text, centered upper area)
+    // Draw logo (above text, centered)
     if(logoImage){
-      const maxLogo=W*0.18;
+      const maxLogoH=H*0.28;
+      const maxLogoW=W*0.2;
       let lw=logoImage.naturalWidth,lh=logoImage.naturalHeight;
-      const r=Math.min(maxLogo/lw,maxLogo/lh);
+      const r=Math.min(maxLogoW/lw,maxLogoH/lh);
       lw*=r;lh*=r;
-      ctx.drawImage(logoImage,(W-lw)/2,H*0.32-lh/2,lw,lh);
+      ctx.drawImage(logoImage,(W-lw)/2,H*0.22-lh/2,lw,lh);
     }
 
     // Draw Hebrew text (centered)
@@ -417,15 +419,15 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       const font=document.getElementById('text-font').value;
       const color=document.getElementById('text-color').value;
       const sizeMul=parseInt(document.getElementById('text-size').value)/42;
-      const fontSize=Math.floor(72*sizeMul);
+      // Larger font for wider canvas
+      const fontSize=Math.floor(110*sizeMul);
       ctx.fillStyle=color;
       ctx.font='700 '+fontSize+'px "'+font+'", sans-serif';
       ctx.textBaseline='middle';
       ctx.textAlign='center';
       ctx.direction='rtl';
 
-      // Split into lines if too long
-      const maxWidth=W*0.7;
+      const maxWidth=W*0.75;
       const words=text.split(' ');
       const lines=[];let cur='';
       words.forEach(w=>{
@@ -435,19 +437,18 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       if(cur)lines.push(cur);
 
       const lineHeight=fontSize*1.25;
-      const startY=H/2-((lines.length-1)*lineHeight)/2 + (logoImage?H*0.05:0);
+      const startY=H*0.55-((lines.length-1)*lineHeight)/2 + (logoImage?H*0.05:-H*0.05);
 
-      // Subtle shadow for readability
       ctx.shadowColor='rgba(255,255,255,0.8)';
-      ctx.shadowBlur=8;
+      ctx.shadowBlur=10;
       lines.forEach((l,i)=>{
         ctx.fillText(l,W/2,startY+i*lineHeight);
       });
       ctx.shadowBlur=0;
     }
 
-    // Save composite as blob - now works because we used blob URL (no taint)
-    canvas.toBlob(b=>{finalBlob=b;if(b)console.log('Composite blob saved:',b.size,'bytes');},'image/png');
+    // Save composite as blob - works because blob URL avoids taint
+    canvas.toBlob(b=>{finalBlob=b;},'image/png');
   }
 
   document.getElementById('generate-btn').addEventListener('click',()=>{
