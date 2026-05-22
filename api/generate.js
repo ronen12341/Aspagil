@@ -39,16 +39,22 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing prompt' });
     }
 
-    // Build a richer prompt for cup design - in Hebrew + English combined
-    const fullPrompt = `Design a beautiful flat 2D paper cup label artwork in wide horizontal format (170x96mm proportion, 16:9 ratio). The user's request: ${prompt}
+    // Generate a photorealistic 3D paper cup mockup with the design printed on it
+    const fullPrompt = `Create a photorealistic product photography mockup of a single white paper coffee cup (disposable 9oz size) standing on a clean white or soft neutral background. The cup is shown at a slight 3/4 angle so the design printed on it is clearly visible.
 
-Important guidelines:
-- This is FLAT 2D artwork, not a 3D cup photo - just the design that will be printed on a cup
-- Wide horizontal banner format
-- Beautiful, professional, suitable for printing
-- Include any Hebrew text mentioned by the user, rendered clearly in elegant typography
-- Match the style and elements requested
-- Decorative, attractive composition`;
+The design printed on the cup is based on this user request: ${prompt}
+
+Critical requirements:
+- Photorealistic 3D paper cup product mockup (NOT flat artwork)
+- Single paper cup, centered, slight angle
+- Clean professional product photography style
+- Soft lighting, subtle shadow under the cup
+- The design WRAPS naturally around the cup surface following its curve
+- Include any Hebrew text mentioned by the user, rendered clearly and beautifully on the cup
+- Match the style, colors and decorative elements the user described
+- High quality, like a professional commercial photograph
+- White or very light neutral background (gray-white)
+- The cup looks tangible and real, like you could pick it up`;
 
     let openaiResponse;
     let modelUsed = '';
@@ -69,7 +75,7 @@ Important guidelines:
         formData.append('image', blob, 'reference.png');
         formData.append('prompt', fullPrompt);
         formData.append('model', 'gpt-image-1');
-        formData.append('size', '1536x1024');
+        formData.append('size', '1024x1024');
         formData.append('quality', 'high');
         formData.append('n', '1');
 
@@ -106,7 +112,7 @@ Important guidelines:
           body: JSON.stringify({
             model: 'gpt-image-1',
             prompt: fullPrompt,
-            size: '1536x1024',
+            size: '1024x1024',
             quality: 'high',
             n: 1
           })
@@ -136,7 +142,7 @@ Important guidelines:
             body: JSON.stringify({
               model: 'dall-e-3',
               prompt: fullPrompt,
-              size: '1792x1024',
+              size: '1024x1024',
               quality: 'hd',
               n: 1,
               response_format: 'b64_json'
