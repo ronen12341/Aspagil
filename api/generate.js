@@ -126,15 +126,39 @@ export default async function handler(req, res) {
 
     const flatPrompt = `Create a flat 2D print-ready graphic design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
 
-User's design request: ${prompt}${photoInstruction}
+User's design request (read carefully, follow exactly): ${prompt}${photoInstruction}
 
-Design rules:
+═══════════════════════════════════════════════
+CRITICAL RULE #1 — COLORS MUST MATCH USER REQUEST
+═══════════════════════════════════════════════
+If the user specified colors (in Hebrew or any language), the design MUST use ONLY those colors as the dominant palette. Examples:
+- "ירוק ולבן" / "green and white" → green background or large green elements + white. NO black dominance, NO other colors.
+- "כחול" / "blue" → blue must be the primary color.
+- "אדום וזהב" / "red and gold" → red + gold dominant.
+Do not default to white+black when the user specified other colors.
+
+═══════════════════════════════════════════════
+CRITICAL RULE #2 — HEBREW TEXT MUST BE SPELLED CORRECTLY
+═══════════════════════════════════════════════
+Hebrew letters are extremely easy to get wrong. Follow these rules:
+- Copy any Hebrew word the user wrote LETTER-BY-LETTER, character-by-character, exactly as it appears.
+- Do NOT substitute similar-looking Hebrew letters (ב vs כ, ד vs ר, ה vs ח, ם vs ס, ן vs ו, etc.)
+- Common brand names must be spelled EXACTLY:
+  • "מכבי חיפה" — letters are: מ-כ-ב-י space ח-י-פ-ה (Maccabi Haifa football club)
+  • "מכבי תל אביב" — letters: מ-כ-ב-י space ת-ל space א-ב-י-ב
+  • "הפועל" — letters: ה-פ-ו-ע-ל
+- If unsure of Hebrew spelling, write the text in Latin/English instead rather than producing garbled Hebrew.
+- Hebrew reads RIGHT-TO-LEFT. Do not mirror or reverse it.
+- Use clean modern Hebrew typography (sans-serif preferred), large and very readable.
+
+═══════════════════════════════════════════════
+DESIGN RULES
+═══════════════════════════════════════════════
 - Modern, clean, contemporary aesthetic — 2026 graphic design style
 - Wide horizontal landscape rectangle, proportion ~170:96 (roughly 1.77:1)
 - Artwork fills the ENTIRE rectangle edge-to-edge — no empty white margins
 - ABSOLUTELY NO decorative frames, NO ornate borders, NO Victorian flourishes, NO ribbon banners
 - Use ONLY the visual elements the user described — do not invent extra decorations
-- Hebrew text must be spelled correctly with authentic Hebrew letter shapes — large, readable, modern typography
 - Clean composition, smart whitespace, not cluttered
 - This is a flat print file — NO 3D cup, NO mockup, NO product photo`;
 
@@ -181,18 +205,23 @@ Design rules:
       }
     }
 
-    const mockupPrompt = `Render a photorealistic 3D product photography mockup of a white paper coffee cup with the EXACT artwork from the input image printed on it.
+    const mockupPrompt = `Render a photorealistic 3D product photography mockup of a paper coffee cup with the EXACT artwork from the input image printed on it.
 
-CRITICAL: The artwork in the input image is the print design that goes on the cup. Wrap that EXACT design around the cup surface — same colors, same layout, same Hebrew text (correctly spelled), same photograph (if any) preserved pixel-perfect with no face regeneration, same composition. Do NOT redesign, do NOT change the artwork. Just take the input image and wrap it naturally around a paper cup.
+CRITICAL: The artwork in the input image is the print design that goes on the cup. Wrap that EXACT design around the cup surface — preserve ALL of these unchanged:
+- Same COLORS (do not shift to white+black if input was green, blue, red, etc.)
+- Same LAYOUT and composition
+- Same Hebrew text — copy letter-for-letter exactly as in the input (do NOT re-spell, do NOT substitute similar-looking Hebrew letters like ב/כ, ד/ר, ה/ח)
+- Same photograph (if any) preserved pixel-perfect — no face regeneration
+- Same logos, icons, illustrations
+
+Do NOT redesign. Do NOT change anything. Just take the input image and wrap it naturally around a paper cup so it follows the cup's curve.
 
 Output requirements:
-- Single white paper takeaway cup, centered, shown at slight 3/4 angle
-- The cup surface displays the input artwork wrapped around its curve naturally
-- Clean light neutral background (soft white/gray)
-- Soft natural shadow under the cup
+- Single paper takeaway cup, centered, shown at slight 3/4 angle
+- The cup's base color should match the design (e.g. if design is green-dominant, the cup may have a green wrap; if the design has a white background, the cup is white)
+- Clean light neutral background (soft white/gray), soft natural shadow under the cup
 - Professional studio product photography lighting
-- Looks like a real photograph of a real product
-- If there's a photo of a person in the artwork, the person must look IDENTICAL to the input — no face redrawing`;
+- Looks like a real photograph of a real product`;
 
     let mockupResult;
     if (flatBlobForStep2) {
