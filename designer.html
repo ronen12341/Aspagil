@@ -349,11 +349,11 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     document.getElementById('ai-loading').classList.add('show');
 
     const styleDesc=styleMap[selectedStyle]||styleMap.watercolor;
-    const prompt='wide horizontal decorative artwork for a paper cup label (170x96mm rectangle proportion), '+styleDesc+', '+bgDesc+', ornamental border pattern along edges of wide rectangle, EMPTY clean center area, NO text, NO letters, NO words, beautiful artistic borders only, white background in center, high quality digital art, banner layout';
+    // CRITICAL: NO mention of "cup" - we want FLAT 2D pattern artwork only
+    const prompt='flat 2D wallpaper pattern, '+styleDesc+', '+bgDesc+', wide horizontal banner format, decorative ornamental frame and borders, top edge and bottom edge richly decorated, sides decorated with corner ornaments, completely EMPTY clean WHITE center area for adding text and photo later, isolated artwork on white background, NO cup, NO object, NO container, NO 3D, NO photograph, NO product, NO mockup, just flat 2D decorative artwork pattern like a wedding invitation border, no text no letters no words, scrapbook style';
 
     const seed=Math.floor(Math.random()*999999);
-    // Use width=1280 height=720 (close to 170:96 ratio of 1.77:1) - Pollinations supported size
-    const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1280&height=720&seed='+seed+'&nologo=true&model=flux';
+    const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1280&height=720&seed='+seed+'&nologo=true&model=flux&enhance=true';
 
     try{
       // Fetch as blob FIRST (this gives us a proper file to attach)
@@ -389,45 +389,82 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     if(!lastAIBg)return;
     const canvas=document.getElementById('preview-canvas');
     const ctx=canvas.getContext('2d');
-    const W=canvas.width,H=canvas.height; // 1700x960 = 170x96 mm at exact ratio
+    const W=canvas.width,H=canvas.height;
     ctx.clearRect(0,0,W,H);
 
-    // Draw AI background stretched to full canvas (170:96 ratio)
+    // Layer 1: AI background (decorative artwork)
     ctx.drawImage(lastAIBg,0,0,W,H);
 
-    // Add white overlay in center for text readability (wider rectangle now)
+    // Layer 2: Soft white overlay in center to clear space for content
     const grad=ctx.createRadialGradient(W/2,H/2,W*0.05,W/2,H/2,W*0.4);
-    grad.addColorStop(0,'rgba(255,255,255,0.95)');
-    grad.addColorStop(0.6,'rgba(255,255,255,0.6)');
+    grad.addColorStop(0,'rgba(255,255,255,0.98)');
+    grad.addColorStop(0.65,'rgba(255,255,255,0.85)');
     grad.addColorStop(1,'rgba(255,255,255,0)');
     ctx.fillStyle=grad;
-    ctx.fillRect(W*0.15,H*0.15,W*0.7,H*0.7);
+    ctx.fillRect(W*0.1,H*0.1,W*0.8,H*0.8);
 
-    // Draw logo (above text, centered)
-    if(logoImage){
-      const maxLogoH=H*0.28;
-      const maxLogoW=W*0.2;
-      let lw=logoImage.naturalWidth,lh=logoImage.naturalHeight;
-      const r=Math.min(maxLogoW/lw,maxLogoH/lh);
-      lw*=r;lh*=r;
-      ctx.drawImage(logoImage,(W-lw)/2,H*0.22-lh/2,lw,lh);
+    const text=document.getElementById('cup-text').value.trim();
+    const color=document.getElementById('text-color').value;
+    const hasLogo=!!logoImage;
+    const hasText=!!text;
+
+    // Layer 3: Logo as circular framed photo (elegant cartouche)
+    if(hasLogo){
+      const cx=W/2;
+      const cy=hasText?H*0.32:H*0.5;
+      const radius=hasText?Math.min(W*0.09,H*0.18):Math.min(W*0.14,H*0.28);
+
+      ctx.save();
+      // White outer ring background
+      ctx.beginPath();
+      ctx.arc(cx,cy,radius+10,0,Math.PI*2);
+      ctx.fillStyle='#FFFFFF';
+      ctx.shadowColor='rgba(0,0,0,0.2)';
+      ctx.shadowBlur=15;
+      ctx.shadowOffsetY=4;
+      ctx.fill();
+      ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+
+      // Clip to circle for photo
+      ctx.beginPath();
+      ctx.arc(cx,cy,radius,0,Math.PI*2);
+      ctx.clip();
+
+      // Draw image filled to circle (cover mode)
+      const ar=logoImage.naturalWidth/logoImage.naturalHeight;
+      let dw,dh;
+      if(ar>=1){dh=radius*2;dw=dh*ar;}else{dw=radius*2;dh=dw/ar;}
+      ctx.drawImage(logoImage,cx-dw/2,cy-dh/2,dw,dh);
+      ctx.restore();
+
+      // Decorative ring around photo
+      ctx.beginPath();
+      ctx.arc(cx,cy,radius+10,0,Math.PI*2);
+      ctx.strokeStyle=color;
+      ctx.lineWidth=3;
+      ctx.globalAlpha=0.7;
+      ctx.stroke();
+      // Inner thin ring
+      ctx.beginPath();
+      ctx.arc(cx,cy,radius+4,0,Math.PI*2);
+      ctx.lineWidth=1;
+      ctx.globalAlpha=0.5;
+      ctx.stroke();
+      ctx.globalAlpha=1;
     }
 
-    // Draw Hebrew text (centered)
-    const text=document.getElementById('cup-text').value.trim();
-    if(text){
+    // Layer 4: Text with elegant cartouche/frame
+    if(hasText){
       const font=document.getElementById('text-font').value;
-      const color=document.getElementById('text-color').value;
       const sizeMul=parseInt(document.getElementById('text-size').value)/42;
-      // Larger font for wider canvas
-      const fontSize=Math.floor(110*sizeMul);
+      const fontSize=Math.floor(105*sizeMul);
       ctx.fillStyle=color;
       ctx.font='700 '+fontSize+'px "'+font+'", sans-serif';
       ctx.textBaseline='middle';
       ctx.textAlign='center';
       ctx.direction='rtl';
 
-      const maxWidth=W*0.75;
+      const maxWidth=W*0.7;
       const words=text.split(' ');
       const lines=[];let cur='';
       words.forEach(w=>{
@@ -436,19 +473,61 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       });
       if(cur)lines.push(cur);
 
-      const lineHeight=fontSize*1.25;
-      const startY=H*0.55-((lines.length-1)*lineHeight)/2 + (logoImage?H*0.05:-H*0.05);
+      const lineHeight=fontSize*1.2;
+      const textBlockH=lines.length*lineHeight;
+      const textY=hasLogo?H*0.68:H*0.5;
+      const startY=textY-textBlockH/2+lineHeight/2;
 
-      ctx.shadowColor='rgba(255,255,255,0.8)';
-      ctx.shadowBlur=10;
+      // Measure max line width for the frame
+      let maxLineW=0;
+      lines.forEach(l=>{const m=ctx.measureText(l).width;if(m>maxLineW)maxLineW=m;});
+
+      // Decorative frame around text
+      const padX=W*0.04,padY=H*0.03;
+      const frameX=W/2-maxLineW/2-padX;
+      const frameY=textY-textBlockH/2-padY;
+      const frameW=maxLineW+padX*2;
+      const frameH=textBlockH+padY*2;
+
+      // Subtle white background behind text for readability
+      ctx.fillStyle='rgba(255,255,255,0.7)';
+      roundedRect(ctx,frameX,frameY,frameW,frameH,12);
+      ctx.fill();
+
+      // Decorative double border (cartouche style)
+      ctx.strokeStyle=color;
+      ctx.globalAlpha=0.55;
+      ctx.lineWidth=2.5;
+      roundedRect(ctx,frameX,frameY,frameW,frameH,12);
+      ctx.stroke();
+      ctx.lineWidth=0.8;
+      ctx.globalAlpha=0.35;
+      roundedRect(ctx,frameX+6,frameY+6,frameW-12,frameH-12,8);
+      ctx.stroke();
+      ctx.globalAlpha=1;
+
+      // Draw text
+      ctx.fillStyle=color;
       lines.forEach((l,i)=>{
         ctx.fillText(l,W/2,startY+i*lineHeight);
       });
-      ctx.shadowBlur=0;
     }
 
-    // Save composite as blob - works because blob URL avoids taint
     canvas.toBlob(b=>{finalBlob=b;},'image/png');
+  }
+
+  function roundedRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.lineTo(x+w-r,y);
+    ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r);
+    ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h);
+    ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r);
+    ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.closePath();
   }
 
   document.getElementById('generate-btn').addEventListener('click',()=>{
