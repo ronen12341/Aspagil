@@ -164,11 +164,8 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
       <h3>📧 שלחו את הבקשה לאספגיל</h3>
       <p style="color:var(--gray-700);margin-bottom:1.2rem;">המעצב הגרפי שלנו יקבל את התיאור, התמונה והעיצוב — ויכין קובץ הדפסה מקצועי תוך 24 שעות.</p>
 
-      <form id="design-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="access_key" value="572c6eee-fcb8-4846-826c-f7accee1490b">
+      <form id="design-form" action="/api/submit-form" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="subject" value="🎨 בקשת עיצוב AI חדשה מהאתר">
-        <input type="hidden" name="from_name" value="חברת אספגיל - מעצב AI">
-        <input type="hidden" name="redirect" value="https://aspagil.vercel.app/designer.html?sent=ok">
         <!-- Honeypot for bot protection (must stay empty) -->
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <input type="hidden" name="user_description" id="h-desc">
@@ -375,45 +372,90 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     document.getElementById('submit-area').scrollIntoView({behavior:'smooth'});
   });
 
-  // Form submission
+  // Helper: read a Blob/File as base64 (without the data: prefix)
+  function readBlobAsBase64(b){
+    return new Promise(function(resolve,reject){
+      const r=new FileReader();
+      r.onload=function(){
+        const s=String(r.result||'');
+        const i=s.indexOf(',');
+        resolve(i>=0?s.substring(i+1):s);
+      };
+      r.onerror=function(){reject(new Error('FileReader error'));};
+      r.readAsDataURL(b);
+    });
+  }
+
+  // Form submission — POST JSON (with base64 files) to /api/submit-form
   const form=document.getElementById('design-form');
-  form.addEventListener('submit',e=>{
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
     const desc=document.getElementById('ai-prompt').value.trim();
     const status=document.getElementById('design-status');
     if(!desc){
-      e.preventDefault();
       status.style.display='block';status.style.background='#FCEBEB';status.style.color='#C73838';
       status.textContent='נא תארו את הכוס לפני שליחה';
       return;
     }
-    e.preventDefault();
 
     document.getElementById('h-desc').value=desc;
 
     status.style.display='block';status.style.background='#FFF8E6';status.style.color='#8B6300';
     status.textContent='⏳ שולח...';
 
-    if(refFile){
-      const dt1=new DataTransfer();dt1.items.add(refFile);
-      document.getElementById('h-ref-file').files=dt1.files;
-    }
+    const submitBtn=form.querySelector('button[type="submit"]');
+    const originalBtnHtml=submitBtn?submitBtn.innerHTML:'';
+    if(submitBtn){submitBtn.disabled=true;}
 
-    // The factory needs the FLAT 170×96 print file
-    if(flatBlob){
-      const f=new File([flatBlob],'print-file-170x96-'+Date.now()+'.png',{type:'image/png'});
-      const dt2=new DataTransfer();dt2.items.add(f);
-      document.getElementById('h-flat-file').files=dt2.files;
-    }
+    try{
+      // Collect plain string fields
+      const fields={};
+      for(const el of form.elements){
+        if(!el.name||el.type==='file'||el.type==='submit'||el.type==='button')continue;
+        if(el.type==='checkbox'||el.type==='radio'){
+          if(el.checked)fields[el.name]=el.value;
+        }else{
+          fields[el.name]=el.value;
+        }
+      }
 
-    // Also attach the 3D mockup so the team can see what the customer approved
-    if(mockupBlob){
-      const f=new File([mockupBlob],'cup-mockup-preview-'+Date.now()+'.png',{type:'image/png'});
-      const dt3=new DataTransfer();dt3.items.add(f);
-      document.getElementById('h-mockup-file').files=dt3.files;
-    }
+      // Collect files (reference photo + flat print + mockup) as base64
+      const files=[];
+      if(refFile){
+        const b64=await readBlobAsBase64(refFile);
+        files.push({field:'reference_image',name:refFile.name||'reference.png',type:refFile.type||'image/png',contentBase64:b64});
+      }
+      if(flatBlob){
+        const b64=await readBlobAsBase64(flatBlob);
+        files.push({field:'print_file_170x96',name:'print-file-170x96-'+Date.now()+'.png',type:'image/png',contentBase64:b64});
+      }
+      if(mockupBlob){
+        const b64=await readBlobAsBase64(mockupBlob);
+        files.push({field:'cup_mockup_preview',name:'cup-mockup-preview-'+Date.now()+'.png',type:'image/png',contentBase64:b64});
+      }
 
-    sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:form.name.value,time:Date.now()}));
-    setTimeout(()=>{form.submit();},300);
+      sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));
+
+      const resp=await fetch('/api/submit-form',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({type:'design',fields:fields,files:files})
+      });
+      const data=await resp.json().catch(()=>({}));
+
+      if(!resp.ok||!data.success){
+        throw new Error(data.message||data.error||data.details||'Submission failed');
+      }
+
+      // Success — redirect to the same page with ?sent=ok
+      window.location.href='designer.html?sent=ok';
+
+    }catch(err){
+      console.error('Submit error:',err);
+      if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML=originalBtnHtml;}
+      status.style.display='block';status.style.background='#FCEBEB';status.style.color='#C73838';
+      status.textContent='שגיאה בשליחה: '+(err.message||'לא ידוע')+'. אנא נסו שוב או התקשרו 054-2150090.';
+    }
   });
 
   if(window.location.search.indexOf('sent=ok')!==-1){

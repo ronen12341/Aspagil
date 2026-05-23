@@ -111,11 +111,8 @@
         <h2>הצעת מחיר</h2>
         <p style="color:var(--gray-700);">ספרו לנו על הפרויקט שלכם — נחזור עם הצעת מחיר והדמיה תוך 24 שעות.</p>
 
-        <form id="quote-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
-          <input type="hidden" name="access_key" value="572c6eee-fcb8-4846-826c-f7accee1490b">
-          <input type="hidden" name="subject" value="📧 בקשת הצעת מחיר מהאתר">
-          <input type="hidden" name="from_name" value="חברת אספגיל - הצעת מחיר">
-          <input type="hidden" name="redirect" value="https://aspagil.vercel.app/contact.html?sent=ok">
+        <form id="quote-form" action="/api/submit-form" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
+          <input type="hidden" name="subject" value="📧 בקשת הצעת מחיר חדשה מהאתר">
           <!-- Honeypot for bot protection (must stay empty) -->
           <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
@@ -360,25 +357,86 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     reader.readAsArrayBuffer(file);
   });
 
-  form.addEventListener('submit', function(e){
-    // Replace the file input with the in-memory cached copy to bypass
-    // mobile OS file-handle invalidation
-    if (cachedFile) {
-      try {
-        var dt = new DataTransfer();
-        if (cachedFile instanceof File) {
-          dt.items.add(cachedFile);
-        } else {
-          dt.items.add(new File([cachedFile], cachedFile.name || 'artwork', { type: cachedFile.type }));
-        }
-        fileInput.files = dt.files;
-      } catch (err) {
-        // DataTransfer not supported — let the form submit with the original input.
-      }
-    } else if (fileReadError) {
-      e.preventDefault();
+  // Read a file (or Blob) as a base64 string (without the data: prefix)
+  function readAsBase64(fileOrBlob){
+    return new Promise(function(resolve, reject){
+      var r = new FileReader();
+      r.onload = function(){
+        var s = String(r.result || '');
+        var idx = s.indexOf(',');
+        resolve(idx >= 0 ? s.substring(idx + 1) : s);
+      };
+      r.onerror = function(){ reject(new Error('FileReader error')); };
+      r.readAsDataURL(fileOrBlob);
+    });
+  }
+
+  // Intercept the form submission — serialize to JSON, POST to /api/submit-form,
+  // then redirect to the success URL.
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    if (fileReadError) {
       showError('הקובץ לא נטען כראוי. בחרו אותו שוב או שלחו דרך WhatsApp 054-2150090.');
       return false;
+    }
+
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'שולח... <span class="arrow">⏳</span>';
+    }
+
+    try {
+      // Collect plain string fields (skip the file input — we handle it separately)
+      var fields = {};
+      var els = form.elements;
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (!el.name || el.type === 'file' || el.type === 'submit' || el.type === 'button') continue;
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          if (el.checked) fields[el.name] = el.value;
+        } else {
+          fields[el.name] = el.value;
+        }
+      }
+
+      // Collect file as base64 (if present)
+      var files = [];
+      var fileToSend = cachedFile || (fileInput.files && fileInput.files[0]);
+      if (fileToSend) {
+        var b64 = await readAsBase64(fileToSend);
+        files.push({
+          field: 'artwork_file',
+          name: fileToSend.name || 'artwork',
+          type: fileToSend.type || 'application/octet-stream',
+          contentBase64: b64
+        });
+      }
+
+      var resp = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'quote', fields: fields, files: files })
+      });
+
+      var data = await resp.json().catch(function(){ return {}; });
+
+      if (!resp.ok || !data.success) {
+        throw new Error(data.message || data.error || data.details || 'Submission failed');
+      }
+
+      // Success — redirect to the same page with ?sent=ok
+      window.location.href = 'contact.html?sent=ok';
+
+    } catch (err) {
+      console.error('Submit error:', err);
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+      showError('שגיאה בשליחה: ' + (err.message || 'לא ידוע') + '. אנא נסו שוב או התקשרו 054-2150090.');
     }
   });
 })();
