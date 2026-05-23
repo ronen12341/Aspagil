@@ -148,6 +148,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         <div class="ai-result" id="ai-result">
           <img id="result-img" class="preview-img" alt="הדמיית הכוס שלכם">
           <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--gray-700);font-weight:600;">🥤 כך הכוס שלכם תיראה</p>
+          <div id="text-warn" style="display:none;background:#FFF4E5;border:1px solid #F0B26A;border-right:4px solid #E0A23A;color:#7A4E00;padding:10px 14px;border-radius:8px;margin-top:0.9rem;font-size:0.92rem;text-align:right;"></div>
           <div class="ai-actions">
             <button type="button" class="btn btn-primary" id="proceed-btn">שלח לאספגיל ←</button>
           </div>
@@ -343,6 +344,18 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         throw new Error('לא התקבלה תמונה מה-AI');
       }
       document.getElementById('result-img').src=URL.createObjectURL(displayBlob);
+
+      // If the text verifier flagged a spelling mismatch (after retries), warn the customer
+      const verify=data.textVerification;
+      const warnEl=document.getElementById('text-warn');
+      if(warnEl){
+        if(verify && !verify.matches && verify.expected && verify.expected.length){
+          warnEl.innerHTML='<strong>⚠ בדקו את הכתיב בעיצוב</strong><br>הטקסט המבוקש: '+verify.expected.map(t=>'"'+t+'"').join(', ')+'<br><span style="font-size:0.85em;">ה-AI לפעמים טועה באיות עברית. אם יש שגיאה — רשמו בהערות מה הטקסט הנכון, והגרפיקאי שלנו יתקן ידנית לפני ההדפסה.</span>';
+          warnEl.style.display='block';
+        } else {
+          warnEl.style.display='none';
+        }
+      }
 
       document.getElementById('ai-loading').classList.remove('show');
       document.getElementById('ai-result').classList.add('show');
