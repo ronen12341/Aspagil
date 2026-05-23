@@ -97,4 +97,34 @@
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/cup-size-guide.html</loc>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/digital-vs-offset-printing.html</loc>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/eco-friendly-cups.html</loc>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/cup-design-tips.html</loc>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/minimum-order-guide.html</loc>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
