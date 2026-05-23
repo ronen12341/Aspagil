@@ -130,7 +130,7 @@ function buildAutoReplyHtml(customerName) {
       <p style="margin:0 0 12px;">אנו נחזור אליכם בהקדם עם הצעת מחיר מפורטת והדמיה.</p>
       <p style="margin:24px 0 0;font-weight:700;">בברכה,<br>חברת אספגיל</p>
       <div style="margin-top:24px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:0.85rem;">
-        <p style="margin:0;">📞 054-2150090</p>
+        <p style="margin:0;">📞 03-9600550</p>
         <p style="margin:4px 0 0;">🌐 ${SITE_URL}</p>
       </div>
     </div>
