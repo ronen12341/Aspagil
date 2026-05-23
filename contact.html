@@ -121,7 +121,7 @@
 
           <h3>פנייה לקבלת הצעה</h3>
           <div class="form-row">
-            <div class="form-group"><label for="c-name">שם מלא</label><input id="c-name" type="text" name="name" required></div>
+            <div class="form-group"><label for="c-name">שם</label><input id="c-name" type="text" name="name" required></div>
             <div class="form-group"><label for="c-phone">טלפון</label><input id="c-phone" type="tel" name="phone" required></div>
           </div>
           <div class="form-row">
@@ -129,19 +129,25 @@
             <div class="form-group"><label for="c-business">שם העסק (אופציונלי)</label><input id="c-business" type="text" name="business"></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label for="c-qty">כמות יחידות</label><select id="c-qty" name="quantity" required>
+            <div class="form-group"><label for="c-invoice-name">שם לחשבונית</label><input id="c-invoice-name" type="text" name="invoice_name" required></div>
+            <div class="form-group"><label for="c-tax-id">מספר ח.פ / ת.ז</label><input id="c-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{7,9}" title="מספר ח.פ או ת.ז (7-9 ספרות)" required></div>
+          </div>
+          <div class="form-group"><label for="c-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד)</label><input id="c-address" type="text" name="address" required></div>
+          <div class="form-group">
+            <label for="c-qty">כמות יחידות</label>
+            <select id="c-qty" name="quantity" required>
               <option value="">בחרו כמות</option>
-              <option>500</option><option>1000</option><option>2000</option><option>3000</option>
-              <option>5000</option><option>10000</option><option>20000</option><option>50000</option><option>100000</option><option>100000+</option>
-            </select></div>
-            <div class="form-group"><label for="c-type">סוג השימוש</label><select id="c-type" name="usage">
-              <option value="">בחרו</option>
-              <option>קפה / שתייה חמה</option>
-              <option>שתייה קרה</option>
-              <option>אירוע / כנס</option>
-              <option>יום הולדת</option>
-              <option>אחר</option>
-            </select></div>
+              <option value="500">500 יח׳ — 500 ש"ח</option>
+              <option value="1000">1,000 יח׳ — 800 ש"ח</option>
+              <option value="2000">2,000 יח׳ — 1,500 ש"ח</option>
+              <option value="3000">3,000 יח׳ — 2,100 ש"ח</option>
+              <option value="5000">5,000 יח׳ — 2,750 ש"ח</option>
+              <option value="10000">10,000 יח׳ — 4,500 ש"ח</option>
+              <option value="50000">50,000 יח׳ — 11,500 ש"ח + 600 ש"ח לכל צבע</option>
+              <option value="100000">100,000 יח׳ — 21,000 ש"ח + 600 ש"ח לכל צבע</option>
+              <option value="100000+">100,000+ — הצעת מחיר אישית</option>
+            </select>
+            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">המחירים כוללים מע"מ ואינם כוללים משלוח</small>
           </div>
           <div class="form-group"><label for="c-msg">פרטים נוספים</label><textarea id="c-msg" name="notes" rows="4" placeholder="צבעי מותג, מועד נדרש, יעד אספקה..."></textarea></div>
           <button class="btn btn-primary form-submit" type="submit">שלח בקשה <span class="arrow">←</span></button>

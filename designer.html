@@ -174,17 +174,33 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         <input type="hidden" name="user_description" id="h-desc">
 
         <div class="form-row">
-          <div class="form-group"><label for="d-name">שם מלא</label><input id="d-name" type="text" name="name" required></div>
+          <div class="form-group"><label for="d-name">שם</label><input id="d-name" type="text" name="name" required></div>
           <div class="form-group"><label for="d-phone">טלפון</label><input id="d-phone" type="tel" name="phone" required></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label for="d-email">אימייל</label><input id="d-email" type="email" name="email" required></div>
-          <div class="form-group"><label for="d-qty">כמות יחידות</label><select id="d-qty" name="quantity" required>
-            <option value="">בחרו...</option>
-            <option>500</option><option>1000</option><option>2000</option><option>3000</option>
-            <option>5000</option><option>10000</option><option>20000</option><option>50000</option><option>100000</option><option>100000+</option>
-          </select></div>
+          <div class="form-group">
+            <label for="d-qty">כמות יחידות</label>
+            <select id="d-qty" name="quantity" required>
+              <option value="">בחרו...</option>
+              <option value="500">500 יח׳ — 500 ש"ח</option>
+              <option value="1000">1,000 יח׳ — 800 ש"ח</option>
+              <option value="2000">2,000 יח׳ — 1,500 ש"ח</option>
+              <option value="3000">3,000 יח׳ — 2,100 ש"ח</option>
+              <option value="5000">5,000 יח׳ — 2,750 ש"ח</option>
+              <option value="10000">10,000 יח׳ — 4,500 ש"ח</option>
+              <option value="50000">50,000 יח׳ — 11,500 ש"ח + 600 ש"ח לכל צבע</option>
+              <option value="100000">100,000 יח׳ — 21,000 ש"ח + 600 ש"ח לכל צבע</option>
+              <option value="100000+">100,000+ — הצעת מחיר אישית</option>
+            </select>
+            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">המחירים כוללים מע"מ ואינם כוללים משלוח</small>
+          </div>
         </div>
+        <div class="form-row">
+          <div class="form-group"><label for="d-invoice-name">שם לחשבונית</label><input id="d-invoice-name" type="text" name="invoice_name" required></div>
+          <div class="form-group"><label for="d-tax-id">מספר ח.פ / ת.ז</label><input id="d-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{7,9}" title="מספר ח.פ או ת.ז (7-9 ספרות)" required></div>
+        </div>
+        <div class="form-group"><label for="d-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד)</label><input id="d-address" type="text" name="address" required></div>
         <div class="form-group"><label for="d-notes">הערות נוספות</label><textarea id="d-notes" name="notes" rows="2"></textarea></div>
 
         <input type="file" name="reference_image" id="h-ref-file" style="display:none">
