@@ -111,7 +111,7 @@
         <h2>הצעת מחיר</h2>
         <p style="color:var(--gray-700);">ספרו לנו על הפרויקט שלכם — נחזור עם הצעת מחיר והדמיה תוך 24 שעות.</p>
 
-        <form action="https://formsubmit.co/salesaspagil@gmail.com" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
+        <form id="quote-form" action="https://formsubmit.co/salesaspagil@gmail.com" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
           <input type="hidden" name="_subject" value="📧 בקשת הצעת מחיר מהאתר">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="box">
@@ -210,6 +210,88 @@ if(window.location.search.indexOf('sent=ok')!==-1){
   setTimeout(()=>{document.getElementById('quote').scrollIntoView({behavior:'smooth'});},200);
   if(window.history.replaceState)window.history.replaceState({},'',window.location.pathname);
 }
+
+/* ============================================================
+   FIX FOR ANDROID ERR_UPLOAD_FILE_CHANGED
+   On mobile (especially Android), the OS sometimes invalidates the
+   selected file handle before form submission completes, causing
+   upload to fail. The fix: when the user picks a file, read its
+   bytes into memory immediately, then rebuild a fresh File object
+   from those bytes on submit so the browser uploads from RAM
+   instead of the (possibly gone) OS file handle.
+   ============================================================ */
+(function(){
+  var fileInput = document.getElementById('c-artwork');
+  var form = document.getElementById('quote-form');
+  if (!fileInput || !form) return;
+
+  var cachedFile = null;
+  var fileReadError = null;
+  var statusBox = document.getElementById('quote-status');
+
+  function showError(msg){
+    if(!statusBox) return;
+    statusBox.style.display = 'block';
+    statusBox.textContent = msg;
+    statusBox.style.background = '#FEE2E2';
+    statusBox.style.color = '#7F1D1D';
+    statusBox.style.border = '1px solid #FCA5A5';
+  }
+
+  fileInput.addEventListener('change', function(e){
+    cachedFile = null;
+    fileReadError = null;
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    // Optional 25 MB safety limit (FormSubmit limit)
+    if (file.size > 25 * 1024 * 1024) {
+      showError('הקובץ גדול מ-25MB. אנא דחסו או שלחו דרך WhatsApp ל-054-2150090.');
+      fileInput.value = '';
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try {
+        cachedFile = new File([ev.target.result], file.name, { type: file.type || 'application/octet-stream' });
+      } catch (err) {
+        // Older browsers may not support new File() constructor — fall back to Blob
+        cachedFile = new Blob([ev.target.result], { type: file.type || 'application/octet-stream' });
+        cachedFile.name = file.name;
+      }
+    };
+    reader.onerror = function(){
+      fileReadError = true;
+      showError('לא הצלחנו לקרוא את הקובץ. נסו לבחור אותו שוב, או שלחו דרך WhatsApp.');
+    };
+    reader.readAsArrayBuffer(file);
+  });
+
+  form.addEventListener('submit', function(e){
+    // If we have a cached in-memory copy, replace the input's file
+    // reference with the cached File so the upload uses RAM, not the
+    // (possibly stale) OS file handle.
+    if (cachedFile) {
+      try {
+        var dt = new DataTransfer();
+        // If cachedFile is a Blob fallback, wrap it in a File
+        if (cachedFile instanceof File) {
+          dt.items.add(cachedFile);
+        } else {
+          dt.items.add(new File([cachedFile], cachedFile.name || 'artwork', { type: cachedFile.type }));
+        }
+        fileInput.files = dt.files;
+      } catch (err) {
+        // DataTransfer not supported — let the form submit with the original input.
+      }
+    } else if (fileReadError) {
+      e.preventDefault();
+      showError('הקובץ לא נטען כראוי. בחרו אותו שוב או שלחו דרך WhatsApp 054-2150090.');
+      return false;
+    }
+  });
+})();
 </script>
 </body>
 </html>
