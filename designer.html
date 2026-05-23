@@ -164,14 +164,13 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
       <h3>📧 שלחו את הבקשה לאספגיל</h3>
       <p style="color:var(--gray-700);margin-bottom:1.2rem;">המעצב הגרפי שלנו יקבל את התיאור, התמונה והעיצוב — ויכין קובץ הדפסה מקצועי תוך 24 שעות.</p>
 
-      <form id="design-form" action="https://formsubmit.co/salesaspagil@gmail.com" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="_subject" value="🎨 בקשת עיצוב AI חדשה מהאתר">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_next" value="https://aspagil.vercel.app/designer.html?sent=ok">
-        <input type="hidden" name="_autoresponse" value="תודה ששלחתם לנו הזמנה - אנו ניצור איתכם קשר בהקדם
-
-חברת אספגיל">
+      <form id="design-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="access_key" value="572c6eee-fcb8-4846-826c-f7accee1490b">
+        <input type="hidden" name="subject" value="🎨 בקשת עיצוב AI חדשה מהאתר">
+        <input type="hidden" name="from_name" value="חברת אספגיל - מעצב AI">
+        <input type="hidden" name="redirect" value="https://aspagil.vercel.app/designer.html?sent=ok">
+        <!-- Honeypot for bot protection (must stay empty) -->
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <input type="hidden" name="user_description" id="h-desc">
 
         <div class="form-row">

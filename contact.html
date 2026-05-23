@@ -111,14 +111,13 @@
         <h2>הצעת מחיר</h2>
         <p style="color:var(--gray-700);">ספרו לנו על הפרויקט שלכם — נחזור עם הצעת מחיר והדמיה תוך 24 שעות.</p>
 
-        <form id="quote-form" action="https://formsubmit.co/salesaspagil@gmail.com" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
-          <input type="hidden" name="_subject" value="📧 בקשת הצעת מחיר מהאתר">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="box">
-          <input type="hidden" name="_next" value="https://aspagil.vercel.app/contact.html?sent=ok">
-          <input type="hidden" name="_autoresponse" value="תודה ששלחתם לנו הזמנה - אנו ניצור איתכם קשר בהקדם
-
-חברת אספגיל">
+        <form id="quote-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
+          <input type="hidden" name="access_key" value="572c6eee-fcb8-4846-826c-f7accee1490b">
+          <input type="hidden" name="subject" value="📧 בקשת הצעת מחיר מהאתר">
+          <input type="hidden" name="from_name" value="חברת אספגיל - הצעת מחיר">
+          <input type="hidden" name="redirect" value="https://aspagil.vercel.app/contact.html?sent=ok">
+          <!-- Honeypot for bot protection (must stay empty) -->
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
           <h3>פנייה לקבלת הצעה</h3>
           <div class="form-row">
@@ -148,9 +147,22 @@
             <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">המחירים כוללים מע"מ ואינם כוללים משלוח</small>
           </div>
           <div class="form-group">
-            <label for="c-artwork">קובץ גרפיקה מוכן (אופציונלי)</label>
-            <input id="c-artwork" type="file" name="artwork_file" accept=".pdf,.ai,.psd,.eps,.svg,.png,.jpg,.jpeg,.tif,.tiff" style="padding:8px;border:1px dashed var(--gray-400);border-radius:8px;background:#FAFAFA;width:100%;">
-            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">אם יש לכם עיצוב מוכן — צרפו אותו כאן. פורמטים נתמכים: PDF, AI, PSD, EPS, SVG, PNG, JPG, TIFF. מומלץ עד 10MB.</small>
+            <label>קובץ גרפיקה מוכן (אופציונלי)</label>
+            <div id="c-artwork-dropzone" style="margin-top:6px;padding:18px;border:2px dashed var(--gray-400);border-radius:10px;background:#FAFAFA;text-align:center;cursor:pointer;transition:all 0.2s;">
+              <input id="c-artwork" type="file" name="artwork_file" accept=".pdf,.ai,.psd,.eps,.svg,.png,.jpg,.jpeg,.tif,.tiff" style="display:none;">
+              <div id="c-artwork-empty">
+                <div style="font-size:2rem;line-height:1;margin-bottom:6px;">📎</div>
+                <div style="font-weight:700;color:var(--ink);">לחצו כאן לבחירת קובץ</div>
+                <div style="font-size:0.85rem;color:var(--gray-700);margin-top:4px;">PDF, AI, PSD, EPS, SVG, PNG, JPG, TIFF — עד 10MB</div>
+              </div>
+              <div id="c-artwork-selected" style="display:none;">
+                <div style="font-size:1.5rem;line-height:1;margin-bottom:6px;color:#1F6638;">✓</div>
+                <div style="font-weight:700;color:#1F6638;" id="c-artwork-filename">קובץ נבחר</div>
+                <div id="c-artwork-filesize" style="font-size:0.85rem;color:var(--gray-700);margin-top:4px;"></div>
+                <button type="button" id="c-artwork-remove" style="margin-top:8px;background:transparent;border:none;color:#C03;font-size:0.85rem;cursor:pointer;text-decoration:underline;">הסר קובץ</button>
+              </div>
+            </div>
+            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">אם יש לכם עיצוב מוכן — צרפו אותו כאן. הקובץ יישלח אוטומטית יחד עם הטופס.</small>
           </div>
           <div class="form-group"><label for="c-msg">פרטים נוספים</label><textarea id="c-msg" name="notes" rows="4" placeholder="צבעי מותג, מועד נדרש, יעד אספקה..."></textarea></div>
           <button class="btn btn-primary form-submit" type="submit">שלח בקשה <span class="arrow">←</span></button>
@@ -212,18 +224,23 @@ if(window.location.search.indexOf('sent=ok')!==-1){
 }
 
 /* ============================================================
-   FIX FOR ANDROID ERR_UPLOAD_FILE_CHANGED
-   On mobile (especially Android), the OS sometimes invalidates the
-   selected file handle before form submission completes, causing
-   upload to fail. The fix: when the user picks a file, read its
-   bytes into memory immediately, then rebuild a fresh File object
-   from those bytes on submit so the browser uploads from RAM
-   instead of the (possibly gone) OS file handle.
+   FILE UPLOAD UX + ANDROID ERR_UPLOAD_FILE_CHANGED FIX
+   - Visual dropzone with click-to-select and drag-and-drop
+   - Clear ✓ confirmation showing filename + size after selection
+   - Removes file via "הסר קובץ" button
+   - Reads file bytes into RAM on selection (prevents the OS from
+     invalidating the file handle before form submission on mobile)
    ============================================================ */
 (function(){
   var fileInput = document.getElementById('c-artwork');
-  var form = document.getElementById('quote-form');
-  if (!fileInput || !form) return;
+  var dropzone  = document.getElementById('c-artwork-dropzone');
+  var emptyView = document.getElementById('c-artwork-empty');
+  var selView   = document.getElementById('c-artwork-selected');
+  var nameEl    = document.getElementById('c-artwork-filename');
+  var sizeEl    = document.getElementById('c-artwork-filesize');
+  var removeBtn = document.getElementById('c-artwork-remove');
+  var form      = document.getElementById('quote-form');
+  if (!fileInput || !form || !dropzone) return;
 
   var cachedFile = null;
   var fileReadError = null;
@@ -238,25 +255,100 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     statusBox.style.border = '1px solid #FCA5A5';
   }
 
+  function fmtSize(bytes){
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(2) + ' MB';
+  }
+
+  function showSelected(file){
+    nameEl.textContent = '✓ ' + file.name;
+    sizeEl.textContent = fmtSize(file.size);
+    emptyView.style.display = 'none';
+    selView.style.display = 'block';
+    dropzone.style.background = '#E6F4EA';
+    dropzone.style.borderColor = '#1F6638';
+    dropzone.style.borderStyle = 'solid';
+  }
+
+  function showEmpty(){
+    emptyView.style.display = 'block';
+    selView.style.display = 'none';
+    dropzone.style.background = '#FAFAFA';
+    dropzone.style.borderColor = '';
+    dropzone.style.borderStyle = 'dashed';
+  }
+
+  // Click dropzone (anywhere except the remove button) → open file picker
+  dropzone.addEventListener('click', function(e){
+    if (e.target === removeBtn) return;
+    fileInput.click();
+  });
+
+  // Remove the selected file
+  removeBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    fileInput.value = '';
+    cachedFile = null;
+    fileReadError = null;
+    showEmpty();
+  });
+
+  // Drag and drop support
+  ['dragenter','dragover'].forEach(function(ev){
+    dropzone.addEventListener(ev, function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.style.background = '#FFF4E5';
+      dropzone.style.borderColor = '#E0A23A';
+    });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    dropzone.addEventListener(ev, function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if (!cachedFile) {
+        dropzone.style.background = '#FAFAFA';
+        dropzone.style.borderColor = '';
+      }
+    });
+  });
+  dropzone.addEventListener('drop', function(e){
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+      try {
+        var dt = new DataTransfer();
+        dt.items.add(e.dataTransfer.files[0]);
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('change'));
+      } catch (err) {
+        // Older browser — fall back: tell user to click
+      }
+    }
+  });
+
   fileInput.addEventListener('change', function(e){
     cachedFile = null;
     fileReadError = null;
     var file = e.target.files && e.target.files[0];
-    if (!file) return;
+    if (!file) { showEmpty(); return; }
 
-    // Optional 25 MB safety limit (FormSubmit limit)
+    // 25 MB safety limit
     if (file.size > 25 * 1024 * 1024) {
       showError('הקובץ גדול מ-25MB. אנא דחסו או שלחו דרך WhatsApp ל-054-2150090.');
       fileInput.value = '';
+      showEmpty();
       return;
     }
 
+    // Show visual confirmation immediately
+    showSelected(file);
+
+    // Read into RAM so OS file invalidation doesn't break the upload
     var reader = new FileReader();
     reader.onload = function(ev){
       try {
         cachedFile = new File([ev.target.result], file.name, { type: file.type || 'application/octet-stream' });
       } catch (err) {
-        // Older browsers may not support new File() constructor — fall back to Blob
         cachedFile = new Blob([ev.target.result], { type: file.type || 'application/octet-stream' });
         cachedFile.name = file.name;
       }
@@ -269,13 +361,11 @@ if(window.location.search.indexOf('sent=ok')!==-1){
   });
 
   form.addEventListener('submit', function(e){
-    // If we have a cached in-memory copy, replace the input's file
-    // reference with the cached File so the upload uses RAM, not the
-    // (possibly stale) OS file handle.
+    // Replace the file input with the in-memory cached copy to bypass
+    // mobile OS file-handle invalidation
     if (cachedFile) {
       try {
         var dt = new DataTransfer();
-        // If cachedFile is a Blob fallback, wrap it in a File
         if (cachedFile instanceof File) {
           dt.items.add(cachedFile);
         } else {
