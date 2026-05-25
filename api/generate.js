@@ -383,21 +383,49 @@ The cup is a pure visual/graphic design with NO typography.
     // AI to design typography.
     const typographyRule = '';
 
-    // Logo usage rule — when a logo is uploaded, force the AI to use it ONCE.
-    const logoOnceRule = imageBase64 ? `
+    // Detect whether the user explicitly asked for the logo to appear
+    // multiple times (front and back, both sides, twice, etc.)
+    function detectMultiLogoMention(text) {
+      if (!text) return false;
+      const t = String(text).toLowerCase();
+      const keywords = [
+        'פעמיים', 'שני צידי', 'שתי פעמים', 'שני צדדים', 'משני הצדדים',
+        'מקדימה ומאחורה', 'מקדימה וגם מאחורה', 'גם מקדימה וגם מאחורה',
+        'מקדימה ואחורה', 'קדימה ואחורה', 'בשני הצדדים', 'משני הצדדים',
+        'front and back', 'both sides', 'twice', 'two logos', 'two copies'
+      ];
+      return keywords.some(k => t.includes(k.toLowerCase()));
+    }
+
+    const userWantsMultipleLogos =
+      detectMultiLogoMention(designDescription) ||
+      detectMultiLogoMention(prompt);
+
+    // Logo usage rule — once OR twice depending on user's request.
+    const logoOnceRule = imageBase64 ? (userWantsMultipleLogos ? `
+
+═══════════════════════════════════════════════
+CRITICAL RULE — USE THE UPLOADED LOGO EXACTLY TWICE
+═══════════════════════════════════════════════
+The customer asked for the logo on both sides of the cup. On the FLAT rectangle:
+- Place the uploaded logo at ~25% from the left edge (becomes the FRONT of the cup)
+- Place the SAME uploaded logo at ~75% from the left edge (becomes the BACK of the cup)
+- Both logos are IDENTICAL — same image, same size, same orientation
+- Use the uploaded logo EXACTLY as it is — do not redraw, modify, or change it
+- Do NOT create three or more logos. EXACTLY TWO instances of the same logo.
+` : `
 
 ═══════════════════════════════════════════════
 CRITICAL RULE — USE THE UPLOADED LOGO EXACTLY ONCE
 ═══════════════════════════════════════════════
-The uploaded image is the customer's LOGO. Place it on the cup EXACTLY ONE TIME — in a prominent position (top-center or upper area of the visible cup surface).
+The uploaded image is the customer's LOGO. Place it on the design EXACTLY ONE TIME — centered horizontally on the flat rectangle.
 
 ABSOLUTE PROHIBITIONS:
 - Do NOT duplicate, repeat, mirror, or tile the logo
 - Do NOT show the same logo in two corners
 - Do NOT add small copies of the logo as decorative repeats
-- Do NOT rotate copies of the logo around the cup
 - The logo appears ONCE. One logo. Single placement.
-` : '';
+`) : '';
 
     // ============================================================
     // STEP 1: Generate the FLAT 170×96 print design
@@ -438,7 +466,29 @@ TEXT PLACEMENT: Render the text ONLY ONCE on the design. Do NOT repeat the text.
       userRequestBlock = `User's design request (read carefully, follow exactly): ${prompt}`;
     }
 
-    const flatPrompt = `Create a flat 2D print-ready graphic design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
+    const flatPrompt = `Create a FLAT 2D PRINT TEMPLATE for a paper coffee cup wrap. The output is a flat horizontal rectangle (the unrolled cup surface), NOT an illustration of a cup.
+
+═══════════════════════════════════════════════
+ABSOLUTE RULE — FLAT RECTANGLE OUTPUT ONLY
+═══════════════════════════════════════════════
+You are designing the printable surface that gets wrapped AROUND a paper cup. The output MUST be:
+- A FLAT horizontal rectangle filling the entire image edge-to-edge
+- NO drawing of a cup shape anywhere in the output
+- NO cup outline, NO cup silhouette, NO 3D rendering
+- NO product photography
+- NO realistic cup illustration
+The viewer should see a flat printable design — like a label peeled off a can — not a picture of a cup.
+
+═══════════════════════════════════════════════
+LOGO PLACEMENT FOR "FRONT AND BACK" REQUESTS
+═══════════════════════════════════════════════
+When the user asks for the logo to appear "on both sides", "front and back", "פעמיים", "מקדימה ומאחורה", or similar:
+- Place the SAME logo TWO TIMES on the flat rectangle
+- One logo at ~25% from the left edge (this wraps to the "front" of the cup)
+- Second identical logo at ~75% from the left edge (this wraps to the "back" of the cup)
+- Both logos are identical in size and orientation
+- The space between them (at ~50% — which is the "side" of the cup) can be empty background or have subtle decorative elements
+When the user asks for just ONE logo: place it ONCE, centered horizontally.
 
 ${userRequestBlock}${extractedColors}${photoInstruction}${spellingGuide}${noPeopleRule}${noTextRule}${typographyRule}${logoOnceRule}
 
