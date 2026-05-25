@@ -604,6 +604,46 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     });
   }
 
+  // Compress an image blob to a smaller JPEG so the email payload stays
+  // under Vercel's 4.5MB request limit. Keeps quality acceptable for
+  // graphic-designer reference and customer preview.
+  async function compressImageBlob(blob, maxWidth, quality){
+    if(!blob) return blob;
+    return new Promise(function(resolve){
+      const img = new Image();
+      img.onload = function(){
+        try {
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if(w > maxWidth){
+            h = Math.round(h * (maxWidth / w));
+            w = maxWidth;
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          // White background prevents black areas if source has transparency
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          canvas.toBlob(function(b){
+            try { URL.revokeObjectURL(img.src); } catch(e){}
+            resolve(b || blob);
+          }, 'image/jpeg', quality);
+        } catch(err){
+          console.error('compressImageBlob error:', err);
+          resolve(blob);
+        }
+      };
+      img.onerror = function(){
+        console.error('compressImageBlob: image load failed');
+        resolve(blob);
+      };
+      img.src = URL.createObjectURL(blob);
+    });
+  }
+
   // Form submission — POST JSON (with base64 files) to /api/submit-form
   const form=document.getElementById('design-form');
   form.addEventListener('submit',async e=>{
@@ -641,21 +681,26 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         }
       }
 
-      // Collect files (reference photo + flat print + mockup) as base64
+      // Collect files (reference photo + flat print + mockup) as base64.
+      // Compress everything to JPEG so the total payload stays under
+      // Vercel's 4.5MB request limit. Quality is high enough for the
+      // graphic designer to use as reference (they create the real print
+      // file from scratch anyway).
       const files=[];
       if(refFile){
-        const b64=await readBlobAsBase64(refFile);
-        files.push({field:'reference_image',name:refFile.name||'reference.png',type:refFile.type||'image/png',contentBase64:b64});
+        const compressed = await compressImageBlob(refFile, 900, 0.85);
+        const b64=await readBlobAsBase64(compressed);
+        files.push({field:'reference_image',name:'reference-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
       if(flatBlob){
-        const b64=await readBlobAsBase64(flatBlob);
-        const ext=(flatBlob.type==='image/jpeg')?'jpg':'png';
-        files.push({field:'print_file_170x96',name:'print-file-170x96-'+Date.now()+'.'+ext,type:flatBlob.type||'image/png',contentBase64:b64});
+        const compressed = await compressImageBlob(flatBlob, 1280, 0.82);
+        const b64=await readBlobAsBase64(compressed);
+        files.push({field:'print_file_170x96',name:'print-file-170x96-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
       if(mockupBlob){
-        const b64=await readBlobAsBase64(mockupBlob);
-        const ext=(mockupBlob.type==='image/jpeg')?'jpg':'png';
-        files.push({field:'cup_mockup_preview',name:'cup-mockup-preview-'+Date.now()+'.'+ext,type:mockupBlob.type||'image/png',contentBase64:b64});
+        const compressed = await compressImageBlob(mockupBlob, 900, 0.82);
+        const b64=await readBlobAsBase64(compressed);
+        files.push({field:'cup_mockup_preview',name:'cup-mockup-preview-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
 
       sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));
