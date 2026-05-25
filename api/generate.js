@@ -634,15 +634,15 @@ DESIGN RULES
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       attemptsUsed = attempt;
-      // Cost-saving: 1024x1024 instead of 1536x1024 (~30% cheaper)
+      // 1536x1024 is the closest available size to the 170:96 cup aspect ratio (1.77:1)
       if (userBlob) {
-        flatResult = await callEdits(apiKey, augmentedPrompt, userBlob, '1024x1024', 'user-photo.png');
+        flatResult = await callEdits(apiKey, augmentedPrompt, userBlob, '1536x1024', 'user-photo.png');
         if (!flatResult.ok) {
           console.error('edits step1 failed, falling back:', flatResult.error);
-          flatResult = await callGen(apiKey, augmentedPrompt, '1024x1024');
+          flatResult = await callGen(apiKey, augmentedPrompt, '1536x1024');
         }
       } else {
-        flatResult = await callGen(apiKey, augmentedPrompt, '1024x1024');
+        flatResult = await callGen(apiKey, augmentedPrompt, '1536x1024');
       }
 
       if (!flatResult.ok) {

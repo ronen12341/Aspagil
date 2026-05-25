@@ -668,9 +668,59 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     });
   }
 
-  // Compress an image blob to a smaller JPEG so the email payload stays
-  // under Vercel's 4.5MB request limit. Keeps quality acceptable for
-  // graphic-designer reference and customer preview.
+  // Crop the AI-generated image to 170:96 aspect ratio AND resize it to
+  // 2008×1134 px = exactly 170mm × 96mm at 300 DPI (print-ready).
+  // This is what gets sent to the graphic designer as the print file.
+  async function buildPrintFile170x96(blob){
+    if(!blob) return blob;
+    return new Promise(function(resolve){
+      const img = new Image();
+      img.onload = function(){
+        try {
+          const srcW = img.naturalWidth || img.width;
+          const srcH = img.naturalHeight || img.height;
+          const targetAspect = 170/96; // 1.7708
+          const srcAspect = srcW/srcH;
+          // Crop the source to match the 170:96 aspect (center crop)
+          let cropX=0, cropY=0, cropW=srcW, cropH=srcH;
+          if(srcAspect > targetAspect){
+            // Source is wider than target → crop sides
+            cropW = Math.round(srcH * targetAspect);
+            cropX = Math.round((srcW - cropW)/2);
+          } else if(srcAspect < targetAspect){
+            // Source is taller than target → crop top/bottom
+            cropH = Math.round(srcW / targetAspect);
+            cropY = Math.round((srcH - cropH)/2);
+          }
+          // Output dimensions: 170mm × 96mm at 300 DPI
+          const outW = 2008;
+          const outH = 1134;
+          const canvas = document.createElement('canvas');
+          canvas.width = outW;
+          canvas.height = outH;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, outW, outH);
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
+          canvas.toBlob(function(b){
+            try { URL.revokeObjectURL(img.src); } catch(e){}
+            resolve(b || blob);
+          }, 'image/jpeg', 0.92);
+        } catch(err){
+          console.error('buildPrintFile170x96 error:', err);
+          resolve(blob);
+        }
+      };
+      img.onerror = function(){
+        console.error('buildPrintFile170x96: image load failed');
+        resolve(blob);
+      };
+      img.src = URL.createObjectURL(blob);
+    });
+  }
+
+  // Compress reference image (logo) for the email — smaller than the print file
   async function compressImageBlob(blob, maxWidth, quality){
     if(!blob) return blob;
     return new Promise(function(resolve){
@@ -687,7 +737,6 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
           canvas.width = w;
           canvas.height = h;
           const ctx = canvas.getContext('2d');
-          // White background prevents black areas if source has transparency
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
@@ -741,11 +790,10 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         }
       }
 
-      // Collect files (reference photo + flat print + mockup) as base64.
-      // Compress everything to JPEG so the total payload stays under
-      // Vercel's 4.5MB request limit. Quality is high enough for the
-      // graphic designer to use as reference (they create the real print
-      // file from scratch anyway).
+      // Collect files for the email:
+      // 1. The customer's uploaded reference (logo) — compressed
+      // 2. The print file at EXACT 170×96 mm @ 300 DPI (2008×1134 px) — cropped and resized
+      // We do NOT send the cup mockup preview anymore — only the print file.
       const files=[];
       if(refFile){
         const compressed = await compressImageBlob(refFile, 900, 0.85);
@@ -753,14 +801,10 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         files.push({field:'reference_image',name:'reference-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
       if(flatBlob){
-        const compressed = await compressImageBlob(flatBlob, 1280, 0.82);
-        const b64=await readBlobAsBase64(compressed);
-        files.push({field:'print_file_170x96',name:'print-file-170x96-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
-      }
-      if(mockupBlob){
-        const compressed = await compressImageBlob(mockupBlob, 900, 0.82);
-        const b64=await readBlobAsBase64(compressed);
-        files.push({field:'cup_mockup_preview',name:'cup-mockup-preview-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
+        // Build the actual 170×96 mm print file at 300 DPI
+        const printFile = await buildPrintFile170x96(flatBlob);
+        const b64=await readBlobAsBase64(printFile);
+        files.push({field:'print_file_170x96',name:'print-file-170x96mm-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
 
       sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));
