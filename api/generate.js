@@ -168,10 +168,11 @@ matches=true ONLY if every expected line appears character-perfect in the image.
   }
 }
 
-// Pre-processor: use GPT-4o-mini to extract the EXACT Hebrew text + colors
-// the user wants on the cup. This lets us inject a letter-by-letter
-// spelling guide into the image-gen prompt, which dramatically reduces
-// Hebrew spelling errors.
+// Pre-processor: use GPT-4o-mini to extract the EXACT Hebrew text + colors.
+// CRITICAL: Only extract text the user EXPLICITLY marked as text-to-print
+// (inside quotes "..." or '...' or after explicit cues like "כתוב:" / "טקסט:").
+// Free-form description words are NOT extracted as text — they describe how
+// the cup looks, not what to write on it.
 async function extractDesignStructure(apiKey, userPrompt) {
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -185,20 +186,41 @@ async function extractDesignStructure(apiKey, userPrompt) {
         messages: [
           {
             role: 'system',
-            content: 'You extract structured info from Hebrew/English paper-cup design requests. Output ONLY valid JSON, no markdown, no explanation.'
+            content: 'You extract structured info from Hebrew/English paper-cup design requests. You are EXTREMELY CONSERVATIVE: you only extract text the user EXPLICITLY asked to PRINT on the cup. You do NOT treat description words as text to print. Output ONLY valid JSON.'
           },
           {
             role: 'user',
-            content: `Extract from this cup design request:
-1. "textLines": array of EXACT text strings the user wants printed on the cup. Copy character-by-character in the EXACT script (Hebrew stays Hebrew, English stays English). Each separate phrase/line goes as its own entry. If no text is requested, return [].
-2. "colors": array of color names the user mentioned (Hebrew or English). [] if none.
-3. "theme": one short sentence describing the visual style/theme.
+            content: `Analyze this cup design request and extract structured info.
 
 Request:
 """${userPrompt}"""
 
-Return ONLY JSON in this exact shape:
-{"textLines": ["..."], "colors": ["..."], "theme": "..."}`
+EXTRACTION RULES — read carefully:
+
+For "textLines":
+- ONLY extract text the user EXPLICITLY asked to print on the cup.
+- A user wants text printed on the cup ONLY when one of these is true:
+  a) The text appears inside quotes: "..." or '...' or "..." or "..."
+  b) The text follows an explicit cue word like: "כתוב", "טקסט:", "כיתוב:", "הכיתוב הוא", "write:", "text:", "says:", "with the words"
+- DO NOT extract words from a free-form description of the cup's appearance.
+- DO NOT extract words like "כוס", "לבנה", "עם", "לוגו", "פעמיים", "מקדימה", "מאחורה", "צבע", "סגנון", "פרחים", "עיצוב" — these are description words.
+- DO NOT extract a description sentence as text. "כוס לבנה עם לוגו פעמיים" is a DESCRIPTION — extract textLines: [].
+- DO NOT extract a brand mentioned in the description unless it's clearly meant as text on the cup.
+- If unsure → return empty array.
+
+EXAMPLES:
+- "כוס לבנה עם לוגו פעמיים" → textLines: []   (just a description, no text to print)
+- "כוס עם הטקסט 'מכבי חיפה'" → textLines: ["מכבי חיפה"]
+- "כוס שכתוב עליה קפה גינץ" → textLines: ["קפה גינץ"]
+- "כוס בסגנון חתונה עם 'דנה ויוסי 12.6.2026'" → textLines: ["דנה ויוסי 12.6.2026"]
+- "white cup with green flowers" → textLines: []
+- "cup that says 'Best Mom'" → textLines: ["Best Mom"]
+
+For "colors": only color names the user mentioned (in any language).
+For "theme": one short sentence describing the visual style.
+
+Return ONLY JSON in this exact shape (no markdown):
+{"textLines": [], "colors": [], "theme": "..."}`
           }
         ],
         temperature: 0,
@@ -211,7 +233,6 @@ Return ONLY JSON in this exact shape:
     }
     const j = await r.json();
     let content = (j.choices[0].message.content || '').trim();
-    // Strip ```json fences if model added them
     content = content.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
     return JSON.parse(content);
   } catch (e) {
@@ -478,6 +499,15 @@ You are designing the printable surface that gets wrapped AROUND a paper cup. Th
 - NO product photography
 - NO realistic cup illustration
 The viewer should see a flat printable design — like a label peeled off a can — not a picture of a cup.
+
+═══════════════════════════════════════════════
+ABSOLUTE RULE — DESCRIPTION IS NOT TEXT
+═══════════════════════════════════════════════
+The user's description tells you HOW the cup looks (style, colors, what elements to include). It is NOT text to print on the cup.
+- Words like "כוס", "לבנה", "עם", "לוגו", "פעמיים", "מקדימה", "מאחורה", "סגנון", "צבע" describe the cup — they do NOT appear as text on the cup.
+- ONLY render text on the cup if it was explicitly given in quotes ("...") or after an explicit cue word like "כתוב", "טקסט:", "text:", "says:".
+- If the description does NOT contain any explicitly quoted text, the cup must contain NO TEXT AT ALL — only the logo and visual elements.
+- Do NOT render the description sentence as text on the cup. Do NOT translate description words into Hebrew letters on the cup.
 
 ═══════════════════════════════════════════════
 LOGO PLACEMENT FOR "FRONT AND BACK" REQUESTS
