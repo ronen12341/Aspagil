@@ -18,16 +18,6 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.gilcups.com/paper-cups-8oz.html</loc>
-    <priority>0.85</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.gilcups.com/paper-cups-12oz.html</loc>
-    <priority>0.85</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
     <loc>https://www.gilcups.com/cardboard-cups.html</loc>
     <priority>0.95</priority>
     <changefreq>weekly</changefreq>
@@ -101,11 +91,6 @@
     <loc>https://www.gilcups.com/blog/</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.gilcups.com/blog/cup-size-guide.html</loc>
-    <priority>0.85</priority>
-    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://www.gilcups.com/blog/digital-vs-offset-printing.html</loc>

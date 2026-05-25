@@ -51,14 +51,41 @@
     <a class="btn btn-gold" href="../contact.html#quote">בקש הצעת מחיר לאירוע</a>
   </div>
   <div>
-    <div style="background: linear-gradient(135deg, var(--teal), var(--navy)); border-radius: var(--radius-lg); padding: 3rem; text-align: center;">
-      <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" style="width: 80%; max-width: 240px;" aria-hidden="true">
-        <path d="M50 35 L62 195 L138 195 L150 35 Z" fill="#F5F1E8" stroke="#0E2A3E" stroke-width="2"/>
-        <ellipse cx="100" cy="35" rx="50" ry="9" fill="#FFFFFF" stroke="#0E2A3E" stroke-width="2"/>
-        <text x="100" y="90" text-anchor="middle" font-size="20" fill="#D4A24C">✦</text>
-        <text x="100" y="120" text-anchor="middle" fill="#0E2A3E" font-family="Heebo, sans-serif" font-weight="700" font-size="14">הכנס שלנו</text>
-        <text x="100" y="140" text-anchor="middle" fill="#1C5D7A" font-family="Heebo, sans-serif" font-size="10">2026</text>
-        <text x="100" y="170" text-anchor="middle" font-size="14" fill="#D4A24C">✦ ✦ ✦</text>
+    <div style="background: linear-gradient(135deg, #F5E8EE, #FFF5F8); border-radius: var(--radius-lg); padding: 3rem; text-align: center;">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width: 80%; max-width: 240px;" aria-hidden="true">
+        <defs>
+          <linearGradient id="evBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9B2747"/><stop offset="100%" stop-color="#5A0F26"/></linearGradient>
+          <linearGradient id="evCyl" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#000" stop-opacity="0.55"/>
+            <stop offset="12%" stop-color="#000" stop-opacity="0.30"/>
+            <stop offset="30%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#FFF" stop-opacity="0.42"/>
+            <stop offset="70%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="88%" stop-color="#000" stop-opacity="0.30"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+          </linearGradient>
+          <linearGradient id="evRim" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="evSh" x="-30%" y="-15%" width="160%" height="135%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+            <feOffset dx="0" dy="7"/>
+            <feComponentTransfer><feFuncA type="linear" slope="0.32"/></feComponentTransfer>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#evSh)"/>
+        <g filter="url(#evSh)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#evBody)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#evCyl)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#2A0712" opacity="0.55"/>
+          <text x="100" y="98" text-anchor="middle" font-size="20" fill="#F5C842">✦</text>
+          <text x="100" y="128" text-anchor="middle" fill="#FFFFFF" font-family="Heebo, sans-serif" font-weight="900" font-size="14">הכנס שלנו</text>
+          <text x="100" y="148" text-anchor="middle" fill="#F5C842" font-family="Heebo, sans-serif" font-weight="700" font-size="13" letter-spacing="0.15em">2026</text>
+          <text x="100" y="174" text-anchor="middle" font-size="13" fill="#F5C842">✦ ✦ ✦</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#evRim)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#2A0712"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#15030A"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,0.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
       </svg>
     </div>
   </div>

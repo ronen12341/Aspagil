@@ -48,14 +48,42 @@
     <a class="btn btn-gold" href="../contact.html#quote">בנה הזמנה מותאמת</a>
   </div>
   <div>
-    <div style="background: linear-gradient(135deg, var(--gold), var(--gold-soft)); border-radius: var(--radius-lg); padding: 3rem; text-align: center;">
-      <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" style="width: 80%; max-width: 240px;" aria-hidden="true">
-        <path d="M50 35 L62 195 L138 195 L150 35 Z" fill="#0E2A3E"/>
-        <ellipse cx="100" cy="35" rx="50" ry="9" fill="#1A3F58"/>
-        <rect x="68" y="85" width="64" height="22" rx="2" fill="#D4A24C"/>
-        <text x="100" y="101" text-anchor="middle" fill="#0E2A3E" font-family="Heebo, sans-serif" font-weight="700" font-size="13">STREET FOOD</text>
-        <text x="100" y="135" text-anchor="middle" fill="#F5F1E8" font-family="Heebo, sans-serif" font-size="11">אצלנו טעים</text>
-        <text x="100" y="155" text-anchor="middle" fill="#D4A24C" font-family="Heebo, sans-serif" font-size="10">★ ★ ★ ★ ★</text>
+    <div style="background: linear-gradient(135deg, #FFE9D6, #FFF7EE); border-radius: var(--radius-lg); padding: 3rem; text-align: center;">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width: 80%; max-width: 240px;" aria-hidden="true">
+        <defs>
+          <linearGradient id="fsBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FB8C00"/><stop offset="100%" stop-color="#9F3C0C"/></linearGradient>
+          <linearGradient id="fsCyl" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#000" stop-opacity="0.55"/>
+            <stop offset="12%" stop-color="#000" stop-opacity="0.30"/>
+            <stop offset="30%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#FFF" stop-opacity="0.42"/>
+            <stop offset="70%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="88%" stop-color="#000" stop-opacity="0.30"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+          </linearGradient>
+          <linearGradient id="fsRim" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="fsSh" x="-30%" y="-15%" width="160%" height="135%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+            <feOffset dx="0" dy="7"/>
+            <feComponentTransfer><feFuncA type="linear" slope="0.32"/></feComponentTransfer>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#fsSh)"/>
+        <g filter="url(#fsSh)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#fsBody)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#fsCyl)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#5E1F0A" opacity="0.55"/>
+          <rect x="60" y="92" width="80" height="22" rx="3" fill="#FFE066"/>
+          <rect x="60" y="92" width="80" height="22" rx="3" fill="url(#fsCyl)" opacity="0.4"/>
+          <text x="100" y="108" text-anchor="middle" fill="#5E1F0A" font-family="Heebo, sans-serif" font-weight="900" font-size="11" letter-spacing="0.06em">STREET FOOD</text>
+          <text x="100" y="140" text-anchor="middle" fill="#FFFFFF" font-family="Heebo, sans-serif" font-weight="700" font-size="12">אצלנו טעים</text>
+          <text x="100" y="162" text-anchor="middle" fill="#FFE066" font-family="Heebo, sans-serif" font-size="11">★ ★ ★ ★ ★</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#fsRim)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#5E1F0A"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#2E0E04"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,0.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
       </svg>
     </div>
   </div>
