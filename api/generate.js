@@ -657,66 +657,23 @@ Do not repeat the previous mistakes.`;
     }
 
     // ============================================================
-    // STEP 2: Take the flat design and wrap it around a 3D cup mockup
-    // This guarantees the mockup shows the EXACT SAME design as the flat file
+    // STEP 2 — SKIPPED.
+    // We deliberately do NOT generate a separate AI mockup.
+    // The AI image-edit step (gpt-image-1 edits) cannot reliably preserve
+    // the flat design when wrapping it around a 3D cup — it reinterprets
+    // colors, layout, and elements. This caused the customer preview and
+    // the print file to look DIFFERENT, which is unacceptable.
+    //
+    // Instead, the FLAT print file IS the customer preview. They are the
+    // exact same image. The customer sees exactly what will be printed.
     // ============================================================
-    let flatBlobForStep2;
-    if (flatB64) {
-      flatBlobForStep2 = b64ToBlob(flatB64);
-    } else if (flatUrl) {
-      try {
-        const r = await fetch(flatUrl);
-        const arr = await r.arrayBuffer();
-        flatBlobForStep2 = new Blob([Buffer.from(arr)], { type: 'image/png' });
-      } catch (e) {
-        console.error('Failed to fetch flat URL for step 2:', e.message);
-      }
-    }
 
-    const mockupPrompt = `Render a photorealistic 3D product photography mockup of a paper coffee cup with the EXACT artwork from the input image printed on it.
-
-CRITICAL: The artwork in the input image is the print design that goes on the cup. Wrap that EXACT design around the cup surface — preserve ALL of these unchanged:
-- Same COLORS (do not shift to white+black if input was green, blue, red, etc.)
-- Same LAYOUT and composition
-- Same Hebrew text — copy letter-for-letter exactly as in the input (do NOT re-spell, do NOT substitute similar-looking Hebrew letters like ב/כ, ד/ר, ה/ח)
-- Same photograph (if any) preserved pixel-perfect — no face regeneration
-- Same logos, icons, illustrations
-
-Do NOT redesign. Do NOT change anything. Just take the input image and wrap it naturally around a paper cup so it follows the cup's curve.
-
-═══════════════════════════════════════════════
-STRICT RULES FOR THE MOCKUP
-═══════════════════════════════════════════════
-- Do NOT add any people, models, hands, faces, or body parts to the scene. The cup stands alone.
-- Do NOT add any text, captions, labels, or written words that were NOT already in the input artwork. If the input artwork has no text, the cup has no text.
-- Do NOT add background props (saucers, beans, plants, tables) — only the cup on a clean neutral surface.
-
-Output requirements:
-- Single paper takeaway cup, centered, shown at slight 3/4 angle
-- The cup's base color should match the design (e.g. if design is green-dominant, the cup may have a green wrap; if the design has a white background, the cup is white)
-- Clean light neutral background (soft white/gray), soft natural shadow under the cup
-- Professional studio product photography lighting
-- Looks like a real photograph of a real product`;
-
-    let mockupResult;
-    if (flatBlobForStep2) {
-      mockupResult = await callEdits(apiKey, mockupPrompt, flatBlobForStep2, '1024x1024', 'flat-design.png');
-    } else {
-      // Couldn't get flat as blob — fall back to text-to-image mockup
-      const fallbackDesc = designDescription || prompt || '';
-      const fallbackTextRule = explicitNoText
-        ? ' The cup has NO text, letters, or words anywhere — pure graphic design only.'
-        : (hasExplicitCupText && cupText.trim().length > 0
-            ? ` The only text on the cup is exactly: "${cupText.trim()}".`
-            : '');
-      mockupResult = await callGen(
-        apiKey,
-        `Photorealistic 3D paper cup mockup. ${fallbackDesc}.${fallbackTextRule} Single white paper cup, slight angle, clean background, studio lighting. NO people, NO faces, NO hands in the image — only the cup. Hebrew text spelled correctly. Modern minimal design — no Victorian frames.`,
-        '1024x1024'
-      );
-    }
-
-    const mockupImg = mockupResult.ok ? mockupResult.data : null;
+    // The "mockup" is the same flat image — guaranteed identical to the print file.
+    const mockupImg = {
+      b64_json: flatB64 || null,
+      url: flatUrl || null
+    };
+    const mockupResult = { ok: true, model: 'flat-as-preview', error: null };
 
     return res.status(200).json({
       success: true,
