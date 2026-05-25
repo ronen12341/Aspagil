@@ -290,22 +290,20 @@ export default async function handler(req, res) {
     const hasExplicitCupText = (typeof cupText === 'string');
     const explicitNoText = hasExplicitCupText && cupText.trim().length === 0;
 
-    // ============================================================
-    // CRITICAL DESIGN CHANGE: We do NOT ask the AI to render Hebrew text.
-    // gpt-image-1 / DALL-E 3 cannot reliably render Hebrew characters.
-    // Instead:
-    //   1. AI generates the visual design (logo, decorations, background)
-    //      with a CLEAR HORIZONTAL BAND reserved for text.
-    //   2. The client overlays the exact Hebrew text on top of the
-    //      generated image using HTML5 Canvas with a real Hebrew font.
-    // This guarantees 100% correct spelling AND a designed look.
-    // ============================================================
+    // The AI generates the flat print file (170×96) including the customer's
+    // Hebrew text. Hebrew rendering may have spelling issues — the graphic
+    // designer corrects them when preparing the actual print plate. The
+    // customer preview (mockup) also gets a client-side text overlay using
+    // Canvas (real Hebrew font) so the customer sees the text correctly.
     let structure = null;
     if (hasExplicitCupText) {
-      // Tell the AI there's no text — we're handling text on the client.
-      structure = { textLines: [], colors: [], theme: '' };
+      const trimmed = cupText.trim();
+      structure = {
+        textLines: trimmed.length > 0 ? [trimmed] : [],
+        colors: [],
+        theme: ''
+      };
     } else {
-      // Legacy: extract from the freeform prompt
       try {
         structure = await extractDesignStructure(apiKey, prompt);
       } catch (e) {
@@ -313,7 +311,8 @@ export default async function handler(req, res) {
       }
     }
 
-    // Whether the client will overlay text (only when user gave non-empty cupText)
+    // The client will overlay text on the MOCKUP preview only (for display).
+    // The FLAT print file remains the AI's raw output for the graphic designer.
     const willOverlayClientText = hasExplicitCupText && cupText.trim().length > 0;
 
     const spellingGuide = structure ? buildSpellingGuide(structure.textLines) : '';
@@ -364,33 +363,19 @@ Even if the description mentions a name, an occasion (mother's day, birthday, we
 If a reference image was uploaded, treat it as a LOGO or GRAPHIC ASSET only — never as a person to feature. Do not invent a person to accompany the logo.
 `;
 
-    // The NO TEXT rule kicks in BOTH when the user didn't request text,
-    // AND when we're going to overlay the text on the client side
-    // (because we don't want the AI to also render garbled Hebrew).
-    const aiMustRenderNoText = explicitNoText || willOverlayClientText;
-
-    const noTextRule = aiMustRenderNoText ? `
+    // NO TEXT rule only applies when the user EXPLICITLY left the text field empty.
+    // When the user provided text, the AI renders it as part of the flat design
+    // (Hebrew spelling may have errors — fixed by the graphic designer later).
+    const noTextRule = explicitNoText ? `
 
 ═══════════════════════════════════════════════
 CRITICAL RULE — NO TEXT ON CUP
 ═══════════════════════════════════════════════
-The cup must be COMPLETELY FREE of any text, letters, words, numbers, or written characters in any language (Hebrew, English, Arabic, or any other script).
-
-ABSOLUTE PROHIBITIONS:
-- Do NOT render any Hebrew letters anywhere on the cup
-- Do NOT render any English text or words on the cup
-- Do NOT add slogans, captions, taglines, labels, or descriptions
-- Do NOT add fake/pseudo-text or "lorem ipsum" style filler
-- Do NOT add numbers, dates, or years (except if they appear inside the uploaded logo itself — keep those as-is)
-- Do NOT write any words from the design description on the cup — that's a description of style, not text content
-${willOverlayClientText ? `
-The customer's text will be placed on the cup LATER by our text-rendering system. You do NOT render it. Your job is ONLY to create the visual/graphic backdrop.
-
-LEAVE A CLEAR HORIZONTAL TEXT AREA:
-- Reserve a horizontal band in the lower-center of the cup (roughly the middle 50% width, between 55% and 75% from the top) that is RELATIVELY UNCLUTTERED — solid background color or subtle pattern only.
-- This is where the customer's text will be placed afterwards. Keep this band visually clean so the text will be readable.
-- The rest of the cup can have richer decoration (logo, illustrations, color blocks, etc.)
-` : ''}
+The cup must be COMPLETELY FREE of any text, letters, words, numbers, or written characters in any language (Hebrew, English, or any other).
+- Do NOT add slogans, captions, taglines, or labels
+- Do NOT write any words from the design description on the cup
+- If a logo was uploaded with text inside it, keep that logo as-is — but do not add OTHER text outside the logo
+The cup is a pure visual/graphic design with NO typography.
 ` : '';
 
     // The "designed typography" rule is no longer needed because the
@@ -429,12 +414,10 @@ ABSOLUTE PROHIBITIONS:
       }
     }
 
-    // Build the user request block — prefer the explicit two-field form when available.
-    //
-    // IMPORTANT: We never tell the AI to RENDER text. When the user provides
-    // cupText, the client overlays it later using Canvas (handled by the
-    // noTextRule above). The cupText is mentioned here only as context so the
-    // AI can plan the layout to leave room for it.
+    // Build the user request block. When the user provides cupText, we tell
+    // the AI to render it on the FLAT print file (Hebrew may not be perfect —
+    // graphic designer cleans up afterwards). The Canvas overlay on the mockup
+    // gives the customer a clean preview.
     let userRequestBlock;
     if (designDescription || hasExplicitCupText) {
       const descLine = designDescription
@@ -443,10 +426,9 @@ ABSOLUTE PROHIBITIONS:
       let textLine = '';
       if (hasExplicitCupText) {
         if (cupText.trim().length > 0) {
-          // Tell the AI a text WILL be added later by another system — so plan space, don't render it
-          textLine = `\n\nLAYOUT NOTE: Customer text will be added to the cup AFTERWARDS by a separate text-rendering system. Plan the layout to leave a clean horizontal area in the lower-center of the cup for that text. The text itself is "${cupText.trim()}" but YOU MUST NOT RENDER IT — the cup must be free of all text, letters, words, or characters. Just leave the space.`;
+          textLine = `\n\nText to render on the cup (THE ONLY text — render it clearly, large, easy to read): "${cupText.trim()}"`;
         } else {
-          textLine = `\n\nText to print on cup: NONE — the cup must contain NO text whatsoever.`;
+          textLine = `\n\nText on cup: NONE — the cup must contain NO text whatsoever.`;
         }
       }
       userRequestBlock = descLine + textLine;
