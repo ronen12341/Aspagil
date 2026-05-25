@@ -369,6 +369,34 @@ The user explicitly did NOT request any text on the cup. The cup must be COMPLET
 The cup is a pure visual/graphic design with ZERO typography. If a logo image was uploaded, the logo may appear as-is; otherwise no text or letters anywhere.
 ` : '';
 
+    // Typography styling block — only when the user provided text to render.
+    // This forces the model to treat the text as a designed typographic
+    // composition, not a plain line of letters dropped on a cup.
+    const hasTextToRender = (hasExplicitCupText && cupText.trim().length > 0) ||
+                            (structure && Array.isArray(structure.textLines) && structure.textLines.length > 0);
+
+    const typographyRule = hasTextToRender ? `
+
+═══════════════════════════════════════════════
+CRITICAL RULE — TYPOGRAPHY MUST BE DESIGNED, NOT PLAIN
+═══════════════════════════════════════════════
+The text on the cup is a CENTERPIECE of the design — treat it as STYLED TYPOGRAPHY, not as a label.
+
+REQUIREMENTS:
+- Use a BOLD, ELEGANT, ON-BRAND typeface that matches the visual mood of the design
+- Hebrew typography options to consider: modern bold sans-serif (similar to Heebo Black, Assistant Bold), or a clean display serif (similar to Frank Ruhl Libre, Alef)
+- The text should INTEGRATE with the graphic elements — flow with the layout, not float disconnected above it
+- Consider DECORATIVE touches that match the design: subtle outline, shadow, color gradient matching the brand palette, or framing elements (lines, shapes) around the text
+- Hierarchy: if the text has multiple parts (e.g., a brand name + a tagline), give them DIFFERENT visual weights — main name LARGE and BOLD, tagline SMALLER and lighter
+- Size: the text should be LARGE and READABLE — fill a meaningful portion of the cup surface
+- Color: the text color should complement the design colors, not clash. If the cup is white, use the dominant accent color from the rest of the design (e.g., if the logo is orange, the text can be orange or dark brown)
+- Placement: center the text on the visible cup surface, well-balanced against the logo if present
+- DO NOT just drop plain default sans-serif Hebrew letters on the cup — that looks amateur
+- The final result should look like a PROFESSIONAL BRANDED CUP, not a printer test page
+
+LIMIT YOURSELF: render the text ONCE on the cup, big and beautiful. Do not repeat it. Do not add tiny secondary text.
+` : '';
+
     // ============================================================
     // STEP 1: Generate the FLAT 170×96 print design
     // ============================================================
@@ -404,7 +432,7 @@ The cup is a pure visual/graphic design with ZERO typography. If a logo image wa
 
     const flatPrompt = `Create a flat 2D print-ready graphic design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
 
-${userRequestBlock}${extractedColors}${photoInstruction}${spellingGuide}${noPeopleRule}${noTextRule}
+${userRequestBlock}${extractedColors}${photoInstruction}${spellingGuide}${noPeopleRule}${noTextRule}${typographyRule}
 
 ═══════════════════════════════════════════════
 CRITICAL RULE #1 — COLORS MUST MATCH USER REQUEST
@@ -468,7 +496,7 @@ DESIGN RULES
     let verifyInfo = { matches: true, foundText: '', issues: '' };
     let attemptsUsed = 0;
     let augmentedPrompt = flatPrompt;
-    const maxAttempts = (expectedLines.length > 0) ? 2 : 1;
+    const maxAttempts = (expectedLines.length > 0) ? 3 : 1;
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       attemptsUsed = attempt;
@@ -498,21 +526,41 @@ DESIGN RULES
 
       if (verifyInfo.matches) break;
 
-      // Mismatch — build a stronger prompt that names what the model got wrong
+      // Mismatch — build a stronger prompt that names what the model got wrong.
+      // On the LAST attempt, we instruct the model to render the text in
+      // English/Latin transliteration rather than produce more garbled Hebrew.
       if (attempt < maxAttempts) {
+        const isFinalAttempt = (attempt === maxAttempts - 1);
+
+        const detailedExpected = expectedLines.map((t, i) => {
+          const chars = Array.from(t).map(c => c === ' ' ? '[space]' : c).join(' · ');
+          return `  Line ${i + 1}: "${t}"   (${Array.from(t).length} characters)\n     Character-by-character: ${chars}`;
+        }).join('\n\n');
+
+        const fallbackInstruction = isFinalAttempt ? `
+
+LAST-RESORT FALLBACK:
+If you genuinely cannot render this Hebrew text without errors, render it in clean Latin/English transliteration of the meaning rather than garbled Hebrew. A correct English version is better than wrong Hebrew. But strongly prefer Hebrew if you can render it correctly.` : '';
+
         augmentedPrompt = flatPrompt + `
 
 ═══════════════════════════════════════════════
-URGENT — PREVIOUS RENDER HAD SPELLING ERRORS
+URGENT — PREVIOUS RENDER HAD SPELLING ERRORS  (attempt ${attempt + 1}/${maxAttempts})
 ═══════════════════════════════════════════════
 The previous attempt rendered the WRONG text on the cup.
 The image showed: "${verifyInfo.foundText}"
-Issue identified by verifier: ${verifyInfo.issues}
+Verifier's diagnosis: ${verifyInfo.issues}
 
-THE CORRECT TEXT (REQUIRED — RENDER EXACTLY):
-${expectedLines.map((t, i) => `  Line ${i + 1}: "${t}"   (${Array.from(t).length} characters total)`).join('\n')}
+THE CORRECT TEXT — RENDER THIS EXACTLY, EVERY CHARACTER:
+${detailedExpected}
 
-This is your final attempt. Render each character above EXACTLY. Count the letters before drawing each word. Do not repeat the previous mistake.`;
+STRATEGY FOR THIS RETRY:
+1. Render the text MUCH LARGER than before — make it the dominant element on the cup so the letterforms are clear.
+2. Use a BOLD, simple Hebrew typeface (Heebo Black / Assistant Bold / Rubik Black style) — no fancy decorative fonts that risk garbling letters.
+3. Render each word as a separate, clean unit with generous spacing.
+4. After drawing each word, mentally compare letter-by-letter against the source above. If anything doesn't match, redraw that word.${fallbackInstruction}
+
+Do not repeat the previous mistakes.`;
       }
     }
 
