@@ -84,9 +84,21 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
 .ai-result{display:none;width:100%}
 .ai-result.show{display:block}
 .preview-img{width:100%;max-width:540px;margin:0 auto;display:block;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,0.18)}
-/* === מוקאפ SVG דטרמיניסטי - כוס נייר ריאליסטית === */
-.cup-svg-wrapper{width:100%;max-width:340px;margin:0 auto;filter:drop-shadow(0 16px 30px rgba(0,0,0,0.15))}
-@media (max-width:640px){.cup-svg-wrapper{max-width:260px}}
+/* === מוקאפ כוס נייר אמיתית עם תבנית PNG === */
+.cup-mockup-real{position:relative;width:100%;max-width:420px;margin:0 auto;aspect-ratio:1/1;}
+.cup-template-bg{width:100%;height:100%;display:block;object-fit:contain}
+/* אזור הגוף של הכוס - איפה שהעיצוב מוטבע. הקואורדינטות מותאמות לתבנית כוס נייר סטנדרטית בזווית 3/4. */
+.cup-design-region{
+  position:absolute;
+  left:30%;top:30%;width:40%;height:40%;
+  background-repeat:no-repeat;background-position:center center;background-size:cover;
+  /* מצב משולב - מאפשר לצללה של הכוס לעבור דרך העיצוב, נראה כמו הדפסה אמיתית */
+  mix-blend-mode:multiply;
+  /* טרפז עדין שמתאים לעיקול גוף הכוס */
+  clip-path:polygon(2% 0,98% 0,94% 100%,6% 100%);
+  pointer-events:none;
+}
+@media (max-width:640px){.cup-mockup-real{max-width:280px}}
 .ai-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
 .ai-actions .btn{padding:11px 18px;font-size:0.95rem}
 .ai-error{color:#C73838;background:#FCEBEB;border:1px solid #F5C0C0;padding:1rem 1.2rem;border-radius:10px;display:none;text-align:right;font-size:0.92rem;line-height:1.6;max-width:480px}
@@ -191,79 +203,13 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         </div>
 
         <div class="ai-result" id="ai-result">
-          <!-- מוקאפ SVG דטרמיניסטי - הקובץ השטוח כטקסטורה על כוס נייר ריאליסטית -->
-          <div class="cup-svg-wrapper" id="cup-svg-wrapper">
-            <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;">
-              <defs>
-                <!-- Clip path for the cup body — slight trapezoid -->
-                <clipPath id="cupBodyClip">
-                  <path d="M 92,62 L 308,62 L 296,418 L 104,418 Z" />
-                </clipPath>
-                <!-- Cylindrical side-shading: darker edges, lighter center -->
-                <linearGradient id="cupShading" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="rgba(0,0,0,0.35)"/>
-                  <stop offset="10%" stop-color="rgba(0,0,0,0.12)"/>
-                  <stop offset="28%" stop-color="rgba(0,0,0,0.02)"/>
-                  <stop offset="50%" stop-color="rgba(255,255,255,0.10)"/>
-                  <stop offset="72%" stop-color="rgba(0,0,0,0.02)"/>
-                  <stop offset="90%" stop-color="rgba(0,0,0,0.12)"/>
-                  <stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
-                </linearGradient>
-                <!-- Rim (top edge of paper cup) -->
-                <linearGradient id="rimGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#fdfdfd"/>
-                  <stop offset="40%" stop-color="#ececec"/>
-                  <stop offset="100%" stop-color="#b8b8b8"/>
-                </linearGradient>
-                <!-- Inside cup darkness -->
-                <radialGradient id="insideCup" cx="0.5" cy="0.3" r="0.7">
-                  <stop offset="0%" stop-color="#3a3a3a"/>
-                  <stop offset="100%" stop-color="#1a1a1a"/>
-                </radialGradient>
-                <!-- Floor shadow under the cup -->
-                <radialGradient id="floorShadow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="rgba(0,0,0,0.30)"/>
-                  <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
-                </radialGradient>
-                <!-- Base rim gradient -->
-                <linearGradient id="baseGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#f2f2f2"/>
-                  <stop offset="50%" stop-color="#d8d8d8"/>
-                  <stop offset="100%" stop-color="#ababab"/>
-                </linearGradient>
-              </defs>
-
-              <!-- Soft floor shadow under cup -->
-              <ellipse cx="200" cy="448" rx="130" ry="14" fill="url(#floorShadow)"/>
-
-              <!-- Cup body white background (visible behind the design) -->
-              <path d="M 92,62 L 308,62 L 296,418 L 104,418 Z" fill="#ffffff"/>
-
-              <!-- THE DESIGN — the user's flat 170x96 wrapped onto the cup body -->
-              <g clip-path="url(#cupBodyClip)">
-                <image id="cup-design-image" x="40" y="62" width="320" height="356" preserveAspectRatio="xMidYMid slice"/>
-              </g>
-
-              <!-- Side cylindrical shading (creates the 3D curve illusion) -->
-              <path d="M 92,62 L 308,62 L 296,418 L 104,418 Z" fill="url(#cupShading)" pointer-events="none"/>
-
-              <!-- Cup base (bottom rim — paper cup foot) -->
-              <ellipse cx="200" cy="418" rx="96" ry="7" fill="url(#baseGradient)" stroke="#9a9a9a" stroke-width="0.5"/>
-              <ellipse cx="200" cy="420" rx="92" ry="5" fill="#ffffff" opacity="0.6"/>
-
-              <!-- Inside of the cup (visible through the top opening) -->
-              <ellipse cx="200" cy="62" rx="108" ry="12" fill="url(#insideCup)"/>
-
-              <!-- Top rim (front lip of paper cup) -->
-              <path d="M 92,62 Q 92,48 200,48 Q 308,48 308,62 L 304,66 Q 304,56 200,56 Q 96,56 96,66 Z" fill="url(#rimGradient)" stroke="#999" stroke-width="0.5"/>
-              <ellipse cx="200" cy="62" rx="108" ry="3" fill="rgba(0,0,0,0.25)"/>
-
-              <!-- Subtle highlight on top-front of cup body -->
-              <path d="M 180,68 Q 200,66 220,68 L 218,76 Q 200,74 182,76 Z" fill="rgba(255,255,255,0.4)"/>
-            </svg>
+          <!-- מוקאפ תבנית כוס אמיתית: assets/cup-template.png + overlay של הקובץ השטוח -->
+          <div class="cup-mockup-real" id="cup-mockup-real">
+            <img class="cup-template-bg" src="assets/cup-template.png" alt="כוס נייר" onerror="this.style.display='none';document.getElementById('result-img').style.display='block';">
+            <div class="cup-design-region" id="cup-design-region"></div>
           </div>
-          <!-- Hidden img for the flat-view toggle -->
-          <img id="result-img" class="preview-img" alt="קובץ ההדפסה" style="display:none;margin-top:1rem">
+          <!-- Fallback: רגיל - הקובץ השטוח אם התבנית לא נטענה -->
+          <img id="result-img" class="preview-img" alt="העיצוב שלכם" style="display:none">
           <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--gray-700);font-weight:600;">🥤 כך הכוס שלכם תיראה</p>
           <button type="button" id="toggle-flat-view" style="margin-top:0.4rem;background:none;border:none;color:var(--orange);font-size:0.85rem;cursor:pointer;text-decoration:underline;font-family:inherit;">הצג את קובץ ההדפסה השטוח</button>
 
@@ -590,21 +536,21 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         imgToBlob(data.flat)
       ]);
 
-      // The API now returns the flat as both `flat` and `mockup` (same image).
-      // We embed it as the texture inside our SVG cup mockup — guaranteed
-      // to match the print file exactly because it IS the print file.
+      // The API returns the flat as the only file (mockup = flat).
+      // We overlay it onto a real paper cup template PNG (assets/cup-template.png)
+      // using CSS positioning + mix-blend-mode, so the cup's natural shading
+      // shows through and the design looks printed on it.
       const displayBlob=flatBlob||mockupBlob;
       if(!displayBlob){
         throw new Error('לא התקבלה תמונה מה-AI');
       }
       const flatPreviewUrl=URL.createObjectURL(displayBlob);
-      // Place the flat as the texture on the SVG cup body
-      const designImg=document.getElementById('cup-design-image');
-      if(designImg){
-        designImg.setAttribute('href', flatPreviewUrl);
-        designImg.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href', flatPreviewUrl);
+      // Place the flat as background on the cup-body region of the template
+      const designRegion=document.getElementById('cup-design-region');
+      if(designRegion){
+        designRegion.style.backgroundImage='url("'+flatPreviewUrl+'")';
       }
-      // Also set the hidden flat-view img (for the toggle button)
+      // The flat itself (fallback when template missing, and for the toggle)
       document.getElementById('result-img').src=flatPreviewUrl;
 
       // If the text verifier flagged a spelling mismatch (after retries), warn the customer
@@ -634,18 +580,18 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
 
   document.getElementById('generate-btn').addEventListener('click',generateDesign);
 
-  // Toggle between 3D cup mockup view and the raw flat print file view
+  // Toggle between cup mockup view and the raw flat print file view
   document.getElementById('toggle-flat-view').addEventListener('click',()=>{
-    const cup=document.getElementById('cup-svg-wrapper');
+    const cup=document.getElementById('cup-mockup-real');
     const flatImg=document.getElementById('result-img');
     const btn=document.getElementById('toggle-flat-view');
-    if(flatImg.style.display==='none'){
+    if(flatImg.style.display==='none' || !flatImg.style.display){
       flatImg.style.display='block';
-      cup.style.display='none';
+      if(cup) cup.style.display='none';
       btn.textContent='חזרה להדמיית הכוס';
     } else {
       flatImg.style.display='none';
-      cup.style.display='block';
+      if(cup) cup.style.display='block';
       btn.textContent='הצג את קובץ ההדפסה השטוח';
     }
   });
