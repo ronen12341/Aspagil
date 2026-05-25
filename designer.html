@@ -126,16 +126,22 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
       <div class="ai-left">
 
         <div class="ai-step">
-          <h3>מה תרצו על הכוס?</h3>
-          <textarea id="ai-prompt" class="ai-input" placeholder="לדוגמה: כוס בסגנון צבעי מים עם פרחים ורודים, לבבות זהובים, וטקסט גדול במרכז שאומר 'אמא הכי יפה בעולם', עם כתר קטן למעלה..."></textarea>
-          <p class="ai-hint">תארו בפירוט — מה הטקסט, איזה צבעים, איזה סגנון, אילו אלמנטים דקורטיביים. ככל שתפרטו יותר, התוצאה תהיה מדויקת יותר.</p>
-          <p class="ai-hint" style="background:#FFF8E6;border-right:3px solid #E0A23A;padding:8px 12px;border-radius:6px;margin-top:8px;color:#7A5A00;"><strong>💡 טיפ:</strong> כתבו את הטקסט הרצוי <strong>בתוך גרשיים</strong> (לדוגמה: "מכבי חיפה") וציינו צבעים מפורשות. ה-AI לפעמים טועה בעברית — אם זה קורה, נסחו שוב או שלחו אלינו והמעצב הגרפי יתקן ידנית.</p>
+          <h3>1. תיאור העיצוב</h3>
+          <textarea id="design-description" class="ai-input" placeholder="לדוגמה: כוס בסגנון צבעי מים עם פרחים ורודים, לבבות זהובים וכתר קטן למעלה. צבעים: ורוד וזהב."></textarea>
+          <p class="ai-hint">תארו את <strong>הסגנון, הצבעים והאלמנטים הדקורטיביים</strong>. אל תכתבו כאן טקסט שצריך להופיע על הכוס — לזה יש שדה נפרד למטה.</p>
           <div class="examples-row">
-            <span class="example-pill" data-val="כוס בסגנון צבעי מים עם פרחים ורודים, לבבות זהובים, וטקסט גדול במרכז שאומר 'אמא הכי יפה בעולם', עם כתר קטן למעלה">מתנה לאמא</span>
-            <span class="example-pill" data-val="כוס בסגנון ילדים עם בלונים צבעוניים, כובעי מסיבה, וכתוב במרכז 'יום הולדת שמח ליובל - גיל 8'">יום הולדת</span>
-            <span class="example-pill" data-val="כוס אלגנטית בצבעי שחור וזהב עם פרחים לבנים עדינים, וכתוב במרכז 'דנה ויוסי - 12.6.2026'">חתונה</span>
-            <span class="example-pill" data-val="כוס בסגנון מודרני לבית קפה בצבע אדום עם לוגו וכתוב 'CAFÉ ROMA - EST. 2025'">בית קפה</span>
+            <span class="example-pill" data-design="כוס בסגנון צבעי מים עם פרחים ורודים, לבבות זהובים וכתר קטן למעלה. צבעים דומיננטיים: ורוד וזהב." data-text="אמא הכי יפה בעולם">מתנה לאמא</span>
+            <span class="example-pill" data-design="כוס בסגנון ילדים עם בלונים צבעוניים וכובעי מסיבה. צבעים עליזים ותוססים." data-text="יום הולדת שמח ליובל — גיל 8">יום הולדת</span>
+            <span class="example-pill" data-design="כוס אלגנטית בצבעי שחור וזהב עם פרחים לבנים עדינים." data-text="דנה ויוסי — 12.6.2026">חתונה</span>
+            <span class="example-pill" data-design="כוס בסגנון מודרני לבית קפה בצבע אדום עם לוגו במרכז." data-text="CAFÉ ROMA - EST. 2025">בית קפה</span>
           </div>
+        </div>
+
+        <div class="ai-step">
+          <h3>2. טקסט שיופיע על הכוס <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></h3>
+          <input type="text" id="cup-text-input" class="ai-input" placeholder='לדוגמה: "מכבי חיפה" או "מזל טוב דנה"' maxlength="80">
+          <p class="ai-hint"><strong>רק</strong> מה שכתוב כאן יופיע כטקסט על הכוס. השאירו ריק לכוס בלי טקסט — רק עיצוב ולוגו.</p>
+          <p class="ai-hint" style="background:#FFF8E6;border-right:3px solid #E0A23A;padding:8px 12px;border-radius:6px;margin-top:8px;color:#7A5A00;"><strong>💡 טיפ:</strong> ה-AI לפעמים טועה באיות עברית. אם זה קורה, נסחו שוב או שלחו אלינו והמעצב הגרפי יתקן ידנית.</p>
         </div>
 
         <div class="ai-step">
@@ -290,11 +296,15 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
   let flatBlob=null;   // flat 170×96 print file (sent to email)
   let mockupBlob=null; // 3D cup mockup (shown to customer)
 
-  // Example pills
+  // Example pills — fill BOTH fields (design + text)
   document.querySelectorAll('.example-pill').forEach(p=>{
     p.addEventListener('click',()=>{
-      document.getElementById('ai-prompt').value=p.dataset.val;
-      document.getElementById('ai-prompt').focus();
+      const designEl=document.getElementById('design-description');
+      const textEl=document.getElementById('cup-text-input');
+      if(p.dataset.design){designEl.value=p.dataset.design;}
+      if(p.dataset.text){textEl.value=p.dataset.text;}
+      else{textEl.value='';}
+      designEl.focus();
     });
   });
 
@@ -319,8 +329,9 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
   });
 
   async function generateDesign(){
-    const desc=document.getElementById('ai-prompt').value.trim();
-    if(!desc){alert('אנא תארו מה תרצו על הכוס');return;}
+    const designDescription=document.getElementById('design-description').value.trim();
+    const cupText=document.getElementById('cup-text-input').value.trim();
+    if(!designDescription && !cupText){alert('אנא תארו את העיצוב או הזינו טקסט שיופיע על הכוס');return;}
 
     document.getElementById('ai-empty').style.display='none';
     document.getElementById('ai-result').classList.remove('show');
@@ -330,7 +341,17 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     mockupBlob=null;
 
     try{
-      const body={prompt:desc};
+      // Build a combined `prompt` for backward-compat + send separate fields so the API
+      // can reliably distinguish design from cup-text.
+      let combinedPrompt=designDescription;
+      if(cupText){combinedPrompt+=(combinedPrompt?'\n\n':'')+'הטקסט שצריך להופיע על הכוס בדיוק: "'+cupText+'"';}
+      else{combinedPrompt+=(combinedPrompt?'\n\n':'')+'אין טקסט על הכוס. הכוס נקייה לחלוטין מכל טקסט, אותיות או מילים.';}
+
+      const body={
+        prompt:combinedPrompt,
+        designDescription:designDescription,
+        cupText:cupText
+      };
       if(refBase64){body.imageBase64=refBase64;}
 
       const resp=await fetch('/api/generate',{
@@ -422,15 +443,19 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
   const form=document.getElementById('design-form');
   form.addEventListener('submit',async e=>{
     e.preventDefault();
-    const desc=document.getElementById('ai-prompt').value.trim();
+    const designDescription=document.getElementById('design-description').value.trim();
+    const cupText=document.getElementById('cup-text-input').value.trim();
     const status=document.getElementById('design-status');
-    if(!desc){
+    if(!designDescription && !cupText){
       status.style.display='block';status.style.background='#FCEBEB';status.style.color='#C73838';
-      status.textContent='נא תארו את הכוס לפני שליחה';
+      status.textContent='נא תארו את הכוס או הזינו טקסט לפני שליחה';
       return;
     }
 
-    document.getElementById('h-desc').value=desc;
+    // Combined description for the graphic designer (sent in the email)
+    let combinedDesc='תיאור עיצוב: '+(designDescription||'(לא הוזן)');
+    combinedDesc+='\nטקסט שצריך להופיע על הכוס: '+(cupText?'"'+cupText+'"':'(אין טקסט - כוס בלי טקסט)');
+    document.getElementById('h-desc').value=combinedDesc;
 
     status.style.display='block';status.style.background='#FFF8E6';status.style.color='#8B6300';
     status.textContent='⏳ שולח...';

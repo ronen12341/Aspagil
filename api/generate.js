@@ -269,25 +269,76 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt, imageBase64 } = req.body || {};
-    if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
+    const { prompt, imageBase64, designDescription, cupText } = req.body || {};
+    if (!prompt && !designDescription && (typeof cupText !== 'string' || cupText.length === 0)) {
+      return res.status(400).json({ error: 'Missing prompt or design description' });
+    }
 
     // ============================================================
-    // STEP 0: Pre-process the user prompt with GPT-4o-mini to extract
-    //   the EXACT text strings + colors. This lets us inject a precise
-    //   letter-by-letter spelling guide into the image-gen prompt, which
-    //   significantly reduces Hebrew spelling errors.
+    // STEP 0: Pre-process the user prompt to extract the EXACT text
+    //   strings + colors.
+    //
+    //   NEW FLOW (designer.html v2+): the frontend sends `designDescription`
+    //   and `cupText` as SEPARATE fields. When `cupText` is provided
+    //   explicitly we treat it as ground truth and SKIP the extractor —
+    //   this prevents the model from "extracting" stray words from the
+    //   design description (which is what caused the prompt-on-cup bug).
+    //
+    //   LEGACY FLOW: when only `prompt` is sent, we still run the
+    //   GPT-4o-mini extractor as before.
     // ============================================================
+    const hasExplicitCupText = (typeof cupText === 'string');
+    const explicitNoText = hasExplicitCupText && cupText.trim().length === 0;
+
     let structure = null;
-    try {
-      structure = await extractDesignStructure(apiKey, prompt);
-    } catch (e) {
-      console.error('Structure extraction failed (non-fatal):', e.message);
+    if (hasExplicitCupText) {
+      // Use the explicit cupText directly — much more reliable.
+      const trimmed = cupText.trim();
+      structure = {
+        textLines: trimmed.length > 0 ? [trimmed] : [],
+        colors: [],
+        theme: ''
+      };
+    } else {
+      // Legacy: extract from the freeform prompt
+      try {
+        structure = await extractDesignStructure(apiKey, prompt);
+      } catch (e) {
+        console.error('Structure extraction failed (non-fatal):', e.message);
+      }
     }
+
     const spellingGuide = structure ? buildSpellingGuide(structure.textLines) : '';
     const extractedColors = (structure && Array.isArray(structure.colors) && structure.colors.length > 0)
       ? `\n\nEXTRACTED COLORS (from user request): ${structure.colors.join(', ')} — these MUST be the dominant palette of the design.`
       : '';
+
+    // ============================================================
+    // STRICT RULES — these prevent the two bugs we saw in production:
+    //   (1) AI added a human/model that the user never asked for
+    //   (2) AI printed words from the prompt itself onto the cup
+    // ============================================================
+    const noPeopleRule = imageBase64 ? '' : `
+
+═══════════════════════════════════════════════
+CRITICAL RULE — NO PEOPLE, NO FACES, NO BODIES
+═══════════════════════════════════════════════
+Do NOT add any people, models, faces, hands, body parts, or human figures to the design.
+Even if the description mentions a name, an occasion (mother's day, birthday, wedding), a gift recipient, or a person — the cup design is graphic/illustrative ONLY. No photos of people. No illustrations of people. No silhouettes. No body parts. The cup is a product shot — only the cup with the graphic design on it. ZERO humans anywhere in the image.
+`;
+
+    const noTextRule = explicitNoText ? `
+
+═══════════════════════════════════════════════
+CRITICAL RULE — NO TEXT ON CUP
+═══════════════════════════════════════════════
+The user explicitly did NOT request any text on the cup. The cup must be COMPLETELY FREE of:
+- Any letters, words, numbers, or characters in any language (Hebrew, English, or any other)
+- Any text-like decorations, pseudo-text, or fake captions
+- Any signs, labels, slogans, or written elements
+- Any words from the design description above — that description tells you HOW the cup looks, NOT what to write on it
+The cup is a pure visual/graphic design with ZERO typography. If a logo image was uploaded, the logo may appear as-is; otherwise no text or letters anywhere.
+` : '';
 
     // ============================================================
     // STEP 1: Generate the FLAT 170×96 print design
@@ -296,9 +347,27 @@ export default async function handler(req, res) {
       ? `\n\nThe user has provided a personal photograph. CRITICAL: Use that exact photograph in the design. DO NOT redraw, regenerate, recreate, alter, modify, change, retouch, repaint, restyle, or reinterpret the person in the photo. Preserve the photograph pixel-perfect: same face, same eyes, same hair, same skin, same clothing, same background, same colors, same lighting — identical to the input photo. Treat the photograph as an unmodifiable asset that you are placing into the design (like cropping it and pasting it). You may crop it to a shape (oval, circle, heart, rectangle) but the pixels inside that shape must be the original photograph unchanged. The person must look IDENTICAL to the input photo — no AI face regeneration.`
       : '';
 
+    // Build the user request block — prefer the explicit two-field form when available
+    let userRequestBlock;
+    if (designDescription || hasExplicitCupText) {
+      // New flow: at least one of the two structured fields was sent
+      const descLine = designDescription
+        ? `Design description (style, colors, mood — read carefully, follow exactly): ${designDescription}`
+        : `Design description: minimal — no specific style requested.`;
+      const textLine = hasExplicitCupText
+        ? (cupText.trim().length > 0
+            ? `\n\nText to print on cup (the ONLY text that may appear): "${cupText.trim()}"`
+            : `\n\nText to print on cup: NONE — the cup must contain NO text whatsoever.`)
+        : '';
+      userRequestBlock = descLine + textLine;
+    } else {
+      // Legacy: freeform prompt only
+      userRequestBlock = `User's design request (read carefully, follow exactly): ${prompt}`;
+    }
+
     const flatPrompt = `Create a flat 2D print-ready graphic design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
 
-User's design request (read carefully, follow exactly): ${prompt}${extractedColors}${photoInstruction}${spellingGuide}
+${userRequestBlock}${extractedColors}${photoInstruction}${spellingGuide}${noPeopleRule}${noTextRule}
 
 ═══════════════════════════════════════════════
 CRITICAL RULE #1 — COLORS MUST MATCH USER REQUEST
@@ -438,6 +507,13 @@ CRITICAL: The artwork in the input image is the print design that goes on the cu
 
 Do NOT redesign. Do NOT change anything. Just take the input image and wrap it naturally around a paper cup so it follows the cup's curve.
 
+═══════════════════════════════════════════════
+STRICT RULES FOR THE MOCKUP
+═══════════════════════════════════════════════
+- Do NOT add any people, models, hands, faces, or body parts to the scene. The cup stands alone.
+- Do NOT add any text, captions, labels, or written words that were NOT already in the input artwork. If the input artwork has no text, the cup has no text.
+- Do NOT add background props (saucers, beans, plants, tables) — only the cup on a clean neutral surface.
+
 Output requirements:
 - Single paper takeaway cup, centered, shown at slight 3/4 angle
 - The cup's base color should match the design (e.g. if design is green-dominant, the cup may have a green wrap; if the design has a white background, the cup is white)
@@ -450,7 +526,17 @@ Output requirements:
       mockupResult = await callEdits(apiKey, mockupPrompt, flatBlobForStep2, '1024x1024', 'flat-design.png');
     } else {
       // Couldn't get flat as blob — fall back to text-to-image mockup
-      mockupResult = await callGen(apiKey, `Photorealistic 3D paper cup mockup. ${prompt}. Single white paper cup, slight angle, clean background, studio lighting. Hebrew text spelled correctly. Modern minimal design — no Victorian frames.`, '1024x1024');
+      const fallbackDesc = designDescription || prompt || '';
+      const fallbackTextRule = explicitNoText
+        ? ' The cup has NO text, letters, or words anywhere — pure graphic design only.'
+        : (hasExplicitCupText && cupText.trim().length > 0
+            ? ` The only text on the cup is exactly: "${cupText.trim()}".`
+            : '');
+      mockupResult = await callGen(
+        apiKey,
+        `Photorealistic 3D paper cup mockup. ${fallbackDesc}.${fallbackTextRule} Single white paper cup, slight angle, clean background, studio lighting. NO people, NO faces, NO hands in the image — only the cup. Hebrew text spelled correctly. Modern minimal design — no Victorian frames.`,
+        '1024x1024'
+      );
     }
 
     const mockupImg = mockupResult.ok ? mockupResult.data : null;

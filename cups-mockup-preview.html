@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מוקאפים חדשים — לאישור</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{font-family:Heebo,sans-serif;background:#F4F4F2;margin:0;padding:2rem;color:#222}
+  .head{max-width:1200px;margin:0 auto 2rem}
+  h1{font-size:1.6rem;margin:0 0 .5rem}
+  p.lead{color:#666;margin:0;font-size:.95rem;line-height:1.6}
+  .note{background:#FFF4D6;border-right:4px solid #E0A800;padding:.9rem 1.1rem;border-radius:8px;margin:1.2rem 0 0;font-size:.9rem;color:#5A4500}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
+  .card{background:#FFF;border-radius:14px;padding:1.2rem 1rem 1.2rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .visual{height:280px;display:flex;align-items:center;justify-content:center;border-radius:10px;margin-bottom:.8rem;background:
+    radial-gradient(ellipse at 50% 70%, #FFFFFF 0%, #F0EFEC 75%, #E5E3DE 100%)}
+  .label{font-weight:800;font-size:1rem;margin-top:.2rem}
+  .sub{color:#888;font-size:.85rem;margin-top:.15rem}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>מוקאפים חדשים בסגנון של תמונות-מוצר — לאישור</h1>
+  <p class="lead">בניתי 6 כוסות חדשות בסגנון של תמונות המוצר שהראית לי: גוף לבן/קרם, הדפסה צבעונית, שפה לבנה מגולגלת, וצל רך על רקע צילומי. תסתכל ותגיד אם זה הסגנון שאתה רוצה לראות באתר — או שאני אצטרך לכוון אחרת.</p>
+  <div class="note">⚠️ אלה רינדורים וקטוריים מתקדמים (SVG), לא תצלומים אמיתיים. אם תרצה תצלום אמיתי לחלוטין — נצטרך תמונות מוצר שלך, או שתפיק תמונות ב-DALL-E/Midjourney שלך ותעלה לי לטמיעה.</div>
+</div>
+
+<div class="grid">
+
+  <!-- ============ 1. WHITE CUP WITH CORPORATE BLUE LOGO (טורנדו style) ============ -->
+  <div class="card">
+    <div class="visual">
+      <svg viewBox="0 0 260 320" width="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Off-white paper body with cylindrical lighting -->
+          <linearGradient id="paperBody1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#C9C5BE"/>
+            <stop offset="8%" stop-color="#DCD8D1"/>
+            <stop offset="22%" stop-color="#EEEBE5"/>
+            <stop offset="42%" stop-color="#FBFAF7"/>
+            <stop offset="50%" stop-color="#FFFFFF"/>
+            <stop offset="58%" stop-color="#FBFAF7"/>
+            <stop offset="78%" stop-color="#ECE9E2"/>
+            <stop offset="92%" stop-color="#D8D4CC"/>
+            <stop offset="100%" stop-color="#BCB7AE"/>
+          </linearGradient>
+          <!-- Rolled rim shading -->
+          <linearGradient id="rimTop1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCFAF6"/>
+            <stop offset="50%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#DDD8CF"/>
+          </linearGradient>
+          <radialGradient id="floor1" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.32)"/>
+            <stop offset="60%" stop-color="rgba(0,0,0,0.18)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <filter id="paper1">
+            <feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="3" result="t"/>
+            <feColorMatrix in="t" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0" result="n"/>
+            <feComposite in="n" in2="SourceGraphic" operator="in" result="grain"/>
+            <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grain"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Soft floor shadow under cup -->
+        <ellipse cx="130" cy="285" rx="92" ry="14" fill="url(#floor1)"/>
+        <!-- Cup body: tapered with slight inner curve, top wider than bottom -->
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z"
+              fill="url(#paperBody1)" filter="url(#paper1)"/>
+        <!-- Subtle vertical seam (paper cup join line) -->
+        <line x1="172" y1="55" x2="180" y2="270" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
+        <!-- Bottom interior shadow ring -->
+        <ellipse cx="130" cy="276" rx="52" ry="4" fill="#9C9890" opacity="0.55"/>
+        <!-- Brand print: logo block + text -->
+        <g transform="translate(130 155)">
+          <!-- Wave/swoosh -->
+          <path d="M-50 -10 Q-30 -22 -10 -10 Q10 2 30 -10 Q42 -16 50 -10"
+                stroke="#1758C2" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M-50 4 Q-30 -8 -10 4 Q10 16 30 4 Q42 -2 50 4"
+                stroke="#3B82F6" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.8"/>
+          <text text-anchor="middle" y="35" font-family="Heebo,sans-serif" font-weight="900" font-size="22" fill="#0B3D91">טורנדו</text>
+          <text text-anchor="middle" y="56" font-family="Heebo,sans-serif" font-weight="500" font-size="10" fill="#1758C2" letter-spacing="0.06em">מזון איכותי לחיים</text>
+        </g>
+        <!-- Rolled rim ellipse at top — slightly bulging -->
+        <ellipse cx="130" cy="52" rx="74" ry="11" fill="url(#rimTop1)"/>
+        <!-- Inner mouth (dark, shows interior depth) -->
+        <ellipse cx="130" cy="54" rx="68" ry="8.5" fill="#3A352D"/>
+        <!-- Deeper interior -->
+        <ellipse cx="130" cy="53" rx="65" ry="6.5" fill="#1B1812"/>
+        <!-- Top-rim specular highlight (curved white line) -->
+        <path d="M62 54 Q130 70 198 54" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <!-- Right-side rim hint of shadow -->
+        <path d="M192 50 Q196 56 196 62" stroke="rgba(0,0,0,0.18)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label">לבן · לוגו תאגידי</div>
+    <div class="sub">סגנון "טורנדו" — לוגו כחול עם תגית</div>
+  </div>
+
+  <!-- ============ 2. WHITE CUP WITH NAVY HEBREW TEXT (יחד ננצח style) ============ -->
+  <div class="card">
+    <div class="visual">
+      <svg viewBox="0 0 260 320" width="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="paperBody2" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#CDC9C0"/>
+            <stop offset="8%" stop-color="#E1DDD4"/>
+            <stop offset="22%" stop-color="#F1EEE7"/>
+            <stop offset="42%" stop-color="#FCFAF5"/>
+            <stop offset="50%" stop-color="#FFFEF9"/>
+            <stop offset="58%" stop-color="#FCFAF5"/>
+            <stop offset="78%" stop-color="#EFEBE2"/>
+            <stop offset="92%" stop-color="#DAD5CB"/>
+            <stop offset="100%" stop-color="#BEB9AE"/>
+          </linearGradient>
+          <linearGradient id="rimTop2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCFAF6"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#DDD8CF"/>
+          </linearGradient>
+          <radialGradient id="floor2" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.32)"/><stop offset="60%" stop-color="rgba(0,0,0,0.18)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <filter id="paper2">
+            <feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" result="t"/>
+            <feColorMatrix in="t" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0" result="n"/>
+            <feComposite in="n" in2="SourceGraphic" operator="in" result="grain"/>
+            <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grain"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="130" cy="285" rx="92" ry="14" fill="url(#floor2)"/>
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z" fill="url(#paperBody2)" filter="url(#paper2)"/>
+        <line x1="172" y1="55" x2="180" y2="270" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
+        <ellipse cx="130" cy="276" rx="52" ry="4" fill="#9C9890" opacity="0.55"/>
+        <!-- Hebrew word block in deep navy -->
+        <g transform="translate(130 170)">
+          <text text-anchor="middle" y="0" font-family="Heebo,sans-serif" font-weight="900" font-size="34" fill="#0F2E5C">יחד</text>
+          <text text-anchor="middle" y="36" font-family="Heebo,sans-serif" font-weight="900" font-size="34" fill="#0F2E5C">ננצח</text>
+          <!-- Small star of david -->
+          <g transform="translate(0 -54)" opacity="0.85">
+            <polygon points="0,-9 8,5 -8,5" fill="none" stroke="#0F2E5C" stroke-width="1.5"/>
+            <polygon points="0,9 8,-5 -8,-5" fill="none" stroke="#0F2E5C" stroke-width="1.5"/>
+          </g>
+        </g>
+        <ellipse cx="130" cy="52" rx="74" ry="11" fill="url(#rimTop2)"/>
+        <ellipse cx="130" cy="54" rx="68" ry="8.5" fill="#3A352D"/>
+        <ellipse cx="130" cy="53" rx="65" ry="6.5" fill="#1B1812"/>
+        <path d="M62 54 Q130 70 198 54" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M192 50 Q196 56 196 62" stroke="rgba(0,0,0,0.18)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label">לבן · טקסט עברי</div>
+    <div class="sub">סגנון "יחד ננצח" — הדפסה כחולה כהה</div>
+  </div>
+
+  <!-- ============ 3. BURGUNDY GEOMETRIC PATTERN CUP (כאן גרים style) ============ -->
+  <div class="card">
+    <div class="visual">
+      <svg viewBox="0 0 260 320" width="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cylDark3" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#000" stop-opacity="0.5"/>
+            <stop offset="12%" stop-color="#000" stop-opacity="0.25"/>
+            <stop offset="32%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#FFF" stop-opacity="0.30"/>
+            <stop offset="68%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="88%" stop-color="#000" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="0.5"/>
+          </linearGradient>
+          <linearGradient id="rimTop3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCFAF6"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#DDD8CF"/>
+          </linearGradient>
+          <radialGradient id="floor3" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.32)"/><stop offset="60%" stop-color="rgba(0,0,0,0.18)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <clipPath id="bodyClip3">
+            <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z"/>
+          </clipPath>
+        </defs>
+        <ellipse cx="130" cy="285" rx="92" ry="14" fill="url(#floor3)"/>
+        <!-- Base body in burgundy -->
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z" fill="#7A1F38"/>
+        <!-- Geometric facets clipped to body -->
+        <g clip-path="url(#bodyClip3)">
+          <polygon points="55,40 130,90 56,150" fill="#9C2A47"/>
+          <polygon points="130,90 205,40 204,140" fill="#5B1027"/>
+          <polygon points="56,150 130,180 76,260" fill="#4A0D20"/>
+          <polygon points="130,180 204,140 184,270" fill="#6E1932"/>
+          <polygon points="130,90 130,180 56,150" fill="#3A4C82"/>
+          <polygon points="130,90 130,180 204,140" fill="#2E3D6B"/>
+          <polygon points="56,150 76,260 130,180" fill="#5B6E9C"/>
+          <polygon points="76,260 130,280 184,270 130,180" fill="#7A1F38"/>
+        </g>
+        <!-- Cylindrical overlay -->
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z" fill="url(#cylDark3)"/>
+        <!-- White rounded-rect label with logo -->
+        <g transform="translate(130 165)">
+          <path d="M-32 -36 Q-32 -42 -26 -42 L26 -42 Q32 -42 32 -36 L32 24 Q32 30 26 32 L-26 32 Q-32 30 -32 24 Z" fill="#FAF8F1"/>
+          <text text-anchor="middle" y="-6" font-family="Heebo,sans-serif" font-weight="900" font-size="20" fill="#0F2E5C">בא!</text>
+          <text text-anchor="middle" y="18" font-family="Heebo,sans-serif" font-weight="900" font-size="20" fill="#0F2E5C">לי!</text>
+        </g>
+        <!-- Small Hebrew tagline under label -->
+        <text x="130" y="220" text-anchor="middle" font-family="Heebo,sans-serif" font-size="9" fill="#FAF8F1" letter-spacing="0.05em">העזר העולד והלומד</text>
+        <ellipse cx="130" cy="276" rx="52" ry="4" fill="#2A0612" opacity="0.6"/>
+        <ellipse cx="130" cy="52" rx="74" ry="11" fill="url(#rimTop3)"/>
+        <ellipse cx="130" cy="54" rx="68" ry="8.5" fill="#3A352D"/>
+        <ellipse cx="130" cy="53" rx="65" ry="6.5" fill="#1B1812"/>
+        <path d="M62 54 Q130 70 198 54" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label">בורדו · תבנית גיאומטרית</div>
+    <div class="sub">סגנון "כאן גרים" — הדפסה מלאת היקף</div>
+  </div>
+
+  <!-- ============ 4. WHITE CUP WITH COFFEE PATTERN (brown cup style) ============ -->
+  <div class="card">
+    <div class="visual">
+      <svg viewBox="0 0 260 320" width="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="brownBody4" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#3F2A1A"/>
+            <stop offset="12%" stop-color="#5C3D27"/>
+            <stop offset="30%" stop-color="#7B5135"/>
+            <stop offset="50%" stop-color="#8B5A3C"/>
+            <stop offset="70%" stop-color="#7B5135"/>
+            <stop offset="88%" stop-color="#5C3D27"/>
+            <stop offset="100%" stop-color="#3F2A1A"/>
+          </linearGradient>
+          <linearGradient id="rimTop4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCFAF6"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#DDD8CF"/>
+          </linearGradient>
+          <radialGradient id="floor4" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.32)"/><stop offset="60%" stop-color="rgba(0,0,0,0.18)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <clipPath id="bodyClip4">
+            <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z"/>
+          </clipPath>
+        </defs>
+        <ellipse cx="130" cy="285" rx="92" ry="14" fill="url(#floor4)"/>
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z" fill="url(#brownBody4)"/>
+        <!-- Coffee cup icon pattern, clipped -->
+        <g clip-path="url(#bodyClip4)" fill="none" stroke="#FBF5E8" stroke-width="1.2">
+          <g transform="translate(82 110)">
+            <path d="M-7 -3 L-6 5 Q-5 8 -3 8 L3 8 Q5 8 6 5 L7 -3 Z"/>
+            <path d="M7 -1 Q11 -1 11 2 Q11 5 7 5"/>
+            <path d="M-3 -8 Q-2 -10 -1 -8 M0 -8 Q1 -10 2 -8 M3 -8 Q4 -10 5 -8"/>
+          </g>
+          <g transform="translate(130 130)">
+            <path d="M-7 -3 L-6 5 Q-5 8 -3 8 L3 8 Q5 8 6 5 L7 -3 Z"/>
+            <path d="M7 -1 Q11 -1 11 2 Q11 5 7 5"/>
+            <path d="M-3 -8 Q-2 -10 -1 -8 M0 -8 Q1 -10 2 -8 M3 -8 Q4 -10 5 -8"/>
+          </g>
+          <g transform="translate(178 110)">
+            <path d="M-7 -3 L-6 5 Q-5 8 -3 8 L3 8 Q5 8 6 5 L7 -3 Z"/>
+            <path d="M7 -1 Q11 -1 11 2 Q11 5 7 5"/>
+            <path d="M-3 -8 Q-2 -10 -1 -8 M0 -8 Q1 -10 2 -8 M3 -8 Q4 -10 5 -8"/>
+          </g>
+          <g transform="translate(96 200)">
+            <path d="M-7 -3 L-6 5 Q-5 8 -3 8 L3 8 Q5 8 6 5 L7 -3 Z"/>
+            <path d="M7 -1 Q11 -1 11 2 Q11 5 7 5"/>
+            <path d="M-3 -8 Q-2 -10 -1 -8 M0 -8 Q1 -10 2 -8 M3 -8 Q4 -10 5 -8"/>
+          </g>
+          <g transform="translate(164 200)">
+            <path d="M-7 -3 L-6 5 Q-5 8 -3 8 L3 8 Q5 8 6 5 L7 -3 Z"/>
+            <path d="M7 -1 Q11 -1 11 2 Q11 5 7 5"/>
+            <path d="M-3 -8 Q-2 -10 -1 -8 M0 -8 Q1 -10 2 -8 M3 -8 Q4 -10 5 -8"/>
+          </g>
+        </g>
+        <ellipse cx="130" cy="276" rx="52" ry="4" fill="#1F1108" opacity="0.65"/>
+        <ellipse cx="130" cy="52" rx="74" ry="11" fill="url(#rimTop4)"/>
+        <ellipse cx="130" cy="54" rx="68" ry="8.5" fill="#2A1B0E"/>
+        <ellipse cx="130" cy="53" rx="65" ry="6.5" fill="#150A05"/>
+        <path d="M62 54 Q130 70 198 54" stroke="rgba(255,255,255,0.6)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label">חום · קפה</div>
+    <div class="sub">דפוס איקוני כוסות לבן על חום</div>
+  </div>
+
+  <!-- ============ 5. WHITE CUP WITH SIMPLE BRAND BLOCK (לב המשבר style) ============ -->
+  <div class="card">
+    <div class="visual">
+      <svg viewBox="0 0 260 320" width="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="paperBody5" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#C9C5BE"/><stop offset="8%" stop-color="#DCD8D1"/><stop offset="22%" stop-color="#EEEBE5"/>
+            <stop offset="42%" stop-color="#FBFAF7"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="58%" stop-color="#FBFAF7"/>
+            <stop offset="78%" stop-color="#ECE9E2"/><stop offset="92%" stop-color="#D8D4CC"/><stop offset="100%" stop-color="#BCB7AE"/>
+          </linearGradient>
+          <linearGradient id="rimTop5" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCFAF6"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#DDD8CF"/>
+          </linearGradient>
+          <radialGradient id="floor5" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.32)"/><stop offset="60%" stop-color="rgba(0,0,0,0.18)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <filter id="paper5">
+            <feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="11" result="t"/>
+            <feColorMatrix in="t" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0" result="n"/>
+            <feComposite in="n" in2="SourceGraphic" operator="in" result="grain"/>
+            <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grain"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="130" cy="285" rx="92" ry="14" fill="url(#floor5)"/>
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z" fill="url(#paperBody5)" filter="url(#paper5)"/>
+        <line x1="172" y1="55" x2="180" y2="270" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
+        <ellipse cx="130" cy="276" rx="52" ry="4" fill="#9C9890" opacity="0.55"/>
+        <!-- Brand block: solid color tile with Hebrew text reversed (white on color) -->
+        <g transform="translate(130 175)">
+          <rect x="-58" y="-32" width="116" height="64" rx="3" fill="#0E3F73"/>
+          <text text-anchor="middle" y="-3" font-family="Heebo,sans-serif" font-weight="900" font-size="22" fill="#FFFFFF">לב</text>
+          <text text-anchor="middle" y="22" font-family="Heebo,sans-serif" font-weight="700" font-size="14" fill="#FFFFFF">המשבר</text>
+        </g>
+        <text x="130" y="225" text-anchor="middle" font-family="Heebo,sans-serif" font-size="8" fill="#777" letter-spacing="0.08em">www.example.co.il · 03-1234567</text>
+        <ellipse cx="130" cy="52" rx="74" ry="11" fill="url(#rimTop5)"/>
+        <ellipse cx="130" cy="54" rx="68" ry="8.5" fill="#3A352D"/>
+        <ellipse cx="130" cy="53" rx="65" ry="6.5" fill="#1B1812"/>
+        <path d="M62 54 Q130 70 198 54" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label">לבן · בלוק עסקי</div>
+    <div class="sub">סגנון "לב המשבר" — תווית עם פרטי קשר</div>
+  </div>
+
+  <!-- ============ 6. LIGHT BLUE PATTERN CUP (PayBox style) ============ -->
+  <div class="card">
+    <div class="visual">
+      <svg viewBox="0 0 260 320" width="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="paperBody6" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#C9C5BE"/><stop offset="8%" stop-color="#DCD8D1"/><stop offset="22%" stop-color="#EEEBE5"/>
+            <stop offset="42%" stop-color="#FBFAF7"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="58%" stop-color="#FBFAF7"/>
+            <stop offset="78%" stop-color="#ECE9E2"/><stop offset="92%" stop-color="#D8D4CC"/><stop offset="100%" stop-color="#BCB7AE"/>
+          </linearGradient>
+          <linearGradient id="rimTop6" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCFAF6"/><stop offset="50%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#DDD8CF"/>
+          </linearGradient>
+          <radialGradient id="floor6" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.32)"/><stop offset="60%" stop-color="rgba(0,0,0,0.18)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <clipPath id="bodyClip6">
+            <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z"/>
+          </clipPath>
+          <pattern id="hands6" x="0" y="0" width="32" height="36" patternUnits="userSpaceOnUse">
+            <g fill="#3B82F6" opacity="0.85">
+              <path d="M8 6 L9 14 L12 14 L13 6 Z M11 4 L12 6 L11 6 Z"/>
+              <path d="M24 22 L25 30 L28 30 L29 22 Z M27 20 L28 22 L27 22 Z"/>
+            </g>
+          </pattern>
+        </defs>
+        <ellipse cx="130" cy="285" rx="92" ry="14" fill="url(#floor6)"/>
+        <path d="M58 50 Q56 50 76 270 Q78 280 130 280 Q182 280 184 270 Q204 50 202 50 Z" fill="url(#paperBody6)"/>
+        <g clip-path="url(#bodyClip6)">
+          <rect x="40" y="40" width="180" height="250" fill="url(#hands6)"/>
+        </g>
+        <!-- Logo word in middle -->
+        <g transform="translate(130 175)">
+          <text text-anchor="middle" font-family="Heebo,sans-serif" font-weight="900" font-size="26" fill="#1758C2" letter-spacing="-0.02em">PayBox</text>
+        </g>
+        <ellipse cx="130" cy="276" rx="52" ry="4" fill="#9C9890" opacity="0.55"/>
+        <ellipse cx="130" cy="52" rx="74" ry="11" fill="url(#rimTop6)"/>
+        <ellipse cx="130" cy="54" rx="68" ry="8.5" fill="#3A352D"/>
+        <ellipse cx="130" cy="53" rx="65" ry="6.5" fill="#1B1812"/>
+        <path d="M62 54 Q130 70 198 54" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label">לבן · תבנית קלה</div>
+    <div class="sub">סגנון "PayBox" — תבנית סמלים חוזרת</div>
+  </div>
+
+</div>
+
+</body>
+</html>
