@@ -398,79 +398,9 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       }
 
       // === CLIENT-SIDE TEXT OVERLAY ===
-      // gpt-image-1 cannot reliably render Hebrew. Instead the API generates
-      // the visual design WITHOUT text, and we draw the exact Hebrew text
-      // here with a real Hebrew font (Heebo Black). 100% correct spelling,
-      // designed look, brand color.
-      async function overlayTextOnImage(imageBlob, overlayConfig, isFlat){
-        if(!imageBlob || !overlayConfig || !overlayConfig.text) return imageBlob;
-        return new Promise(resolve => {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.onload = function(){
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-
-            const text = overlayConfig.text;
-            const color = overlayConfig.color || '#E85D2F';
-            // The AI is instructed to place the logo at top and reserve the
-            // lower-center as a clean band. Position text in that band.
-            const cfgY = (overlayConfig.position && overlayConfig.position.yRatio) || 0.62;
-            const yRatio = isFlat ? 0.6 : cfgY;
-            // Mockup cup at 3/4 angle: visible face center is slightly off-center.
-            // Flat print file is a true rectangle.
-            const xRatio = isFlat ? 0.5 : 0.46;
-
-            const base = Math.min(canvas.width, canvas.height);
-            const len = Array.from(text).length;
-            let fontSize;
-            if(len <= 8) fontSize = base * 0.095;
-            else if(len <= 16) fontSize = base * 0.07;
-            else if(len <= 25) fontSize = base * 0.052;
-            else fontSize = base * 0.042;
-
-            // Wrap long text to 2 lines if needed
-            const lines = wrapHebrewText(text, len > 18 ? 2 : 1);
-
-            ctx.font = '900 ' + fontSize + 'px "Heebo", "Assistant", system-ui, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.direction = 'rtl';
-            ctx.lineJoin = 'round';
-            ctx.miterLimit = 2;
-
-            const lineHeight = fontSize * 1.15;
-            const x = canvas.width * xRatio;
-            const startY = canvas.height * yRatio - ((lines.length - 1) * lineHeight) / 2;
-
-            lines.forEach((line, i) => {
-              const y = startY + i * lineHeight;
-              // White outline for readability on any background
-              ctx.lineWidth = fontSize * 0.14;
-              ctx.strokeStyle = 'rgba(255,255,255,0.92)';
-              ctx.strokeText(line, x, y);
-              // Subtle drop shadow for depth
-              ctx.shadowColor = 'rgba(0,0,0,0.22)';
-              ctx.shadowBlur = fontSize * 0.12;
-              ctx.shadowOffsetX = 1;
-              ctx.shadowOffsetY = fontSize * 0.06;
-              // Main fill — brand orange
-              ctx.fillStyle = color;
-              ctx.fillText(line, x, y);
-              ctx.shadowColor = 'transparent';
-            });
-
-            canvas.toBlob(b => resolve(b || imageBlob), 'image/png');
-          };
-          img.onerror = function(){ resolve(imageBlob); };
-          img.src = URL.createObjectURL(imageBlob);
-        });
-      }
-
-      // Wrap Hebrew text by words into N lines as evenly as possible
+      // gpt-image-1 cannot reliably render Hebrew. The API generates the
+      // visual WITHOUT text, and we draw the exact Hebrew text here with
+      // a real Hebrew font.
       function wrapHebrewText(text, maxLines){
         if(maxLines <= 1) return [text];
         const words = text.split(/\s+/).filter(Boolean);
@@ -483,8 +413,118 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         return lines;
       }
 
-      // Make sure the Heebo Black weight is fully loaded before drawing
-      try { await document.fonts.load('900 60px Heebo'); } catch(e) {}
+      async function overlayTextOnImage(imageBlob, overlayConfig, isFlat){
+        if(!imageBlob){console.warn('[overlay] no imageBlob, skipping');return imageBlob;}
+        if(!overlayConfig || !overlayConfig.text){console.log('[overlay] no overlayConfig, skipping');return imageBlob;}
+        console.log('[overlay] drawing text on '+(isFlat?'flat':'mockup')+':', overlayConfig.text);
+
+        return new Promise(resolve => {
+          const img = new Image();
+          // Do NOT set crossOrigin for blob URLs — it can prevent the load.
+          let settled = false;
+          const finish = (result) => {
+            if(settled) return;
+            settled = true;
+            try { URL.revokeObjectURL(img.src); } catch(e){}
+            resolve(result || imageBlob);
+          };
+
+          img.onload = function(){
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = img.naturalWidth || img.width;
+              canvas.height = img.naturalHeight || img.height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0);
+
+              const text = overlayConfig.text;
+              const color = overlayConfig.color || '#E85D2F';
+              // Lower position: AI tends to place the logo at center, so we
+              // put the text in the lower third of the cup, below the logo.
+              const yRatio = isFlat ? 0.75 : 0.78;
+              const xRatio = isFlat ? 0.5 : 0.46;
+
+              const base = Math.min(canvas.width, canvas.height);
+              const len = Array.from(text).length;
+              let fontSize;
+              if(len <= 8) fontSize = base * 0.085;
+              else if(len <= 16) fontSize = base * 0.062;
+              else if(len <= 25) fontSize = base * 0.048;
+              else fontSize = base * 0.038;
+
+              const lines = wrapHebrewText(text, len > 18 ? 2 : 1);
+
+              ctx.font = '900 ' + Math.round(fontSize) + 'px "Heebo", "Assistant", system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              try { ctx.direction = 'rtl'; } catch(e){}
+              ctx.lineJoin = 'round';
+              ctx.miterLimit = 2;
+
+              const lineHeight = fontSize * 1.15;
+              const x = canvas.width * xRatio;
+              const totalH = lines.length * lineHeight;
+              const startY = canvas.height * yRatio - ((lines.length - 1) * lineHeight) / 2;
+
+              // Soft white "plate" behind text — guarantees readability over
+              // any AI-generated background and creates a designed look.
+              const padX = fontSize * 0.6;
+              const padY = fontSize * 0.35;
+              const maxLineW = Math.max(...lines.map(l => ctx.measureText(l).width));
+              const plateW = maxLineW + padX * 2;
+              const plateH = totalH + padY * 2;
+              const plateX = x - plateW / 2;
+              const plateY = startY - lineHeight / 2 - padY;
+              const radius = plateH * 0.35;
+
+              ctx.save();
+              ctx.fillStyle = 'rgba(255,255,255,0.92)';
+              ctx.shadowColor = 'rgba(0,0,0,0.18)';
+              ctx.shadowBlur = fontSize * 0.4;
+              ctx.shadowOffsetY = fontSize * 0.08;
+              // Rounded rect
+              ctx.beginPath();
+              ctx.moveTo(plateX + radius, plateY);
+              ctx.lineTo(plateX + plateW - radius, plateY);
+              ctx.quadraticCurveTo(plateX + plateW, plateY, plateX + plateW, plateY + radius);
+              ctx.lineTo(plateX + plateW, plateY + plateH - radius);
+              ctx.quadraticCurveTo(plateX + plateW, plateY + plateH, plateX + plateW - radius, plateY + plateH);
+              ctx.lineTo(plateX + radius, plateY + plateH);
+              ctx.quadraticCurveTo(plateX, plateY + plateH, plateX, plateY + plateH - radius);
+              ctx.lineTo(plateX, plateY + radius);
+              ctx.quadraticCurveTo(plateX, plateY, plateX + radius, plateY);
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+
+              lines.forEach((line, i) => {
+                const y = startY + i * lineHeight;
+                ctx.fillStyle = color;
+                ctx.fillText(line, x, y);
+              });
+
+              canvas.toBlob(b => {
+                console.log('[overlay] '+(isFlat?'flat':'mockup')+' done, blob size:', b ? b.size : 'null');
+                finish(b);
+              }, 'image/png');
+            } catch(err) {
+              console.error('[overlay] error during draw:', err);
+              finish(null);
+            }
+          };
+          img.onerror = function(err){
+            console.error('[overlay] image load error:', err);
+            finish(null);
+          };
+          img.src = URL.createObjectURL(imageBlob);
+        });
+      }
+
+      // Try to load Heebo Black so the canvas draws with it. Non-blocking — if
+      // it fails we fall back to system bold.
+      if(document.fonts && document.fonts.load){
+        try { await document.fonts.load('900 60px Heebo'); } catch(e) { console.warn('[overlay] Heebo load failed:', e); }
+      }
 
       // Process both images in parallel
       [mockupBlob,flatBlob]=await Promise.all([
@@ -493,11 +533,14 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       ]);
 
       // If the server told us to overlay text on the client side, do it now.
+      console.log('[overlay] data.clientTextOverlay =', data.clientTextOverlay);
       if(data.clientTextOverlay && data.clientTextOverlay.text){
         [mockupBlob, flatBlob] = await Promise.all([
           overlayTextOnImage(mockupBlob, data.clientTextOverlay, false),
           overlayTextOnImage(flatBlob, data.clientTextOverlay, true)
         ]);
+      } else {
+        console.warn('[overlay] server did not return clientTextOverlay - text will NOT be added');
       }
 
       // Show the 3D mockup to the customer (priority); fall back to flat if mockup failed
