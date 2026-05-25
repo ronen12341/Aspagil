@@ -543,27 +543,12 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         imgToBlob(data.flat)
       ]);
 
-      // === שכבת טקסט רק על המוקאפ (התצוגה ללקוח) ===
-      // הקובץ השטוח (flat 170×96) נשאר רק עם פלט ה-AI הגולמי - זה הקובץ
-      // שנשלח למעצב הגרפי שלנו לעריכה ולהדפסה בפועל.
-      // המוקאפ (התמונה התלת-ממדית של הכוס) מקבל שכבת טקסט עברית מקצועית
-      // כדי שהלקוח יראה תצוגה מקדימה ברורה.
-      // displayMockupBlob = רק לתצוגה. mockupBlob המקורי נשמר לאימייל.
-      let displayMockupBlob = mockupBlob;
-      const overlayCfg = (cupText && cupText.trim().length > 0)
-        ? { text: cupText.trim(), position: { yRatio: 0.78 }, color: '#E85D2F' }
-        : null;
+      // ה-AI כבר מטפל ברישום הטקסט על הכוס. אין צורך ב-Canvas overlay -
+      // הוא רק יוצר כפילות מיותרת. הטקסט שהלקוח כתב מוצג בכרטיס ברור
+      // מתחת לתמונה כאישור ויזואלי, וגם נשלח למעצב הגרפי באימייל.
 
-      if(overlayCfg && mockupBlob){
-        try {
-          const newMockup = await overlayTextOnImage(mockupBlob, overlayCfg, false);
-          if(newMockup) displayMockupBlob = newMockup;
-        } catch(e) { console.error('mockup overlay failed:', e); }
-      }
-
-      // Show the 3D mockup to the customer (with text overlay for preview).
-      // The raw mockupBlob (without overlay) is what's sent to Aspagil.
-      const displayBlob=displayMockupBlob||mockupBlob||flatBlob;
+      // Show the 3D mockup to the customer
+      const displayBlob=mockupBlob||flatBlob;
       if(!displayBlob){
         throw new Error('לא התקבלה תמונה מה-AI');
       }

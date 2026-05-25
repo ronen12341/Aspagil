@@ -426,7 +426,9 @@ ABSOLUTE PROHIBITIONS:
       let textLine = '';
       if (hasExplicitCupText) {
         if (cupText.trim().length > 0) {
-          textLine = `\n\nText to render on the cup (THE ONLY text — render it clearly, large, easy to read): "${cupText.trim()}"`;
+          textLine = `\n\nText to render on the cup (the ONLY text — render once, in elegant balanced typography, MEDIUM size that fits naturally next to the logo without overwhelming it): "${cupText.trim()}"
+
+TEXT PLACEMENT: Render the text ONLY ONCE on the design. Do NOT repeat the text. Keep the text size proportional — it should complement the logo, not dominate the cup. Use clean modern Hebrew typography in a color that harmonizes with the design (the brand color or a neutral dark tone). Place the text below or beside the logo in a balanced composition.`;
         } else {
           textLine = `\n\nText on cup: NONE — the cup must contain NO text whatsoever.`;
         }
