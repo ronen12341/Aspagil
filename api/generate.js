@@ -317,14 +317,43 @@ export default async function handler(req, res) {
     // STRICT RULES — these prevent the two bugs we saw in production:
     //   (1) AI added a human/model that the user never asked for
     //   (2) AI printed words from the prompt itself onto the cup
+    //
+    //   We only allow people in the design if the user EXPLICITLY
+    //   mentioned a person (face, mom, child, portrait, etc.) in their
+    //   description. Otherwise NO PEOPLE, regardless of whether they
+    //   uploaded a logo or other asset.
     // ============================================================
-    const noPeopleRule = imageBase64 ? '' : `
+    function detectPersonMention(text) {
+      if (!text) return false;
+      const personWords = [
+        // Hebrew
+        'פנים', 'פרצוף', 'אדם', 'איש ', 'אישה', 'אנשים', 'ילד', 'ילדה', 'ילדים',
+        'אמא', 'אבא', 'סבא', 'סבתא', 'תינוק', 'משפחה', 'דמות',
+        'חתן', 'כלה', 'זוג', 'בן זוג', 'בת זוג',
+        'פורטרט', 'תמונה שלי', 'התמונה שלי', 'תמונה של',
+        // English
+        'face', 'person', 'people', 'man ', 'woman', 'women', 'men ',
+        'child', 'children', 'kid', 'kids', 'baby', 'family',
+        'portrait', 'mother', 'father', 'mom', 'dad',
+        'wife', 'husband', 'son', 'daughter', 'bride', 'groom'
+      ];
+      const lower = String(text).toLowerCase();
+      return personWords.some(w => lower.includes(w.toLowerCase()));
+    }
+
+    const userMentionedPerson =
+      detectPersonMention(designDescription) ||
+      detectPersonMention(prompt) ||
+      detectPersonMention(cupText);
+
+    const noPeopleRule = userMentionedPerson ? '' : `
 
 ═══════════════════════════════════════════════
 CRITICAL RULE — NO PEOPLE, NO FACES, NO BODIES
 ═══════════════════════════════════════════════
 Do NOT add any people, models, faces, hands, body parts, or human figures to the design.
 Even if the description mentions a name, an occasion (mother's day, birthday, wedding), a gift recipient, or a person — the cup design is graphic/illustrative ONLY. No photos of people. No illustrations of people. No silhouettes. No body parts. The cup is a product shot — only the cup with the graphic design on it. ZERO humans anywhere in the image.
+If a reference image was uploaded, treat it as a LOGO or GRAPHIC ASSET only — never as a person to feature. Do not invent a person to accompany the logo.
 `;
 
     const noTextRule = explicitNoText ? `
@@ -343,9 +372,17 @@ The cup is a pure visual/graphic design with ZERO typography. If a logo image wa
     // ============================================================
     // STEP 1: Generate the FLAT 170×96 print design
     // ============================================================
-    const photoInstruction = imageBase64
-      ? `\n\nThe user has provided a personal photograph. CRITICAL: Use that exact photograph in the design. DO NOT redraw, regenerate, recreate, alter, modify, change, retouch, repaint, restyle, or reinterpret the person in the photo. Preserve the photograph pixel-perfect: same face, same eyes, same hair, same skin, same clothing, same background, same colors, same lighting — identical to the input photo. Treat the photograph as an unmodifiable asset that you are placing into the design (like cropping it and pasting it). You may crop it to a shape (oval, circle, heart, rectangle) but the pixels inside that shape must be the original photograph unchanged. The person must look IDENTICAL to the input photo — no AI face regeneration.`
-      : '';
+    // The user may upload either (a) a personal photograph of a person,
+    // or (b) a logo / graphic asset. We branch based on whether the
+    // description actually mentions a person.
+    let photoInstruction = '';
+    if (imageBase64) {
+      if (userMentionedPerson) {
+        photoInstruction = `\n\nThe user has provided a personal photograph. CRITICAL: Use that exact photograph in the design. DO NOT redraw, regenerate, recreate, alter, modify, change, retouch, repaint, restyle, or reinterpret the person in the photo. Preserve the photograph pixel-perfect: same face, same eyes, same hair, same skin, same clothing, same background, same colors, same lighting — identical to the input photo. Treat the photograph as an unmodifiable asset that you are placing into the design (like cropping it and pasting it). You may crop it to a shape (oval, circle, heart, rectangle) but the pixels inside that shape must be the original photograph unchanged. The person must look IDENTICAL to the input photo — no AI face regeneration.`;
+      } else {
+        photoInstruction = `\n\nThe user has provided a LOGO or GRAPHIC ASSET (not a personal photo of a person). CRITICAL: Use that exact image as a graphic element in the design — place it as-is without redrawing, regenerating, or modifying it. Preserve it pixel-perfect: same colors, same typography (if it contains text), same proportions. You may resize and position it but you must NOT alter the image itself. Do NOT add any people, faces, or human figures alongside this logo. This is a graphic asset only.`;
+      }
+    }
 
     // Build the user request block — prefer the explicit two-field form when available
     let userRequestBlock;
