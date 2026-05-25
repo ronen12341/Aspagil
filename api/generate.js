@@ -13,6 +13,10 @@ export const config = {
   },
 };
 
+// Vercel function timeout — image generation + verification can take 30-50s.
+// Default is 10s on Hobby which causes "Failed to fetch" on the client.
+export const maxDuration = 60;
+
 // Helper: call OpenAI edits endpoint with an image input
 async function callEdits(apiKey, prompt, imageBlob, size, filename) {
   const formData = new FormData();
