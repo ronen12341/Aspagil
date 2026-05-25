@@ -83,7 +83,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
 @keyframes ai-spin{to{transform:rotate(360deg)}}
 .ai-result{display:none;width:100%}
 .ai-result.show{display:block}
-.preview-img{width:100%;max-width:540px;margin:0 auto;display:block;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,0.18)}
+.preview-img{width:100%;max-width:540px;margin:0 auto;display:block;border-radius:0;box-shadow:0 12px 32px rgba(0,0,0,0.18);border:1px solid #e0e0e0}
 /* === מוקאפ כוס נייר אמיתית עם תבנית PNG === */
 .cup-mockup-real{position:relative;width:100%;max-width:420px;margin:0 auto;aspect-ratio:1/1;}
 .cup-template-bg{width:100%;height:100%;display:block;object-fit:contain}
@@ -536,16 +536,19 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         imgToBlob(data.flat)
       ]);
 
-      // The API returns the flat as the only file (mockup = flat).
-      // We overlay it onto a real paper cup template PNG (assets/cup-template.png)
-      // using CSS positioning + mix-blend-mode, so the cup's natural shading
-      // shows through and the design looks printed on it.
-      const displayBlob=flatBlob||mockupBlob;
-      if(!displayBlob){
+      // Build the final 170×96mm print file (with bottom 8mm white strip).
+      // This becomes the customer preview AND what gets emailed to the designer.
+      const rawBlob=flatBlob||mockupBlob;
+      if(!rawBlob){
         throw new Error('לא התקבלה תמונה מה-AI');
       }
-      const flatPreviewUrl=URL.createObjectURL(displayBlob);
-      // Place the flat as background on the cup-body region of the template
+      // Process to the final 170×96mm print file (with the white strip)
+      const printFileBlob = await buildPrintFile170x96(rawBlob);
+      // Replace flatBlob with the processed version so the email sends THIS one
+      flatBlob = printFileBlob;
+      const flatPreviewUrl=URL.createObjectURL(printFileBlob);
+
+      // Place the print file (with white strip) on the cup-body region of the template
       const designRegion=document.getElementById('cup-design-region');
       if(designRegion){
         designRegion.style.backgroundImage='url("'+flatPreviewUrl+'")';
@@ -614,41 +617,48 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     });
   }
 
-  // Crop the AI-generated image to 170:96 aspect ratio AND resize it to
-  // 2008×1134 px = exactly 170mm × 96mm at 300 DPI (print-ready).
-  // This is what gets sent to the graphic designer as the print file.
+  // Build the 170×96mm print file at 300 DPI (2008×1134 px) with:
+  // - Sharp corners (no rounding)
+  // - 8mm white strip at the bottom (for the cup base region)
+  // - Design fills the top 88mm
   async function buildPrintFile170x96(blob){
     if(!blob) return blob;
     return new Promise(function(resolve){
       const img = new Image();
       img.onload = function(){
         try {
+          // Final print dimensions: 170×96mm at 300 DPI
+          const PRINT_W = 2008;     // 170mm × 300/25.4 ≈ 2008 px
+          const PRINT_H = 1134;     // 96mm × 300/25.4 ≈ 1134 px
+          const STRIP_H = 94;       // 8mm × 300/25.4 ≈ 94 px (bottom white strip)
+          const DESIGN_H = PRINT_H - STRIP_H; // 1040 px = 88mm (design area only)
+
           const srcW = img.naturalWidth || img.width;
           const srcH = img.naturalHeight || img.height;
-          const targetAspect = 170/96; // 1.7708
-          const srcAspect = srcW/srcH;
-          // Crop the source to match the 170:96 aspect (center crop)
+          // Design area aspect: 170mm × 88mm = 1.932:1
+          const designAspect = 170 / 88;
+          const srcAspect = srcW / srcH;
+          // Crop the source to the design area aspect (center crop)
           let cropX=0, cropY=0, cropW=srcW, cropH=srcH;
-          if(srcAspect > targetAspect){
-            // Source is wider than target → crop sides
-            cropW = Math.round(srcH * targetAspect);
+          if(srcAspect > designAspect){
+            cropW = Math.round(srcH * designAspect);
             cropX = Math.round((srcW - cropW)/2);
-          } else if(srcAspect < targetAspect){
-            // Source is taller than target → crop top/bottom
-            cropH = Math.round(srcW / targetAspect);
+          } else if(srcAspect < designAspect){
+            cropH = Math.round(srcW / designAspect);
             cropY = Math.round((srcH - cropH)/2);
           }
-          // Output dimensions: 170mm × 96mm at 300 DPI
-          const outW = 2008;
-          const outH = 1134;
+
           const canvas = document.createElement('canvas');
-          canvas.width = outW;
-          canvas.height = outH;
+          canvas.width = PRINT_W;
+          canvas.height = PRINT_H;
           const ctx = canvas.getContext('2d');
+          // White background for the entire canvas (including the bottom strip)
           ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, outW, outH);
+          ctx.fillRect(0, 0, PRINT_W, PRINT_H);
           ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
+          // Draw the design into the top design area (sharp rectangular fit)
+          ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, PRINT_W, DESIGN_H);
+          // The bottom STRIP_H px stays pure white — the 8mm strip for the cup base
           canvas.toBlob(function(b){
             try { URL.revokeObjectURL(img.src); } catch(e){}
             resolve(b || blob);
@@ -747,9 +757,8 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         files.push({field:'reference_image',name:'reference-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
       if(flatBlob){
-        // Build the actual 170×96 mm print file at 300 DPI
-        const printFile = await buildPrintFile170x96(flatBlob);
-        const b64=await readBlobAsBase64(printFile);
+        // flatBlob is already the processed 170×96mm print file (built in generateDesign)
+        const b64=await readBlobAsBase64(flatBlob);
         files.push({field:'print_file_170x96',name:'print-file-170x96mm-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
 
