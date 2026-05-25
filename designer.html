@@ -540,6 +540,28 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         imgToBlob(data.flat)
       ]);
 
+      // === שכבת הטקסט על התמונה ===
+      // אם הלקוח הזין טקסט, מציירים אותו על התמונה ב-Canvas
+      // עם פונט עברי אמיתי (Heebo Black) - 100% איות מושלם.
+      const overlayCfg = (data.clientTextOverlay && data.clientTextOverlay.text)
+        ? data.clientTextOverlay
+        : (cupText && cupText.trim().length > 0
+            ? { text: cupText.trim(), position: { yRatio: 0.78 }, color: '#E85D2F' }
+            : null);
+
+      if(overlayCfg && mockupBlob){
+        try {
+          const newMockup = await overlayTextOnImage(mockupBlob, overlayCfg, false);
+          if(newMockup) mockupBlob = newMockup;
+        } catch(e) { console.error('mockup overlay failed:', e); }
+      }
+      if(overlayCfg && flatBlob){
+        try {
+          const newFlat = await overlayTextOnImage(flatBlob, overlayCfg, true);
+          if(newFlat) flatBlob = newFlat;
+        } catch(e) { console.error('flat overlay failed:', e); }
+      }
+
       // Show the 3D mockup to the customer (priority); fall back to flat if mockup failed
       const displayBlob=mockupBlob||flatBlob;
       if(!displayBlob){
