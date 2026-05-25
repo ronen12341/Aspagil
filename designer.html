@@ -202,19 +202,8 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         </div>
 
         <div class="ai-result" id="ai-result">
-          <!-- מוקאפ כוס תלת-ממדי דטרמיניסטי - הקובץ השטוח הוא הטקסטורה -->
-          <div class="cup-3d" id="cup-3d-preview">
-            <div class="cup-rim"></div>
-            <div class="cup-body">
-              <div class="cup-body-img" id="cup-body-img"></div>
-              <div class="cup-body-shading"></div>
-            </div>
-            <div class="cup-base"></div>
-          </div>
-          <!-- הקובץ השטוח עצמו (יוצג בתצוגה משנית, מוסתר כברירת מחדל) -->
-          <img id="result-img" class="preview-img" alt="קובץ ההדפסה" style="display:none;margin-top:1rem">
-          <p class="cup-3d-caption">🥤 כך הכוס שלכם תיראה</p>
-          <button type="button" id="toggle-flat-view" style="margin-top:0.5rem;background:none;border:none;color:var(--orange);font-size:0.85rem;cursor:pointer;text-decoration:underline;font-family:inherit;">הצג את קובץ ההדפסה השטוח</button>
+          <img id="result-img" class="preview-img" alt="הדמיית הכוס שלכם">
+          <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--gray-700);font-weight:600;">🥤 כך הכוס שלכם תיראה</p>
 
           <div id="text-warn" style="display:none;background:#FFF4E5;border:1px solid #F0B26A;border-right:4px solid #E0A23A;color:#7A4E00;padding:10px 14px;border-radius:8px;margin-top:0.9rem;font-size:0.92rem;text-align:right;"></div>
           <div class="ai-actions">
@@ -539,20 +528,12 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         imgToBlob(data.flat)
       ]);
 
-      // The flat IS the design. Use it as the texture on the CSS 3D cup mockup.
-      // This guarantees the preview matches the print file exactly.
-      const displayBlob=flatBlob||mockupBlob;
+      // Show the AI-generated 3D cup mockup (priority); fall back to flat if mockup failed
+      const displayBlob=mockupBlob||flatBlob;
       if(!displayBlob){
         throw new Error('לא התקבלה תמונה מה-AI');
       }
-      const flatUrl=URL.createObjectURL(displayBlob);
-      // Apply the flat as background of the cup body
-      const cupBodyImg=document.getElementById('cup-body-img');
-      if(cupBodyImg){
-        cupBodyImg.style.backgroundImage='url("'+flatUrl+'")';
-      }
-      // Also set the hidden flat image (for "view flat file" toggle)
-      document.getElementById('result-img').src=flatUrl;
+      document.getElementById('result-img').src=URL.createObjectURL(displayBlob);
 
       // If the text verifier flagged a spelling mismatch (after retries), warn the customer
       const verify=data.textVerification;
@@ -580,22 +561,6 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
   }
 
   document.getElementById('generate-btn').addEventListener('click',generateDesign);
-
-  // Toggle between 3D cup view and flat print file view
-  document.getElementById('toggle-flat-view').addEventListener('click',()=>{
-    const cup3d=document.getElementById('cup-3d-preview');
-    const flatImg=document.getElementById('result-img');
-    const btn=document.getElementById('toggle-flat-view');
-    if(flatImg.style.display==='none'){
-      flatImg.style.display='block';
-      cup3d.style.display='none';
-      btn.textContent='הצג את הדמיית הכוס';
-    } else {
-      flatImg.style.display='none';
-      cup3d.style.display='block';
-      btn.textContent='הצג את קובץ ההדפסה השטוח';
-    }
-  });
 
   document.getElementById('proceed-btn').addEventListener('click',()=>{
     document.getElementById('submit-area').scrollIntoView({behavior:'smooth'});
