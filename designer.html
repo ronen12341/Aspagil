@@ -511,10 +511,13 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
                 ctx.fillText(line, x, y);
               });
 
+              // Output as JPEG (much smaller than PNG) — keeps the submission
+              // payload well under Vercel's body size limit. Quality 0.92 is
+              // visually indistinguishable from PNG for product mockups.
               canvas.toBlob(b => {
                 console.log('[overlay] '+(isFlat?'flat':'mockup')+' done, blob size:', b ? b.size : 'null');
                 finish(b);
-              }, 'image/png');
+              }, 'image/jpeg', 0.92);
             } catch(err) {
               console.error('[overlay] error during draw:', err);
               finish(null);
@@ -664,24 +667,31 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
       }
       if(flatBlob){
         const b64=await readBlobAsBase64(flatBlob);
-        files.push({field:'print_file_170x96',name:'print-file-170x96-'+Date.now()+'.png',type:'image/png',contentBase64:b64});
+        const ext=(flatBlob.type==='image/jpeg')?'jpg':'png';
+        files.push({field:'print_file_170x96',name:'print-file-170x96-'+Date.now()+'.'+ext,type:flatBlob.type||'image/png',contentBase64:b64});
       }
       if(mockupBlob){
         const b64=await readBlobAsBase64(mockupBlob);
-        files.push({field:'cup_mockup_preview',name:'cup-mockup-preview-'+Date.now()+'.png',type:'image/png',contentBase64:b64});
+        const ext=(mockupBlob.type==='image/jpeg')?'jpg':'png';
+        files.push({field:'cup_mockup_preview',name:'cup-mockup-preview-'+Date.now()+'.'+ext,type:mockupBlob.type||'image/png',contentBase64:b64});
       }
 
       sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));
 
+      const payload=JSON.stringify({type:'design',fields:fields,files:files});
+      console.log('[submit] payload size:', (payload.length/1024/1024).toFixed(2), 'MB, files:', files.length);
+
       const resp=await fetch('/api/submit-form',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({type:'design',fields:fields,files:files})
+        body:payload
       });
       const data=await resp.json().catch(()=>({}));
+      console.log('[submit] response status:', resp.status, 'data:', data);
 
       if(!resp.ok||!data.success){
-        throw new Error(data.message||data.error||data.details||'Submission failed');
+        const detail=data.message||data.error||data.details||('HTTP '+resp.status);
+        throw new Error(detail);
       }
 
       // Success — redirect to the same page with ?sent=ok
