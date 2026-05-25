@@ -24,7 +24,7 @@ async function callEdits(apiKey, prompt, imageBlob, size, filename) {
   formData.append('prompt', prompt);
   formData.append('model', 'gpt-image-1');
   formData.append('size', size);
-  formData.append('quality', 'high');
+  formData.append('quality', 'medium');
   formData.append('n', '1');
 
   const r = await fetch('https://api.openai.com/v1/images/edits', {
@@ -55,7 +55,7 @@ async function callGen(apiKey, prompt, size) {
         model: 'gpt-image-1',
         prompt: prompt,
         size: size,
-        quality: 'high',
+        quality: 'medium',
         n: 1
       })
     });
@@ -82,7 +82,7 @@ async function callGen(apiKey, prompt, size) {
         model: 'dall-e-3',
         prompt: prompt,
         size: dalleSize,
-        quality: 'hd',
+        quality: 'standard',
         n: 1,
         response_format: 'b64_json'
       })
@@ -627,18 +627,22 @@ DESIGN RULES
     let verifyInfo = { matches: true, foundText: '', issues: '' };
     let attemptsUsed = 0;
     let augmentedPrompt = flatPrompt;
-    const maxAttempts = (expectedLines.length > 0) ? 3 : 1;
+    // Cost-saving: no retries. The verifier still runs (so the customer
+    // sees a warning if Hebrew spelling is off), but we don't regenerate.
+    // The graphic designer fixes Hebrew before printing anyway.
+    const maxAttempts = 1;
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       attemptsUsed = attempt;
+      // Cost-saving: 1024x1024 instead of 1536x1024 (~30% cheaper)
       if (userBlob) {
-        flatResult = await callEdits(apiKey, augmentedPrompt, userBlob, '1536x1024', 'user-photo.png');
+        flatResult = await callEdits(apiKey, augmentedPrompt, userBlob, '1024x1024', 'user-photo.png');
         if (!flatResult.ok) {
           console.error('edits step1 failed, falling back:', flatResult.error);
-          flatResult = await callGen(apiKey, augmentedPrompt, '1536x1024');
+          flatResult = await callGen(apiKey, augmentedPrompt, '1024x1024');
         }
       } else {
-        flatResult = await callGen(apiKey, augmentedPrompt, '1536x1024');
+        flatResult = await callGen(apiKey, augmentedPrompt, '1024x1024');
       }
 
       if (!flatResult.ok) {
