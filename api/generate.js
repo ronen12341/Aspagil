@@ -172,11 +172,10 @@ matches=true ONLY if every expected line appears character-perfect in the image.
   }
 }
 
-// Pre-processor: use GPT-4o-mini to extract the EXACT Hebrew text + colors.
-// CRITICAL: Only extract text the user EXPLICITLY marked as text-to-print
-// (inside quotes "..." or '...' or after explicit cues like "כתוב:" / "טקסט:").
-// Free-form description words are NOT extracted as text — they describe how
-// the cup looks, not what to write on it.
+// Pre-processor: use GPT-4o-mini to translate the Hebrew prompt into a CLEAN
+// ENGLISH visual description, stripping any words that might trigger the
+// image model to render text on the cup. Also extracts text-to-print
+// (only if EXPLICITLY in quotes).
 async function extractDesignStructure(apiKey, userPrompt) {
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -190,45 +189,72 @@ async function extractDesignStructure(apiKey, userPrompt) {
         messages: [
           {
             role: 'system',
-            content: 'You extract structured info from Hebrew/English paper-cup design requests. You are EXTREMELY CONSERVATIVE: you only extract text the user EXPLICITLY asked to PRINT on the cup. You do NOT treat description words as text to print. Output ONLY valid JSON.'
+            content: 'You convert Hebrew/English paper-cup design requests into a CLEAN English visual description for an image-generation model. You are EXTREMELY CONSERVATIVE about identifying "text to print" — only inside quotes. You translate descriptions into VISUAL ONLY terms (no contextual words that imply text). Output ONLY valid JSON.'
           },
           {
             role: 'user',
-            content: `Analyze this cup design request and extract structured info.
+            content: `Convert this paper-cup design request into structured info for an image-generation model.
 
 Request:
 """${userPrompt}"""
 
-EXTRACTION RULES — read carefully:
+═══════════════════════════════════════════════
+PRODUCE THREE FIELDS:
+═══════════════════════════════════════════════
 
-For "textLines":
-- ONLY extract text the user EXPLICITLY asked to print on the cup.
-- A user wants text printed on the cup ONLY when one of these is true:
-  a) The text appears inside quotes: "..." or '...' or "..." or "..."
-  b) The text follows an explicit cue word like: "כתוב", "טקסט:", "כיתוב:", "הכיתוב הוא", "write:", "text:", "says:", "with the words"
-- DO NOT extract words from a free-form description of the cup's appearance.
-- DO NOT extract words like "כוס", "לבנה", "עם", "לוגו", "פעמיים", "מקדימה", "מאחורה", "צבע", "סגנון", "פרחים", "עיצוב" — these are description words.
-- DO NOT extract a description sentence as text. "כוס לבנה עם לוגו פעמיים" is a DESCRIPTION — extract textLines: [].
-- DO NOT extract a brand mentioned in the description unless it's clearly meant as text on the cup.
-- If unsure → return empty array.
+1. "textLines" — text the user EXPLICITLY wants PRINTED on the cup
+   ONLY extract if it appears inside quotes (" " or ' ') or after explicit cues like "כתוב", "טקסט:", "says:", "write:".
+   Free-form descriptions are NOT text-to-print.
+   Examples:
+   - "כוס ליום הולדת לילדה בת 5" → textLines: []  (it's a description, NOT a request for text)
+   - "כוס ליום הולדת עם 'מזל טוב לדנה'" → textLines: ["מזל טוב לדנה"]
+   - "white cup with flowers" → textLines: []
+   - "כוס לבנה עם הטקסט קפה גינץ" → textLines: ["קפה גינץ"]
+   When unsure → []. Default is empty.
 
-EXAMPLES:
-- "כוס לבנה עם לוגו פעמיים" → textLines: []   (just a description, no text to print)
-- "כוס עם הטקסט 'מכבי חיפה'" → textLines: ["מכבי חיפה"]
-- "כוס שכתוב עליה קפה גינץ" → textLines: ["קפה גינץ"]
-- "כוס בסגנון חתונה עם 'דנה ויוסי 12.6.2026'" → textLines: ["דנה ויוסי 12.6.2026"]
-- "white cup with green flowers" → textLines: []
-- "cup that says 'Best Mom'" → textLines: ["Best Mom"]
+2. "visualDescription" — ENGLISH visual description for the image model
+   This is the most important field. Convert the request into PURE VISUAL English with these rules:
+   - Translate everything to English
+   - Describe ONLY visual elements (colors, shapes, illustrations, patterns)
+   - REMOVE any contextual words that imply text should appear:
+     * "יום הולדת" / "birthday" → "festive celebration design with party elements"
+     * "מזל טוב" / "congratulations" → "celebratory festive design"
+     * "חתונה" / "wedding" → "elegant romantic design with floral elements"
+     * "ליום אמא" / "mother's day" → "soft romantic floral design"
+     * The age "בת 5" / "5 year old" → "playful childlike design"
+   - If user said "no text" or didn't mention text → add "NO TEXT, NO LETTERS, NO WORDS anywhere on the cup"
+   - Focus on visual attributes: "colorful flowers", "butterflies", "soft pastel colors", "modern minimalist", etc.
 
-For "colors": only color names the user mentioned (in any language).
-For "theme": one short sentence describing the visual style.
+3. "colors" — colors the user mentioned (any language) as English color names. [] if none.
 
-Return ONLY JSON in this exact shape (no markdown):
-{"textLines": [], "colors": [], "theme": "..."}`
+═══════════════════════════════════════════════
+EXAMPLES — STUDY THESE CAREFULLY:
+═══════════════════════════════════════════════
+
+Input: "כוס ליום הולדת לילדה בת 5 עם הרבה פרחים וציורים"
+Output:
+{"textLines": [], "visualDescription": "Playful childlike paper cup design featuring lots of colorful cartoon flowers (daisies, tulips, sunflowers in pink, yellow, orange, purple), butterflies, and whimsical doodles. Soft pastel background with festive cheerful mood. NO TEXT, NO LETTERS, NO WORDS anywhere on the cup — pure visual illustration only.", "colors": ["pink", "yellow", "orange", "purple"]}
+
+Input: "כוס לבנה עם הלוגו פעמיים"
+Output:
+{"textLines": [], "visualDescription": "Plain white paper cup featuring the uploaded logo placed twice — once at the front, once at the back. Clean minimal design. NO TEXT, NO LETTERS, NO WORDS anywhere on the cup other than what already exists inside the logo itself.", "colors": ["white"]}
+
+Input: "כוס לחתונה של דנה ויוסי 12.6.2026"
+Output:
+{"textLines": ["דנה ויוסי 12.6.2026"], "visualDescription": "Elegant romantic paper cup design with soft floral elements (white roses, delicate gold leaves), refined typography area for the names and date, ivory and gold color palette. The text 'דנה ויוסי 12.6.2026' is the only text on the cup.", "colors": ["ivory", "gold", "white"]}
+
+Input: "כוס בית קפה בצבע ירוק"
+Output:
+{"textLines": [], "visualDescription": "Modern cafe paper cup design in green tones (forest green, sage, mint). Clean contemporary aesthetic. NO TEXT, NO LETTERS, NO WORDS anywhere on the cup.", "colors": ["green"]}
+
+═══════════════════════════════════════════════
+
+Return ONLY JSON (no markdown, no explanation):
+{"textLines": [], "visualDescription": "...", "colors": []}`
           }
         ],
-        temperature: 0,
-        max_tokens: 400
+        temperature: 0.2,
+        max_tokens: 600
       })
     });
     if (!r.ok) {
@@ -238,7 +264,10 @@ Return ONLY JSON in this exact shape (no markdown):
     const j = await r.json();
     let content = (j.choices[0].message.content || '').trim();
     content = content.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+    // backward-compat: also expose `theme` if needed elsewhere
+    if (!parsed.theme && parsed.visualDescription) parsed.theme = parsed.visualDescription;
+    return parsed;
   } catch (e) {
     console.error('extractDesignStructure exception:', e.message);
     return null;
@@ -467,28 +496,38 @@ ABSOLUTE PROHIBITIONS:
       }
     }
 
-    // Build the user request block. When the user provides cupText, we tell
-    // the AI to render it on the FLAT print file (Hebrew may not be perfect —
-    // graphic designer cleans up afterwards). The Canvas overlay on the mockup
-    // gives the customer a clean preview.
-    let userRequestBlock;
-    if (designDescription || hasExplicitCupText) {
-      const descLine = designDescription
-        ? `Design description (style, colors, mood — read carefully, follow exactly): ${designDescription}`
-        : `Design description: minimal — no specific style requested.`;
-      let textLine = '';
-      if (hasExplicitCupText) {
-        if (cupText.trim().length > 0) {
-          textLine = `\n\nText to render on the cup (the ONLY text — render once, in elegant balanced typography, MEDIUM size that fits naturally next to the logo without overwhelming it): "${cupText.trim()}"
+    // Build the user request block using the CLEAN ENGLISH visual description
+    // from GPT-4o-mini (if available). This prevents the image model from
+    // accidentally rendering Hebrew description words as text on the cup.
+    const cleanVisualDesc = (structure && structure.visualDescription) ? structure.visualDescription : null;
+    const extractedTextLines = (structure && Array.isArray(structure.textLines))
+      ? structure.textLines.filter(t => typeof t === 'string' && t.trim().length > 0)
+      : [];
 
-TEXT PLACEMENT: Render the text ONLY ONCE on the design. Do NOT repeat the text. Keep the text size proportional — it should complement the logo, not dominate the cup. Use clean modern Hebrew typography in a color that harmonizes with the design (the brand color or a neutral dark tone). Place the text below or beside the logo in a balanced composition.`;
-        } else {
-          textLine = `\n\nText on cup: NONE — the cup must contain NO text whatsoever.`;
-        }
+    let userRequestBlock;
+    if (cleanVisualDesc) {
+      // New flow: use the sanitized English description
+      userRequestBlock = `Visual description (English, sanitized — follow EXACTLY): ${cleanVisualDesc}`;
+      if (extractedTextLines.length > 0) {
+        userRequestBlock += `\n\nText to render on the cup (THE ONLY text — render once, elegant typography, medium size): ${extractedTextLines.map(t => `"${t}"`).join(', ')}`;
+      } else {
+        userRequestBlock += `\n\nText on cup: NONE — render NO text, NO letters, NO words. The cup is pure visual graphics only.`;
+      }
+    } else if (designDescription || hasExplicitCupText) {
+      // Legacy path with structured fields
+      const descLine = designDescription
+        ? `Design description (style, colors, mood): ${designDescription}`
+        : `Design description: minimal.`;
+      let textLine = '';
+      if (hasExplicitCupText && cupText.trim().length > 0) {
+        textLine = `\n\nText to render (ONLY this — render once, elegant typography, medium size): "${cupText.trim()}"`;
+      } else {
+        textLine = `\n\nText on cup: NONE — render NO text whatsoever.`;
       }
       userRequestBlock = descLine + textLine;
     } else {
-      userRequestBlock = `User's design request (read carefully, follow exactly): ${prompt}`;
+      // Last-resort fallback
+      userRequestBlock = `Design request: ${prompt}\n\nText on cup: NONE — render NO text whatsoever.`;
     }
 
     const flatPrompt = `Create a FLAT 2D PRINT TEMPLATE for a paper coffee cup wrap. The output is a flat horizontal rectangle (the unrolled cup surface), NOT an illustration of a cup.
