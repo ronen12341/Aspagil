@@ -144,12 +144,10 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
           <h3>2. טקסט שיופיע על הכוס <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></h3>
           <input type="text" id="cup-text-input" class="ai-input" placeholder='לדוגמה: "מכבי חיפה" או "מזל טוב דנה"' maxlength="80">
           <p class="ai-hint"><strong>רק</strong> מה שכתוב כאן יופיע כטקסט על הכוס. השאירו ריק לכוס בלי טקסט — רק עיצוב ולוגו.</p>
-          <p class="ai-hint" style="background:#FFF8E6;border-right:3px solid #E0A23A;padding:10px 14px;border-radius:6px;margin-top:8px;color:#7A5A00;line-height:1.6;">
-            <strong>💡 טיפים לטקסט שעובד טוב:</strong><br>
-            • <strong>קצר עדיף</strong> — 2-3 מילים נותנות תוצאה הרבה יותר טובה מ-5+ מילים<br>
-            • <strong>שורה אחת</strong> — בלי מקפים, פסיקים או שבירות שורה<br>
-            • <strong>אנגלית עובדת מצוין</strong> — אם זה אופציה (לדוגמה "Gintz Coffee" במקום "קפה גינץ")<br>
-            • ה-AI לפעמים טועה באיות עברית. אם זה קורה — המעצב הגרפי שלנו יתקן ידנית לפני ההדפסה.
+          <p class="ai-hint" style="background:#E8F4EA;border-right:3px solid #3FA34D;padding:10px 14px;border-radius:6px;margin-top:8px;color:#1F5C28;line-height:1.6;">
+            <strong>✓ הטקסט יודפס בדיוק כפי שכתבתם</strong> — בעברית או באנגלית, באיות מושלם.<br>
+            • לתוצאה הכי יפה: 2-5 מילים, שורה אחת.<br>
+            • הטקסט יעוצב בפונט בולט בצבע מותג, מעל הגרפיקה שה-AI יוצר.
           </p>
         </div>
 
@@ -399,11 +397,108 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         return null;
       }
 
+      // === CLIENT-SIDE TEXT OVERLAY ===
+      // gpt-image-1 cannot reliably render Hebrew. Instead the API generates
+      // the visual design WITHOUT text, and we draw the exact Hebrew text
+      // here with a real Hebrew font (Heebo Black). 100% correct spelling,
+      // designed look, brand color.
+      async function overlayTextOnImage(imageBlob, overlayConfig, isFlat){
+        if(!imageBlob || !overlayConfig || !overlayConfig.text) return imageBlob;
+        return new Promise(resolve => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = function(){
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            const text = overlayConfig.text;
+            const color = overlayConfig.color || '#E85D2F';
+            // The AI is instructed to place the logo at top and reserve the
+            // lower-center as a clean band. Position text in that band.
+            const cfgY = (overlayConfig.position && overlayConfig.position.yRatio) || 0.62;
+            const yRatio = isFlat ? 0.6 : cfgY;
+            // Mockup cup at 3/4 angle: visible face center is slightly off-center.
+            // Flat print file is a true rectangle.
+            const xRatio = isFlat ? 0.5 : 0.46;
+
+            const base = Math.min(canvas.width, canvas.height);
+            const len = Array.from(text).length;
+            let fontSize;
+            if(len <= 8) fontSize = base * 0.095;
+            else if(len <= 16) fontSize = base * 0.07;
+            else if(len <= 25) fontSize = base * 0.052;
+            else fontSize = base * 0.042;
+
+            // Wrap long text to 2 lines if needed
+            const lines = wrapHebrewText(text, len > 18 ? 2 : 1);
+
+            ctx.font = '900 ' + fontSize + 'px "Heebo", "Assistant", system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.direction = 'rtl';
+            ctx.lineJoin = 'round';
+            ctx.miterLimit = 2;
+
+            const lineHeight = fontSize * 1.15;
+            const x = canvas.width * xRatio;
+            const startY = canvas.height * yRatio - ((lines.length - 1) * lineHeight) / 2;
+
+            lines.forEach((line, i) => {
+              const y = startY + i * lineHeight;
+              // White outline for readability on any background
+              ctx.lineWidth = fontSize * 0.14;
+              ctx.strokeStyle = 'rgba(255,255,255,0.92)';
+              ctx.strokeText(line, x, y);
+              // Subtle drop shadow for depth
+              ctx.shadowColor = 'rgba(0,0,0,0.22)';
+              ctx.shadowBlur = fontSize * 0.12;
+              ctx.shadowOffsetX = 1;
+              ctx.shadowOffsetY = fontSize * 0.06;
+              // Main fill — brand orange
+              ctx.fillStyle = color;
+              ctx.fillText(line, x, y);
+              ctx.shadowColor = 'transparent';
+            });
+
+            canvas.toBlob(b => resolve(b || imageBlob), 'image/png');
+          };
+          img.onerror = function(){ resolve(imageBlob); };
+          img.src = URL.createObjectURL(imageBlob);
+        });
+      }
+
+      // Wrap Hebrew text by words into N lines as evenly as possible
+      function wrapHebrewText(text, maxLines){
+        if(maxLines <= 1) return [text];
+        const words = text.split(/\s+/).filter(Boolean);
+        if(words.length <= 1) return [text];
+        const perLine = Math.ceil(words.length / maxLines);
+        const lines = [];
+        for(let i = 0; i < words.length; i += perLine){
+          lines.push(words.slice(i, i + perLine).join(' '));
+        }
+        return lines;
+      }
+
+      // Make sure the Heebo Black weight is fully loaded before drawing
+      try { await document.fonts.load('900 60px Heebo'); } catch(e) {}
+
       // Process both images in parallel
       [mockupBlob,flatBlob]=await Promise.all([
         imgToBlob(data.mockup),
         imgToBlob(data.flat)
       ]);
+
+      // If the server told us to overlay text on the client side, do it now.
+      if(data.clientTextOverlay && data.clientTextOverlay.text){
+        [mockupBlob, flatBlob] = await Promise.all([
+          overlayTextOnImage(mockupBlob, data.clientTextOverlay, false),
+          overlayTextOnImage(flatBlob, data.clientTextOverlay, true)
+        ]);
+      }
 
       // Show the 3D mockup to the customer (priority); fall back to flat if mockup failed
       const displayBlob=mockupBlob||flatBlob;

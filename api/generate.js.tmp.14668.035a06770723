@@ -429,34 +429,27 @@ ABSOLUTE PROHIBITIONS:
       }
     }
 
-    // Build the user request block — prefer the explicit two-field form when available.
-    //
-    // IMPORTANT: We never tell the AI to RENDER text. When the user provides
-    // cupText, the client overlays it later using Canvas (handled by the
-    // noTextRule above). The cupText is mentioned here only as context so the
-    // AI can plan the layout to leave room for it.
+    // Build the user request block — prefer the explicit two-field form when available
     let userRequestBlock;
     if (designDescription || hasExplicitCupText) {
+      // New flow: at least one of the two structured fields was sent
       const descLine = designDescription
         ? `Design description (style, colors, mood — read carefully, follow exactly): ${designDescription}`
         : `Design description: minimal — no specific style requested.`;
-      let textLine = '';
-      if (hasExplicitCupText) {
-        if (cupText.trim().length > 0) {
-          // Tell the AI a text WILL be added later by another system — so plan space, don't render it
-          textLine = `\n\nLAYOUT NOTE: Customer text will be added to the cup AFTERWARDS by a separate text-rendering system. Plan the layout to leave a clean horizontal area in the lower-center of the cup for that text. The text itself is "${cupText.trim()}" but YOU MUST NOT RENDER IT — the cup must be free of all text, letters, words, or characters. Just leave the space.`;
-        } else {
-          textLine = `\n\nText to print on cup: NONE — the cup must contain NO text whatsoever.`;
-        }
-      }
+      const textLine = hasExplicitCupText
+        ? (cupText.trim().length > 0
+            ? `\n\nText to print on cup (the ONLY text that may appear): "${cupText.trim()}"`
+            : `\n\nText to print on cup: NONE — the cup must contain NO text whatsoever.`)
+        : '';
       userRequestBlock = descLine + textLine;
     } else {
+      // Legacy: freeform prompt only
       userRequestBlock = `User's design request (read carefully, follow exactly): ${prompt}`;
     }
 
     const flatPrompt = `Create a flat 2D print-ready graphic design for a paper coffee cup label. This is a print file, NOT a photo of a cup.
 
-${userRequestBlock}${extractedColors}${photoInstruction}${spellingGuide}${noPeopleRule}${noTextRule}${typographyRule}${logoOnceRule}
+${userRequestBlock}${extractedColors}${photoInstruction}${spellingGuide}${noPeopleRule}${noTextRule}${typographyRule}
 
 ═══════════════════════════════════════════════
 CRITICAL RULE #1 — COLORS MUST MATCH USER REQUEST
@@ -663,14 +656,6 @@ Output requirements:
         url: mockupImg.url || null
       } : null,
       mockupError: mockupResult.ok ? null : mockupResult.error,
-      // Tell the client to overlay this text on the rendered images using Canvas
-      clientTextOverlay: willOverlayClientText ? {
-        text: cupText.trim(),
-        // Suggested vertical position (0=top, 1=bottom) and font size hint
-        position: { yRatio: 0.62 },
-        // Brand orange — matches the site theme
-        color: '#E85D2F'
-      } : null,
       textVerification: expectedLines.length > 0 ? {
         expected: expectedLines,
         matches: verifyInfo.matches,
