@@ -56,19 +56,17 @@ function escapeHtml(str) {
 
 function buildEmailHtml(type, fields, attachmentNames) {
   const title = type === 'design'
-    ? '🎨 בקשת עיצוב AI חדשה מהאתר'
-    : '📧 בקשת הצעת מחיר חדשה מהאתר';
+    ? 'בקשת עיצוב AI חדשה מהאתר'
+    : 'בקשת הצעת מחיר חדשה מהאתר';
 
   // Build rows in a stable order
   const ORDER = ['name','phone','email','business','invoice_name','tax_id','address','quantity','usage','user_description','notes'];
   const rows = [];
   for (const key of ORDER) {
     if (fields[key] != null && String(fields[key]).trim() !== '') {
-      rows.push(`
-        <tr>
-          <td style="font-weight:700;padding:10px 12px;border-bottom:1px solid #eee;width:35%;background:#FAFAFA;color:#444;">${FIELD_LABELS[key] || key}</td>
-          <td style="padding:10px 12px;border-bottom:1px solid #eee;color:#1a1a1a;">${escapeHtml(fields[key])}</td>
-        </tr>`);
+      // Preserve line breaks in multi-line text (user_description, notes)
+      const value = escapeHtml(fields[key]).replace(/\n/g, '<br>');
+      rows.push(`<tr><td align="right" valign="top" style="font-weight:bold;padding:8px 12px;border-bottom:1px solid #dddddd;background:#f5f5f5;width:30%;color:#333333;">${FIELD_LABELS[key] || key}</td><td align="right" valign="top" style="padding:8px 12px;border-bottom:1px solid #dddddd;color:#1a1a1a;">${value}</td></tr>`);
     }
   }
   // Any other fields not in ORDER
@@ -76,65 +74,71 @@ function buildEmailHtml(type, fields, attachmentNames) {
     if (ORDER.includes(key)) continue;
     if (key === 'subject' || key === 'from_name' || key === 'access_key' || key === 'redirect' || key === 'botcheck') continue;
     if (fields[key] != null && String(fields[key]).trim() !== '') {
-      rows.push(`
-        <tr>
-          <td style="font-weight:700;padding:10px 12px;border-bottom:1px solid #eee;width:35%;background:#FAFAFA;color:#444;">${escapeHtml(FIELD_LABELS[key] || key)}</td>
-          <td style="padding:10px 12px;border-bottom:1px solid #eee;color:#1a1a1a;">${escapeHtml(fields[key])}</td>
-        </tr>`);
+      const value = escapeHtml(fields[key]).replace(/\n/g, '<br>');
+      rows.push(`<tr><td align="right" valign="top" style="font-weight:bold;padding:8px 12px;border-bottom:1px solid #dddddd;background:#f5f5f5;width:30%;color:#333333;">${escapeHtml(FIELD_LABELS[key] || key)}</td><td align="right" valign="top" style="padding:8px 12px;border-bottom:1px solid #dddddd;color:#1a1a1a;">${value}</td></tr>`);
     }
+  }
+
+  // If we have no rows at all, show a clear message instead of empty body
+  if (rows.length === 0) {
+    rows.push(`<tr><td colspan="2" align="right" style="padding:16px;color:#a04040;background:#fff4f4;">⚠ לא התקבלו פרטי לקוח. כנראה תקלה בטופס. אנא בדוק את הקבצים המצורפים.</td></tr>`);
   }
 
   let attachmentSection = '';
   if (attachmentNames && attachmentNames.length) {
-    attachmentSection = `
-      <p style="margin-top:18px;padding:12px;background:#FFF4E5;border-right:4px solid #E0A23A;color:#7A4E00;border-radius:6px;">
-        📎 <strong>קבצים מצורפים (${attachmentNames.length}):</strong><br>
-        ${attachmentNames.map(n => escapeHtml(n)).join('<br>')}
-      </p>`;
+    attachmentSection = `<p align="right" style="margin:18px 0 0;padding:12px;background:#fff4e5;border-right:4px solid #e0a23a;color:#7a4e00;direction:rtl;"><strong>קבצים מצורפים (${attachmentNames.length}):</strong><br>${attachmentNames.map(n => escapeHtml(n)).join('<br>')}</p>`;
   }
 
   return `<!DOCTYPE html>
-<html dir="rtl" lang="he"><head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#F5F5F5;font-family:Arial,'Segoe UI',Tahoma,sans-serif;">
-  <div style="max-width:640px;margin:24px auto;background:#FFF;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.08);">
-    <div style="background:linear-gradient(135deg,#B85A00,#E0A23A);color:#FFF;padding:20px 24px;">
-      <h1 style="margin:0;font-size:1.3rem;">${title}</h1>
-      <p style="margin:6px 0 0;opacity:0.92;font-size:0.9rem;">נשלח מ-${SITE_URL}</p>
-    </div>
-    <div style="padding:8px 24px 24px;">
-      <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:0.95rem;">
-        ${rows.join('')}
-      </table>
-      ${attachmentSection}
-      <p style="margin-top:24px;color:#999;font-size:0.78rem;border-top:1px solid #eee;padding-top:12px;">
-        מייל זה נוצר אוטומטית. ענה ישירות ללקוח דרך כתובת המייל / מספר הטלפון שמופיעים למעלה.
-      </p>
-    </div>
-  </div>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif;direction:rtl;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;background:#ffffff;border:1px solid #e0e0e0;">
+<tr><td align="right" style="background:#b85a00;color:#ffffff;padding:20px 24px;direction:rtl;">
+<div style="font-size:20px;font-weight:bold;margin:0;">${escapeHtml(title)}</div>
+<div style="font-size:13px;margin-top:6px;color:#ffe8d0;">נשלח מ-${SITE_URL}</div>
+</td></tr>
+<tr><td style="padding:20px 24px;" align="right">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;direction:rtl;">
+${rows.join('')}
+</table>
+${attachmentSection}
+<p align="right" style="margin:24px 0 0;color:#999999;font-size:12px;border-top:1px solid #eeeeee;padding-top:12px;direction:rtl;">
+מייל זה נוצר אוטומטית. ענה ישירות ללקוח דרך כתובת המייל / מספר הטלפון שמופיעים למעלה.
+</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
 </body></html>`;
 }
 
 function buildAutoReplyHtml(customerName) {
   const greet = customerName ? `שלום ${escapeHtml(customerName)},` : 'שלום,';
   return `<!DOCTYPE html>
-<html dir="rtl" lang="he"><head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#F5F5F5;font-family:Arial,'Segoe UI',Tahoma,sans-serif;">
-  <div style="max-width:560px;margin:24px auto;background:#FFF;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.08);">
-    <div style="background:linear-gradient(135deg,#B85A00,#E0A23A);color:#FFF;padding:24px;text-align:center;">
-      <h1 style="margin:0;font-size:1.5rem;">חברת אספגיל</h1>
-      <p style="margin:6px 0 0;opacity:0.92;">מפעל ישראלי להדפסה על כוסות נייר וקרטון</p>
-    </div>
-    <div style="padding:24px;color:#1a1a1a;line-height:1.7;font-size:1rem;">
-      <p style="margin:0 0 12px;">${greet}</p>
-      <p style="margin:0 0 12px;"><strong>תודה ששלחתם לנו הזמנה</strong> — קיבלנו את הפנייה שלכם בהצלחה.</p>
-      <p style="margin:0 0 12px;">אנו נחזור אליכם בהקדם עם הצעת מחיר מפורטת והדמיה.</p>
-      <p style="margin:24px 0 0;font-weight:700;">בברכה,<br>חברת אספגיל</p>
-      <div style="margin-top:24px;padding-top:14px;border-top:1px solid #eee;color:#666;font-size:0.85rem;">
-        <p style="margin:0;">📞 03-9600550</p>
-        <p style="margin:4px 0 0;">🌐 ${SITE_URL}</p>
-      </div>
-    </div>
-  </div>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><title>תודה על פנייתכם - חברת אספגיל</title></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif;direction:rtl;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#ffffff;border:1px solid #e0e0e0;">
+<tr><td align="center" style="background:#b85a00;color:#ffffff;padding:24px;direction:rtl;">
+<div style="font-size:22px;font-weight:bold;">חברת אספגיל</div>
+<div style="font-size:14px;margin-top:6px;color:#ffe8d0;">מפעל ישראלי להדפסה על כוסות נייר וקרטון</div>
+</td></tr>
+<tr><td align="right" style="padding:24px;color:#1a1a1a;line-height:1.7;font-size:15px;direction:rtl;">
+<p style="margin:0 0 12px;">${greet}</p>
+<p style="margin:0 0 12px;"><strong>תודה ששלחתם לנו הזמנה</strong> — קיבלנו את הפנייה שלכם בהצלחה.</p>
+<p style="margin:0 0 12px;">אנו נחזור אליכם בהקדם עם הצעת מחיר מפורטת והדמיה.</p>
+<p style="margin:24px 0 0;font-weight:bold;">בברכה,<br>חברת אספגיל</p>
+<div style="margin-top:24px;padding-top:14px;border-top:1px solid #eeeeee;color:#666666;font-size:13px;">
+<div>טלפון: 03-9600550</div>
+<div style="margin-top:4px;">אתר: ${SITE_URL}</div>
+</div>
+</td></tr>
+</table>
+</td></tr>
+</table>
 </body></html>`;
 }
 
@@ -177,9 +181,28 @@ export default async function handler(req, res) {
     const fields = body.fields || {};
     const files = Array.isArray(body.files) ? body.files : [];
 
+    // Diagnostic logging — visible in Vercel function logs
+    console.log('submit-form received:', {
+      type: type,
+      fieldsCount: Object.keys(fields).length,
+      fieldsKeys: Object.keys(fields),
+      filesCount: files.length,
+      hasName: !!fields.name,
+      hasEmail: !!fields.email,
+      hasPhone: !!fields.phone
+    });
+
     // Honeypot — silently drop bot submissions
     if (fields.botcheck) {
       return res.status(200).json({ success: true, skipped: 'honeypot' });
+    }
+
+    // Fail loudly if the submission is essentially empty — better than sending an empty email
+    if (Object.keys(fields).length === 0 && files.length === 0) {
+      return res.status(400).json({
+        error: 'Empty submission',
+        message: 'הטופס לא הגיע עם תוכן. אנא מלאו את הפרטים ונסו שוב.'
+      });
     }
 
     // Build attachments array for Resend
