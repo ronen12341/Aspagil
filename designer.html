@@ -238,9 +238,9 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         </div>
         <div class="form-row">
           <div class="form-group"><label for="d-invoice-name">שם לחשבונית</label><input id="d-invoice-name" type="text" name="invoice_name" required></div>
-          <div class="form-group"><label for="d-tax-id">מספר ח.פ / ת.ז</label><input id="d-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{7,9}" title="מספר ח.פ או ת.ז (7-9 ספרות)" required></div>
+          <div class="form-group"><label for="d-tax-id">מספר ח.פ / ת.ז <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="d-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{7,9}" title="מספר ח.פ או ת.ז (7-9 ספרות) - אופציונלי"></div>
         </div>
-        <div class="form-group"><label for="d-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד)</label><input id="d-address" type="text" name="address" required></div>
+        <div class="form-group"><label for="d-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד) <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="d-address" type="text" name="address"></div>
         <div class="form-group"><label for="d-notes">הערות נוספות</label><textarea id="d-notes" name="notes" rows="2"></textarea></div>
 
         <input type="file" name="reference_image" id="h-ref-file" style="display:none">
