@@ -24,7 +24,7 @@ async function callEdits(apiKey, prompt, imageBlob, size, filename) {
   formData.append('prompt', prompt);
   formData.append('model', 'gpt-image-1');
   formData.append('size', size);
-  formData.append('quality', 'medium');
+  formData.append('quality', 'high');
   formData.append('n', '1');
 
   const r = await fetch('https://api.openai.com/v1/images/edits', {
@@ -55,7 +55,7 @@ async function callGen(apiKey, prompt, size) {
         model: 'gpt-image-1',
         prompt: prompt,
         size: size,
-        quality: 'medium',
+        quality: 'high',
         n: 1
       })
     });
@@ -82,7 +82,7 @@ async function callGen(apiKey, prompt, size) {
         model: 'dall-e-3',
         prompt: prompt,
         size: dalleSize,
-        quality: 'standard',
+        quality: 'hd',
         n: 1,
         response_format: 'b64_json'
       })
@@ -530,7 +530,16 @@ ABSOLUTE PROHIBITIONS:
       userRequestBlock = `Design request: ${prompt}\n\nText on cup: NONE — render NO text whatsoever.`;
     }
 
-    const flatPrompt = `Create a FLAT 2D PRINT TEMPLATE for a paper coffee cup wrap. The output is a flat horizontal rectangle (the unrolled cup surface), NOT an illustration of a cup.
+    const flatPrompt = `Create a PROFESSIONAL, SOPHISTICATED, HIGH-END flat 2D print template for a paper coffee cup wrap. This is professional commercial graphic design for a real product — NOT a child's drawing, NOT cartoon clipart, NOT amateur illustration. The output is a flat horizontal rectangle (the unrolled cup surface), NOT an illustration of a cup.
+
+═══════════════════════════════════════════════
+DESIGN QUALITY — CRITICAL
+═══════════════════════════════════════════════
+- Aim for PROFESSIONAL commercial-grade graphic design (think: Starbucks, Costa Coffee, premium boutique cafes)
+- Sophisticated color palettes, refined illustration style, balanced composition
+- DO NOT produce: childish cartoon clipart, simple flat stickers, kindergarten-level art, basic emoji-style icons
+- Use: rich textures, layered illustration, depth, professional typography, considered visual hierarchy
+- The cup should look like it could be sold in a high-end coffee shop
 
 ═══════════════════════════════════════════════
 ABSOLUTE RULE — FLAT RECTANGLE OUTPUT ONLY
