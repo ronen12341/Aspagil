@@ -199,127 +199,13 @@
     </div>
 
     <div class="hero-cups reveal is-visible">
-      <svg viewBox="0 0 560 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <!-- Soft drop shadow under each cup -->
-          <filter id="cupDrop" x="-30%" y="-15%" width="160%" height="135%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
-            <feOffset dx="0" dy="6"/>
-            <feComponentTransfer><feFuncA type="linear" slope="0.32"/></feComponentTransfer>
-            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <!-- Cylindrical light wrap overlay: dark→light→dark across the body -->
-          <linearGradient id="cylLight" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#000" stop-opacity="0.55"/>
-            <stop offset="12%"  stop-color="#000" stop-opacity="0.30"/>
-            <stop offset="30%"  stop-color="#FFF" stop-opacity="0"/>
-            <stop offset="48%"  stop-color="#FFF" stop-opacity="0.40"/>
-            <stop offset="66%"  stop-color="#FFF" stop-opacity="0"/>
-            <stop offset="88%"  stop-color="#000" stop-opacity="0.30"/>
-            <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
-          </linearGradient>
-          <!-- White rolled rim, soft top→bottom shading -->
-          <linearGradient id="rimWhite" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#FFFFFF"/>
-            <stop offset="60%"  stop-color="#F1EEE8"/>
-            <stop offset="100%" stop-color="#D8D2C6"/>
-          </linearGradient>
-          <!-- Per-cup vertical body gradients (slight top-light, bottom-dark) -->
-          <linearGradient id="redBody"    x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D93434"/><stop offset="100%" stop-color="#8B1414"/></linearGradient>
-          <linearGradient id="yellowBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F5C842"/><stop offset="100%" stop-color="#A87B00"/></linearGradient>
-          <linearGradient id="greenBody"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3FA34D"/><stop offset="100%" stop-color="#1B5E20"/></linearGradient>
-          <linearGradient id="blueBody"   x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2C6AD9"/><stop offset="100%" stop-color="#0E3F73"/></linearGradient>
-          <linearGradient id="orangeBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FB8C00"/><stop offset="100%" stop-color="#9F3C0C"/></linearGradient>
-        </defs>
-
-        <!-- YELLOW BACK-LEFT — Bakery -->
-        <g transform="translate(40,180) rotate(-6)">
-          <ellipse cx="60" cy="230" rx="62" ry="9" fill="rgba(0,0,0,0.22)" filter="url(#cupDrop)"/>
-          <g filter="url(#cupDrop)">
-            <path d="M0 8 L10 215 L110 215 L120 8 Z" fill="url(#yellowBody)"/>
-            <path d="M0 8 L10 215 L110 215 L120 8 Z" fill="url(#cylLight)"/>
-            <ellipse cx="60" cy="215" rx="50" ry="4" fill="#5C3F00" opacity="0.55"/>
-            <rect x="22" y="78" width="76" height="68" rx="4" fill="#FFFFFF"/>
-            <rect x="22" y="78" width="76" height="68" rx="4" fill="url(#cylLight)" opacity="0.55"/>
-            <text x="60" y="108" text-anchor="middle" fill="#A87B00" font-family="Heebo,sans-serif" font-weight="900" font-size="17" letter-spacing="0.05em">BAKERY</text>
-            <text x="60" y="128" text-anchor="middle" fill="#3A2A00" font-family="Heebo,sans-serif" font-size="10">★ מאפים טריים ★</text>
-            <ellipse cx="60" cy="8" rx="60" ry="10" fill="url(#rimWhite)"/>
-            <ellipse cx="60" cy="10" rx="55" ry="8" fill="#3A2A00"/>
-            <ellipse cx="60" cy="9" rx="53" ry="6" fill="#1A1200"/>
-            <path d="M12 9 Q60 17 108 9" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- GREEN BACK-RIGHT — Eco -->
-        <g transform="translate(390,200) rotate(8)">
-          <ellipse cx="55" cy="210" rx="57" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#cupDrop)"/>
-          <g filter="url(#cupDrop)">
-            <path d="M0 7 L9 195 L101 195 L110 7 Z" fill="url(#greenBody)"/>
-            <path d="M0 7 L9 195 L101 195 L110 7 Z" fill="url(#cylLight)"/>
-            <ellipse cx="55" cy="195" rx="46" ry="3.5" fill="#0F4424" opacity="0.55"/>
-            <text x="55" y="82" text-anchor="middle" fill="#FFFFFF" font-family="Heebo,sans-serif" font-weight="900" font-size="15" letter-spacing="0.1em">ECO</text>
-            <text x="55" y="102" text-anchor="middle" fill="#E8F5E9" font-family="Heebo,sans-serif" font-weight="700" font-size="11">ירוק וטבעי</text>
-            <ellipse cx="55" cy="7" rx="55" ry="9" fill="url(#rimWhite)"/>
-            <ellipse cx="55" cy="9" rx="50" ry="7" fill="#0F4424"/>
-            <ellipse cx="55" cy="8" rx="48" ry="5" fill="#06200F"/>
-            <path d="M10 8 Q55 16 100 8" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- RED MAIN FRONT-CENTER — Café Roma -->
-        <g transform="translate(170,80)">
-          <ellipse cx="110" cy="345" rx="120" ry="12" fill="rgba(0,0,0,0.28)" filter="url(#cupDrop)"/>
-          <g filter="url(#cupDrop)">
-            <path d="M0 12 L15 325 L205 325 L220 12 Z" fill="url(#redBody)"/>
-            <path d="M0 12 L15 325 L205 325 L220 12 Z" fill="url(#cylLight)"/>
-            <ellipse cx="110" cy="325" rx="92" ry="7" fill="#4A0C0C" opacity="0.55"/>
-            <rect x="48" y="125" width="124" height="100" rx="6" fill="#FFFFFF"/>
-            <rect x="48" y="125" width="124" height="100" rx="6" fill="url(#cylLight)" opacity="0.5"/>
-            <text x="110" y="162" text-anchor="middle" fill="#8B1414" font-family="Heebo,sans-serif" font-weight="900" font-size="24" letter-spacing="0.05em">CAFÉ</text>
-            <text x="110" y="192" text-anchor="middle" fill="#8B1414" font-family="Heebo,sans-serif" font-weight="900" font-size="24" letter-spacing="0.05em">ROMA</text>
-            <line x1="70" y1="202" x2="150" y2="202" stroke="#8B1414" stroke-width="1.2"/>
-            <text x="110" y="218" text-anchor="middle" fill="#222" font-family="Heebo,sans-serif" font-size="10" letter-spacing="0.18em">EST. 2026</text>
-            <ellipse cx="110" cy="12" rx="110" ry="16" fill="url(#rimWhite)"/>
-            <ellipse cx="110" cy="14" rx="103" ry="13" fill="#3A0808"/>
-            <ellipse cx="110" cy="13" rx="100" ry="10" fill="#1F0404"/>
-            <path d="M14 14 Q110 28 206 14" stroke="rgba(255,255,255,0.8)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- BLUE FRONT-LEFT — A monogram -->
-        <g transform="translate(50,310) rotate(-12)">
-          <ellipse cx="45" cy="170" rx="46" ry="7" fill="rgba(0,0,0,0.24)" filter="url(#cupDrop)"/>
-          <g filter="url(#cupDrop)">
-            <path d="M0 6 L8 160 L82 160 L90 6 Z" fill="url(#blueBody)"/>
-            <path d="M0 6 L8 160 L82 160 L90 6 Z" fill="url(#cylLight)"/>
-            <ellipse cx="45" cy="160" rx="37" ry="3" fill="#06204F" opacity="0.55"/>
-            <circle cx="45" cy="82" r="22" fill="#FFFFFF"/>
-            <circle cx="45" cy="82" r="22" fill="url(#cylLight)" opacity="0.4"/>
-            <text x="45" y="91" text-anchor="middle" fill="#0E3F73" font-family="Heebo,sans-serif" font-weight="900" font-size="22">A</text>
-            <ellipse cx="45" cy="6" rx="45" ry="7" fill="url(#rimWhite)"/>
-            <ellipse cx="45" cy="8" rx="41" ry="5.5" fill="#06204F"/>
-            <ellipse cx="45" cy="7" rx="39" ry="4" fill="#020F2A"/>
-            <path d="M8 7 Q45 13 82 7" stroke="rgba(255,255,255,0.75)" stroke-width="1" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- ORANGE FRONT-RIGHT — Party -->
-        <g transform="translate(415,330) rotate(14)">
-          <ellipse cx="42" cy="158" rx="44" ry="7" fill="rgba(0,0,0,0.24)" filter="url(#cupDrop)"/>
-          <g filter="url(#cupDrop)">
-            <path d="M0 6 L8 148 L76 148 L84 6 Z" fill="url(#orangeBody)"/>
-            <path d="M0 6 L8 148 L76 148 L84 6 Z" fill="url(#cylLight)"/>
-            <ellipse cx="42" cy="148" rx="34" ry="3" fill="#5E1F0A" opacity="0.55"/>
-            <text x="42" y="62" text-anchor="middle" fill="#FFFFFF" font-family="Heebo,sans-serif" font-weight="900" font-size="11" letter-spacing="0.12em">PARTY</text>
-            <text x="42" y="86" text-anchor="middle" fill="#FFE066" font-family="serif" font-size="22">★</text>
-            <text x="42" y="110" text-anchor="middle" fill="#FFFFFF" font-family="Heebo,sans-serif" font-size="9" letter-spacing="0.1em">EVENT 2026</text>
-            <ellipse cx="42" cy="6" rx="42" ry="7" fill="url(#rimWhite)"/>
-            <ellipse cx="42" cy="8" rx="38" ry="5.5" fill="#5E1F0A"/>
-            <ellipse cx="42" cy="7" rx="36" ry="4" fill="#2E0E04"/>
-            <path d="M8 7 Q42 13 76 7" stroke="rgba(255,255,255,0.75)" stroke-width="1" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-      </svg>
+      <div class="cup-collage">
+        <img class="cup-img cup-back-left" src="assets/cups/cup-boutique-roastery.png" alt="כוס נייר ממותגת לבית קפה" loading="lazy">
+        <img class="cup-img cup-back-right" src="assets/cups/cup-maccabi-haifa.png" alt="כוס נייר ממותגת לקבוצת ספורט" loading="lazy">
+        <img class="cup-img cup-main" src="assets/cups/cup-coffee-house.png" alt="כוס נייר ממותגת לבית קפה" loading="lazy">
+        <img class="cup-img cup-front-left" src="assets/cups/cup-hitech.png" alt="כוס נייר ממותגת לחברת הייטק" loading="lazy">
+        <img class="cup-img cup-front-right" src="assets/cups/cup-birthday-beach.png" alt="כוס נייר ממותגת ליום הולדת" loading="lazy">
+      </div>
     </div>
   </div>
 </section>

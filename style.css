@@ -102,6 +102,14 @@ p{margin:0 0 1em}
 .hero-trust .divider{width:1px;height:18px;background:var(--gray-300)}
 .hero-cups{position:relative;aspect-ratio:1.1/1;display:flex;align-items:center;justify-content:center}
 .hero-cups svg{width:100%;max-width:560px}
+/* Cup collage — real cup photos arranged like the previous SVG */
+.cup-collage{position:relative;width:100%;max-width:560px;aspect-ratio:1.12/1}
+.cup-img{position:absolute;display:block;filter:drop-shadow(0 12px 18px rgba(0,0,0,0.20))}
+.cup-img.cup-main{left:30%;top:8%;width:42%;z-index:5}
+.cup-img.cup-back-left{left:3%;top:28%;width:24%;transform:rotate(-6deg);z-index:1}
+.cup-img.cup-back-right{right:3%;top:30%;width:23%;transform:rotate(8deg);z-index:2}
+.cup-img.cup-front-left{left:7%;bottom:0%;width:20%;transform:rotate(-12deg);z-index:6}
+.cup-img.cup-front-right{right:7%;bottom:2%;width:19%;transform:rotate(14deg);z-index:7}
 
 /* Subhero for inner pages */
 .subhero{padding:clamp(3rem,6vw,5rem) 0 clamp(2rem,3vw,3rem);background:linear-gradient(180deg,var(--orange-soft) 0%,#fff 100%)}
