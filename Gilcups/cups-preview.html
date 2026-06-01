@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תצוגת כוסות חדשות — אספגיל</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body { font-family: Heebo, sans-serif; background:#FAFAFA; margin:0; padding:2rem; color:#222; }
+  h1 { font-size:1.8rem; margin:0 0 .5rem; }
+  p.lead { color:#666; margin:0 0 2rem; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; max-width:1200px; }
+  .card { background:#FFF; border:1px solid #EEE; border-radius:14px; padding:1rem 1rem 1.2rem; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+  .card .visual { display:flex; align-items:center; justify-content:center; height:220px; border-radius:10px; margin-bottom:.6rem; }
+  .label { font-weight:700; font-size:.95rem; }
+  .sub { color:#888; font-size:.82rem; }
+  a.demo-link { display:inline-block; margin-top:1.5rem; color:#FB8C00; font-weight:700; text-decoration:none; }
+</style>
+</head>
+<body>
+<h1>תצוגת הכוסות החדשות</h1>
+<p class="lead">דוגמה של רכיב הכוס הריאליסטי החדש בשישה צבעים שמופיעים באתר. הכוסות מטמיעות הצללה גלילית, שפה לבנה מגולגלת, צל פנים וצללים על הרצפה.</p>
+
+<div class="grid">
+  <div class="card">
+    <div class="visual" style="background:linear-gradient(135deg,#FFE5E5,#FFF5F5);">
+      <svg viewBox="0 0 200 240" width="160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="r1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D93434"/><stop offset="100%" stop-color="#8B1414"/></linearGradient>
+          <linearGradient id="cy" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#000" stop-opacity=".55"/><stop offset="12%" stop-color="#000" stop-opacity=".3"/><stop offset="30%" stop-color="#FFF" stop-opacity="0"/><stop offset="50%" stop-color="#FFF" stop-opacity=".42"/><stop offset="70%" stop-color="#FFF" stop-opacity="0"/><stop offset="88%" stop-color="#000" stop-opacity=".3"/><stop offset="100%" stop-color="#000" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="rm" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="sh" x="-30%" y="-15%" width="160%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="0" dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#sh)"/>
+        <g filter="url(#sh)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#r1)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#cy)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#4A0C0C" opacity=".55"/>
+          <rect x="60" y="88" width="80" height="65" rx="4" fill="#FFFFFF"/>
+          <rect x="60" y="88" width="80" height="65" rx="4" fill="url(#cy)" opacity=".5"/>
+          <text x="100" y="116" text-anchor="middle" fill="#8B1414" font-family="Heebo" font-weight="900" font-size="16">CAFÉ</text>
+          <text x="100" y="140" text-anchor="middle" fill="#8B1414" font-family="Heebo" font-weight="900" font-size="16">ROMA</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#rm)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#3A0808"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#1F0404"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label">אדום — Café Roma</div>
+    <div class="sub">כוסות נייר ממותגות לבתי קפה</div>
+  </div>
+
+  <div class="card">
+    <div class="visual" style="background:linear-gradient(135deg,#E5F0FF,#F5F9FF);">
+      <svg viewBox="0 0 200 240" width="160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="b1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2C6AD9"/><stop offset="100%" stop-color="#0E3F73"/></linearGradient>
+          <linearGradient id="cy2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#000" stop-opacity=".55"/><stop offset="12%" stop-color="#000" stop-opacity=".3"/><stop offset="30%" stop-color="#FFF" stop-opacity="0"/><stop offset="50%" stop-color="#FFF" stop-opacity=".42"/><stop offset="70%" stop-color="#FFF" stop-opacity="0"/><stop offset="88%" stop-color="#000" stop-opacity=".3"/><stop offset="100%" stop-color="#000" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="rm2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="sh2" x="-30%" y="-15%" width="160%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="0" dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#sh2)"/>
+        <g filter="url(#sh2)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#b1)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#cy2)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#06204F" opacity=".55"/>
+          <circle cx="100" cy="118" r="30" fill="#FFFFFF"/>
+          <circle cx="100" cy="118" r="30" fill="url(#cy2)" opacity=".4"/>
+          <text x="100" y="128" text-anchor="middle" fill="#0E3F73" font-family="Heebo" font-weight="900" font-size="28">A</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#rm2)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#06204F"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#020F2A"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label">כחול — לוגו מונוגרם</div>
+    <div class="sub">לחברות ועסקים</div>
+  </div>
+
+  <div class="card">
+    <div class="visual" style="background:linear-gradient(135deg,#E8F5E9,#F1F8F1);">
+      <svg viewBox="0 0 200 240" width="160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3FA34D"/><stop offset="100%" stop-color="#1B5E20"/></linearGradient>
+          <linearGradient id="cy3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#000" stop-opacity=".55"/><stop offset="12%" stop-color="#000" stop-opacity=".3"/><stop offset="30%" stop-color="#FFF" stop-opacity="0"/><stop offset="50%" stop-color="#FFF" stop-opacity=".42"/><stop offset="70%" stop-color="#FFF" stop-opacity="0"/><stop offset="88%" stop-color="#000" stop-opacity=".3"/><stop offset="100%" stop-color="#000" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="rm3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="sh3" x="-30%" y="-15%" width="160%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="0" dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#sh3)"/>
+        <g filter="url(#sh3)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#g1)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#cy3)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#0F4424" opacity=".55"/>
+          <text x="100" y="108" text-anchor="middle" fill="#FFFFFF" font-family="Heebo" font-weight="900" font-size="22" letter-spacing="0.1em">ECO</text>
+          <text x="100" y="138" text-anchor="middle" fill="#E8F5E9" font-family="Heebo" font-weight="700" font-size="13">ירוק וטבעי</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#rm3)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#0F4424"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#06200F"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label">ירוק — Eco</div>
+    <div class="sub">כוסות ידידותיות לסביבה</div>
+  </div>
+
+  <div class="card">
+    <div class="visual" style="background:linear-gradient(135deg,#FFE9D6,#FFF7EE);">
+      <svg viewBox="0 0 200 240" width="160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="o1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FB8C00"/><stop offset="100%" stop-color="#9F3C0C"/></linearGradient>
+          <linearGradient id="cy4" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#000" stop-opacity=".55"/><stop offset="12%" stop-color="#000" stop-opacity=".3"/><stop offset="30%" stop-color="#FFF" stop-opacity="0"/><stop offset="50%" stop-color="#FFF" stop-opacity=".42"/><stop offset="70%" stop-color="#FFF" stop-opacity="0"/><stop offset="88%" stop-color="#000" stop-opacity=".3"/><stop offset="100%" stop-color="#000" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="rm4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="sh4" x="-30%" y="-15%" width="160%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="0" dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#sh4)"/>
+        <g filter="url(#sh4)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#o1)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#cy4)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#5E1F0A" opacity=".55"/>
+          <rect x="60" y="92" width="80" height="22" rx="3" fill="#FFE066"/>
+          <text x="100" y="108" text-anchor="middle" fill="#5E1F0A" font-family="Heebo" font-weight="900" font-size="11" letter-spacing="0.06em">STREET FOOD</text>
+          <text x="100" y="140" text-anchor="middle" fill="#FFFFFF" font-family="Heebo" font-weight="700" font-size="12">אצלנו טעים</text>
+          <text x="100" y="162" text-anchor="middle" fill="#FFE066" font-family="Heebo" font-size="11">★ ★ ★ ★ ★</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#rm4)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#5E1F0A"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#2E0E04"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label">כתום — Street Food</div>
+    <div class="sub">דוכני מזון ופוד טראקים</div>
+  </div>
+
+  <div class="card">
+    <div class="visual" style="background:linear-gradient(135deg,#FFE5F0,#FFF4E5);">
+      <svg viewBox="0 0 200 240" width="160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="p1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EC4899"/><stop offset="100%" stop-color="#9D174D"/></linearGradient>
+          <linearGradient id="cy5" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#000" stop-opacity=".55"/><stop offset="12%" stop-color="#000" stop-opacity=".3"/><stop offset="30%" stop-color="#FFF" stop-opacity="0"/><stop offset="50%" stop-color="#FFF" stop-opacity=".42"/><stop offset="70%" stop-color="#FFF" stop-opacity="0"/><stop offset="88%" stop-color="#000" stop-opacity=".3"/><stop offset="100%" stop-color="#000" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="rm5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="sh5" x="-30%" y="-15%" width="160%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="0" dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#sh5)"/>
+        <g filter="url(#sh5)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#p1)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#cy5)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#500822" opacity=".55"/>
+          <text x="100" y="84" text-anchor="middle" font-size="22" fill="#FFE066">★</text>
+          <text x="100" y="130" text-anchor="middle" fill="#FFFFFF" font-family="Heebo" font-weight="900" font-size="38">8</text>
+          <text x="100" y="152" text-anchor="middle" fill="#FFE066" font-family="Heebo" font-weight="800" font-size="13">יום הולדת</text>
+          <text x="100" y="168" text-anchor="middle" fill="#FFFFFF" font-family="Heebo" font-size="12">ליובל</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#rm5)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#500822"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#2A0411"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label">ורוד — יום הולדת</div>
+    <div class="sub">מסיבות, ימי הולדת ואירועי ילדים</div>
+  </div>
+
+  <div class="card">
+    <div class="visual" style="background:linear-gradient(135deg,#F5E8EE,#FFF5F8);">
+      <svg viewBox="0 0 200 240" width="160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="e1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9B2747"/><stop offset="100%" stop-color="#5A0F26"/></linearGradient>
+          <linearGradient id="cy6" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#000" stop-opacity=".55"/><stop offset="12%" stop-color="#000" stop-opacity=".3"/><stop offset="30%" stop-color="#FFF" stop-opacity="0"/><stop offset="50%" stop-color="#FFF" stop-opacity=".42"/><stop offset="70%" stop-color="#FFF" stop-opacity="0"/><stop offset="88%" stop-color="#000" stop-opacity=".3"/><stop offset="100%" stop-color="#000" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="rm6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#D8D2C6"/></linearGradient>
+          <filter id="sh6" x="-30%" y="-15%" width="160%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="0" dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="208" rx="62" ry="8" fill="rgba(0,0,0,0.22)" filter="url(#sh6)"/>
+        <g filter="url(#sh6)">
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#e1)"/>
+          <path d="M50 38 L62 198 L138 198 L150 38 Z" fill="url(#cy6)"/>
+          <ellipse cx="100" cy="198" rx="38" ry="3" fill="#2A0712" opacity=".55"/>
+          <text x="100" y="98" text-anchor="middle" font-size="20" fill="#F5C842">✦</text>
+          <text x="100" y="128" text-anchor="middle" fill="#FFFFFF" font-family="Heebo" font-weight="900" font-size="14">הכנס שלנו</text>
+          <text x="100" y="148" text-anchor="middle" fill="#F5C842" font-family="Heebo" font-weight="700" font-size="13" letter-spacing="0.15em">2026</text>
+          <text x="100" y="174" text-anchor="middle" font-size="13" fill="#F5C842">✦ ✦ ✦</text>
+          <ellipse cx="100" cy="38" rx="50" ry="9" fill="url(#rm6)"/>
+          <ellipse cx="100" cy="40" rx="46" ry="7" fill="#2A0712"/>
+          <ellipse cx="100" cy="39" rx="44" ry="5" fill="#15030A"/>
+          <path d="M52 39 Q100 49 148 39" stroke="rgba(255,255,255,.78)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label">בורדו — אירועים</div>
+    <div class="sub">כנסים, חתונות ואירועים יוקרתיים</div>
+  </div>
+</div>
+
+<p><a class="demo-link" href="index.html">← לראות באתר עצמו (דף הבית)</a></p>
+</body>
+</html>

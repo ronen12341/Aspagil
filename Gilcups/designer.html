@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מעצב כוסות AI חינמי | עיצוב כוסות נייר אונליין עם בינה מלאכותית | אספגיל</title>
+<meta name="description" content="מעצב כוסות AI חינמי וייחודי בישראל! תארו במילים מה תרצו על הכוס וקבלו הדמיה תלת-ממדית של כוס נייר ממותגת תוך 30 שניות. עיצוב כוסות אונליין, מתאים לבתי קפה, מסעדות, אירועים. ללא תשלום, ללא רישום.">
+<meta name="keywords" content="מעצב כוסות AI, עיצוב כוסות אונליין, עצב כוס באינטרנט, מעצב כוסות חינמי, עיצוב כוסות בינה מלאכותית, מעצב כוסות נייר, איך לעצב כוס, כוסות עם הדמיה, הדמיית כוס, מעצב גרפי לכוסות, כוסות ממותגות אונליין, אספגיל">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.gilcups.com/designer.html">
+<meta property="og:title" content="מעצב כוסות AI חינמי | אספגיל">
+<meta property="og:description" content="עצבו כוס נייר ממותגת בעזרת AI — תארו במילים, קבלו הדמיה תוך שניות. חינמי, ללא רישום.">
+<meta property="og:locale" content="he_IL">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.gilcups.com/designer.html">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"מעצב כוסות AI - אספגיל",
+  "url":"https://www.gilcups.com/designer.html",
+  "applicationCategory":"DesignApplication",
+  "operatingSystem":"Web Browser",
+  "description":"כלי עיצוב כוסות נייר ממותגות בעזרת בינה מלאכותית. תיאור מילולי → הדמיה תלת-ממדית של כוס נייר תוך 30 שניות.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"ILS"},
+  "inLanguage":"he",
+  "provider":{"@type":"Organization","name":"אספגיל","url":"https://www.gilcups.com/"}
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"בית","item":"https://www.gilcups.com/"},
+    {"@type":"ListItem","position":2,"name":"מעצב כוסות AI","item":"https://www.gilcups.com/designer.html"}
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.ai-designer{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;align-items:start}
+@media (max-width:980px){.ai-designer{grid-template-columns:1fr}}
+.ai-left{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:2rem}
+.ai-step h3{margin:0 0 0.6rem;font-size:1.05rem;color:var(--ink)}
+.ai-step{margin-bottom:1.5rem}
+.ai-input{width:100%;padding:14px 16px;border:1.5px solid var(--gray-300);border-radius:10px;font-size:1.05rem;font-family:inherit;background:#fff;color:var(--ink);box-sizing:border-box}
+.ai-input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,93,47,0.16)}
+textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
+.ai-hint{font-size:0.85rem;color:var(--gray-500);margin-top:6px;line-height:1.5}
+.examples-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.example-pill{padding:7px 14px;background:var(--orange-soft);border:1px solid var(--orange-light);border-radius:100px;font-size:0.85rem;color:var(--orange-dark);cursor:pointer;transition:all .2s}
+.example-pill:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.file-input-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.file-upload-btn{display:flex;align-items:center;gap:14px;width:100%;padding:18px 20px;background:linear-gradient(135deg,#FFF7F2,#FFEDDF);border:2px dashed var(--orange);border-radius:12px;color:var(--orange-dark,#B5410F);cursor:pointer;transition:all 0.2s;box-sizing:border-box;text-align:right;font-family:inherit}
+.file-upload-btn:hover{background:linear-gradient(135deg,#FFEDDF,#FFE0CC);border-color:var(--orange-deep,#A03A0F);transform:translateY(-1px);box-shadow:0 4px 12px -4px rgba(232,93,47,0.3)}
+.file-upload-btn:active{transform:translateY(0)}
+.file-upload-btn svg{flex-shrink:0;color:var(--orange)}
+.file-upload-text{display:flex;flex-direction:column;gap:2px;flex:1}
+.file-upload-title{font-weight:700;font-size:1rem;color:var(--ink)}
+.file-upload-sub{font-size:0.82rem;color:var(--gray-500);font-weight:400}
+.ai-thumb-wrap{margin-top:10px;display:none;align-items:center;gap:10px}
+.ai-thumb-wrap.show{display:flex}
+.ai-thumb-wrap.show + .file-upload-btn,.file-upload-btn.has-file{display:none}
+.ai-thumb{max-width:90px;max-height:90px;border-radius:10px;border:2px solid var(--gray-200);object-fit:cover}
+.ai-thumb-label{font-size:0.88rem;color:var(--gray-700)}
+.ai-thumb-remove{background:none;border:none;color:#C73838;cursor:pointer;font-size:1.2rem;padding:4px;line-height:1}
+.ai-generate-btn{width:100%;padding:18px 24px;background:linear-gradient(135deg,#E85D2F,#FF7A4A);color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;box-shadow:0 8px 22px -8px rgba(232,93,47,0.55);margin-top:1.5rem}
+.ai-generate-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px -8px rgba(232,93,47,0.65)}
+.ai-generate-btn:disabled{background:var(--gray-300);cursor:not-allowed;transform:none;box-shadow:none}
+.ai-right{position:sticky;top:90px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.8rem;text-align:center;min-height:520px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.ai-empty{color:var(--gray-500);padding:2rem 1rem}
+.ai-empty svg{width:80px;height:80px;margin:0 auto 1rem;opacity:0.3}
+.ai-loading{display:none;flex-direction:column;align-items:center;gap:1rem}
+.ai-loading.show{display:flex}
+.ai-spinner{width:60px;height:60px;border:4px solid var(--orange-soft);border-top-color:var(--orange);border-radius:50%;animation:ai-spin 1s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result{display:none;width:100%}
+.ai-result.show{display:block}
+.preview-img{width:100%;max-width:540px;margin:0 auto;display:block;border-radius:0;box-shadow:0 12px 32px rgba(0,0,0,0.18);border:1px solid #e0e0e0}
+/* === מוקאפ כוס נייר אמיתית עם תבנית PNG === */
+.cup-mockup-real{position:relative;width:100%;max-width:420px;margin:0 auto;aspect-ratio:1/1;}
+.cup-template-bg{width:100%;height:100%;display:block;object-fit:contain}
+/* אזור הגוף של הכוס - איפה שהעיצוב מוטבע. הקואורדינטות מותאמות לתבנית כוס נייר סטנדרטית בזווית 3/4. */
+.cup-design-region{
+  position:absolute;
+  left:30%;top:30%;width:40%;height:40%;
+  background-repeat:no-repeat;background-position:center center;background-size:cover;
+  /* מצב משולב - מאפשר לצללה של הכוס לעבור דרך העיצוב, נראה כמו הדפסה אמיתית */
+  mix-blend-mode:multiply;
+  /* טרפז עדין שמתאים לעיקול גוף הכוס */
+  clip-path:polygon(2% 0,98% 0,94% 100%,6% 100%);
+  pointer-events:none;
+}
+@media (max-width:640px){.cup-mockup-real{max-width:280px}}
+.ai-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
+.ai-actions .btn{padding:11px 18px;font-size:0.95rem}
+.ai-error{color:#C73838;background:#FCEBEB;border:1px solid #F5C0C0;padding:1rem 1.2rem;border-radius:10px;display:none;text-align:right;font-size:0.92rem;line-height:1.6;max-width:480px}
+.ai-error.show{display:block}
+.submit-area{background:var(--orange-soft);border-radius:var(--radius-lg);padding:2rem;margin-top:2rem;display:none}
+.submit-area.show{display:block}
+.submit-area h3{margin-bottom:0.8rem;font-size:1.2rem}
+.info-box{background:#F0F8FF;border-right:3px solid #2169C8;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;color:#08274D;margin-top:1.2rem;line-height:1.55}
+.info-box strong{color:#04132A}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><div><div class="brand-name">אספגיל</div><div class="brand-tag">כוסות נייר מעוצבות · מאז 1995</div></div></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">בית</a>
+      <a href="paper-cups.html">כוסות נייר ממותגות</a>
+      <a href="cardboard-cups.html">כוסות קרטון</a>
+      <a href="printing.html">הדפסה</a>
+      <a href="disc-duplication.html">שכפול דיסקים</a>
+      <a href="designer.html" class="is-active">מעצב AI</a>
+      <a href="about.html">אודות</a>
+      <a href="contact.html">צור קשר</a>
+    </nav>
+    <div class="header-cta">
+      <a class="phone-link" href="tel:039600550">03-9600550</a>
+      <a class="btn btn-primary" href="contact.html#quote">הצעת מחיר</a>
+      <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="subhero">
+  <div class="container">
+    <p class="crumbs"><a href="index.html">בית</a> ← מעצב AI</p>
+    <h1>מעצב כוסות <span style="color:var(--orange)">בינה מלאכותית ✨</span></h1>
+    <p class="lead">תארו במילים מה תרצו על הכוס — וה-AI שלנו יצור עיצוב מקצועי מותאם אישית. אפשר להעלות גם תמונה לשילוב.</p>
+  </div>
+</section>
+
+<section class="section section--gray" id="designer-section">
+  <div class="container">
+
+    <div class="ai-designer">
+
+      <!-- LEFT: Simple input -->
+      <div class="ai-left">
+
+        <div class="ai-step">
+          <h3>מה תרצו על הכוס?</h3>
+          <textarea id="design-description" class="ai-input" placeholder="לדוגמה: כוס לבנה עם הלוגו פעמיים, או כוס בצבעי מים עם פרחים ורודים והטקסט 'אמא הכי יפה בעולם'..."></textarea>
+          <p class="ai-hint">תארו בפירוט — מה הטקסט (אם יש), איזה צבעים, איזה סגנון, אילו אלמנטים דקורטיביים. ככל שתפרטו יותר, התוצאה תהיה מדויקת יותר.</p>
+          <p class="ai-hint" style="background:#FFF8E6;border-right:3px solid #E0A23A;padding:8px 12px;border-radius:6px;margin-top:8px;color:#7A5A00;"><strong>💡 טיפ:</strong> כתבו את הטקסט הרצוי <strong>בתוך גרשיים</strong> (לדוגמה: "מכבי חיפה"). ה-AI לפעמים טועה בעברית — אם זה קורה, המעצב הגרפי שלנו יתקן ידנית לפני ההדפסה.</p>
+        </div>
+
+        <div class="ai-step">
+          <h3>תמונה לשילוב (אופציונלי)</h3>
+          <input type="file" id="ref-image" accept="image/png,image/jpeg,image/webp" class="file-input-hidden">
+          <label for="ref-image" class="file-upload-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="file-upload-text">
+              <span class="file-upload-title">לחצו להעלאת תמונה</span>
+              <span class="file-upload-sub">PNG, JPG, WEBP · עד 10MB</span>
+            </span>
+          </label>
+          <div class="ai-thumb-wrap" id="thumb-wrap">
+            <img id="ref-thumb" class="ai-thumb" alt="">
+            <span class="ai-thumb-label" id="thumb-name">תמונה.png</span>
+            <button type="button" class="ai-thumb-remove" id="remove-thumb">✕</button>
+          </div>
+          <p class="ai-hint">אם תעלו תמונה, ה-AI ינסה לשלב אותה בעיצוב.</p>
+        </div>
+
+        <button type="button" id="generate-btn" class="ai-generate-btn">
+          ✨ צרו עיצוב
+        </button>
+
+        <div class="info-box">
+          <strong>איך זה עובד?</strong> משתמשים ב-AI של OpenAI (אותה טכנולוגיה שמפעילה את ChatGPT). תוך 15-30 שניות תקבלו הדמיה תלת-ממדית של הכוס שלכם. כשתשלחו את הבקשה — קובץ ההדפסה השטוח במידה 170×96 מ"מ נשלח אוטומטית למעצב הגרפי שלנו.
+        </div>
+
+        <a href="cup-template.pdf" download style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:1rem;padding:14px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;text-decoration:none;transition:all 0.15s;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          לחצו כאן על מנת לעצב לבד את הגרפיקה שלכם
+        </a>
+      </div>
+
+      <!-- RIGHT: Preview -->
+      <div class="ai-right">
+        <div class="ai-empty" id="ai-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5A5A5A" stroke-width="1.5"><path d="M12 2L8 8H4l4 5-2 7 6-4 6 4-2-7 4-5h-4z"/></svg>
+          <h4 style="font-size:1.1rem;color:var(--ink);margin-bottom:0.5rem">תצוגה מקדימה</h4>
+          <p style="color:var(--gray-500);font-size:0.9rem">תארו את הכוס ולחצו "צרו עיצוב"</p>
+        </div>
+
+        <div class="ai-loading" id="ai-loading">
+          <div class="ai-spinner"></div>
+          <div style="font-weight:600;color:var(--gray-700)">יוצר עיצוב עם DALL-E...</div>
+          <div style="font-size:0.85rem;color:var(--gray-500);max-width:280px">⏳ 15-30 שניות</div>
+        </div>
+
+        <div class="ai-result" id="ai-result">
+          <!-- מוקאפ תבנית כוס אמיתית: assets/cup-template.png + overlay של הקובץ השטוח -->
+          <div class="cup-mockup-real" id="cup-mockup-real">
+            <img class="cup-template-bg" src="assets/cup-template.png" alt="כוס נייר" onerror="this.style.display='none';document.getElementById('result-img').style.display='block';">
+            <div class="cup-design-region" id="cup-design-region"></div>
+          </div>
+          <!-- Fallback: רגיל - הקובץ השטוח אם התבנית לא נטענה -->
+          <img id="result-img" class="preview-img" alt="העיצוב שלכם" style="display:none">
+          <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--gray-700);font-weight:600;">🥤 כך הכוס שלכם תיראה</p>
+          <button type="button" id="toggle-flat-view" style="margin-top:0.4rem;background:none;border:none;color:var(--orange);font-size:0.85rem;cursor:pointer;text-decoration:underline;font-family:inherit;">הצג את קובץ ההדפסה השטוח</button>
+
+          <div id="text-warn" style="display:none;background:#FFF4E5;border:1px solid #F0B26A;border-right:4px solid #E0A23A;color:#7A4E00;padding:10px 14px;border-radius:8px;margin-top:0.9rem;font-size:0.92rem;text-align:right;"></div>
+          <div class="ai-actions">
+            <button type="button" class="btn btn-primary" id="proceed-btn">שלח לאספגיל ←</button>
+          </div>
+          <p style="margin-top:0.7rem;font-size:0.82rem;color:var(--gray-500);">📐 קובץ הדפסה שטוח (170×96 מ"מ) נשלח אוטומטית למעצב הגרפי</p>
+        </div>
+
+        <div class="ai-error" id="ai-error"></div>
+      </div>
+    </div>
+
+    <!-- SUBMIT AREA -->
+    <div class="submit-area" id="submit-area">
+      <h3>📧 שלחו את הבקשה לאספגיל</h3>
+      <p style="color:var(--gray-700);margin-bottom:1.2rem;">המעצב הגרפי שלנו יקבל את התיאור, התמונה והעיצוב — ויכין קובץ הדפסה מקצועי תוך 24 שעות.</p>
+
+      <form id="design-form" action="/api/submit-form" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="subject" value="🎨 בקשת עיצוב AI חדשה מהאתר">
+        <!-- Honeypot for bot protection (must stay empty) -->
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="user_description" id="h-desc">
+
+        <div class="form-row">
+          <div class="form-group"><label for="d-name">שם</label><input id="d-name" type="text" name="name" required></div>
+          <div class="form-group"><label for="d-phone">טלפון</label><input id="d-phone" type="tel" name="phone" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="d-email">אימייל</label><input id="d-email" type="email" name="email" required></div>
+          <div class="form-group">
+            <label for="d-qty">כמות יחידות</label>
+            <select id="d-qty" name="quantity" required>
+              <option value="">בחרו...</option>
+              <option value="500">500 יח׳ — 500 ש"ח</option>
+              <option value="1000">1,000 יח׳ — 800 ש"ח</option>
+              <option value="2000">2,000 יח׳ — 1,500 ש"ח</option>
+              <option value="3000">3,000 יח׳ — 2,100 ש"ח</option>
+              <option value="5000">5,000 יח׳ — 2,750 ש"ח</option>
+              <option value="10000">10,000 יח׳ — 4,500 ש"ח</option>
+              <option value="50000">50,000 יח׳ — 11,500 ש"ח + 600 ש"ח לכל צבע</option>
+              <option value="100000">100,000 יח׳ — 21,000 ש"ח + 600 ש"ח לכל צבע</option>
+              <option value="100000+">100,000+ — הצעת מחיר אישית</option>
+            </select>
+            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">המחירים כוללים מע"מ ואינם כוללים משלוח</small>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="d-invoice-name">שם לחשבונית</label><input id="d-invoice-name" type="text" name="invoice_name" required></div>
+          <div class="form-group"><label for="d-tax-id">מספר ח.פ / ת.ז <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="d-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{7,9}" title="מספר ח.פ או ת.ז (7-9 ספרות) - אופציונלי"></div>
+        </div>
+        <div class="form-group"><label for="d-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד) <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="d-address" type="text" name="address"></div>
+        <div class="form-group"><label for="d-notes">הערות נוספות</label><textarea id="d-notes" name="notes" rows="2"></textarea></div>
+
+        <input type="file" name="reference_image" id="h-ref-file" style="display:none">
+        <input type="file" name="print_file_170x96" id="h-flat-file" style="display:none">
+        <input type="file" name="cup_mockup_preview" id="h-mockup-file" style="display:none">
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:1.05rem;">שלח לאספגיל <span class="arrow">←</span></button>
+
+        <div id="design-status" style="margin-top:0.8rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.9rem;display:none"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">אספגיל</div>
+        <p class="footer-tag">מפעל ישראלי להדפסה על כוסות נייר וכוסות קרטון. מאז 1995.</p>
+        <p><a href="tel:039600550" style="color:var(--orange-light);font-weight:700;font-size:1.1rem;">03-9600550</a></p>
+      </div>
+      <div><h4>שירותים</h4><ul>
+        <li><a href="paper-cups.html">כוסות נייר ממותגות</a></li>
+        <li><a href="cardboard-cups.html">כוסות קרטון</a></li>
+        <li><a href="printing.html">הדפסה על כוסות</a></li>
+        <li><a href="disc-duplication.html">שכפול דיסקים</a></li>
+        <li><a href="designer.html">מעצב AI</a></li>
+      </ul></div>
+      <div><h4>החברה</h4><ul>
+        <li><a href="about.html">אודות</a></li>
+        <li><a href="contact.html">צור קשר</a></li>
+        <li><a href="contact.html#quote">הצעת מחיר</a></li>
+      </ul></div>
+      <div><h4>יצירת קשר</h4><ul>
+        <li>רחוב הירקון 39, בני ברק</li>
+        <li>קומה 3</li>
+        <li><a href="tel:039600550">03-9600550</a></li>
+        <li><a href="mailto:salesaspagil@gmail.com">salesaspagil@gmail.com</a></li>
+        <li><a href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> אספגיל — כל הזכויות שמורות</div>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+</a>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+const mt=document.getElementById('menuToggle'),mn=document.getElementById('mainNav');
+mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
+
+(function(){
+  let refFile=null,refBase64=null;
+  let flatBlob=null;   // flat 170×96 print file (sent to email)
+  let mockupBlob=null; // 3D cup mockup (shown to customer)
+
+  // Example pills (if any are added to the HTML in the future)
+  document.querySelectorAll('.example-pill').forEach(p=>{
+    p.addEventListener('click',()=>{
+      const designEl=document.getElementById('design-description');
+      if(p.dataset.val){designEl.value=p.dataset.val;}
+      else if(p.dataset.design){designEl.value=p.dataset.design;}
+      designEl.focus();
+    });
+  });
+
+  // Reference image upload
+  document.getElementById('ref-image').addEventListener('change',e=>{
+    const f=e.target.files[0];if(!f)return;
+    refFile=f;
+    const r=new FileReader();
+    r.onload=ev=>{
+      refBase64=ev.target.result;
+      document.getElementById('ref-thumb').src=ev.target.result;
+      document.getElementById('thumb-name').textContent=f.name;
+      document.getElementById('thumb-wrap').classList.add('show');
+      document.querySelector('.file-upload-btn').classList.add('has-file');
+    };
+    r.readAsDataURL(f);
+  });
+
+  document.getElementById('remove-thumb').addEventListener('click',()=>{
+    refFile=null;refBase64=null;
+    document.getElementById('ref-image').value='';
+    document.getElementById('thumb-wrap').classList.remove('show');
+    document.querySelector('.file-upload-btn').classList.remove('has-file');
+  });
+
+  async function generateDesign(){
+    const desc=document.getElementById('design-description').value.trim();
+    if(!desc){alert('אנא תארו מה תרצו על הכוס');return;}
+
+    document.getElementById('ai-empty').style.display='none';
+    document.getElementById('ai-result').classList.remove('show');
+    document.getElementById('ai-error').classList.remove('show');
+    document.getElementById('ai-loading').classList.add('show');
+    flatBlob=null;
+    mockupBlob=null;
+
+    try{
+      // Single freeform prompt — the API extracts text + colors from it.
+      const body={prompt:desc};
+      if(refBase64){body.imageBase64=refBase64;}
+
+      const resp=await fetch('/api/generate',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+
+      const data=await resp.json();
+
+      if(!resp.ok){
+        throw new Error(data.message||data.error||data.details||'Generation failed');
+      }
+
+      // Helper: convert response image (b64 or url) to a Blob
+      async function imgToBlob(img){
+        if(!img)return null;
+        if(img.b64_json){
+          const bin=atob(img.b64_json);
+          const bytes=new Uint8Array(bin.length);
+          for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+          return new Blob([bytes],{type:'image/png'});
+        }
+        if(img.url){
+          try{const r=await fetch(img.url);return await r.blob();}catch(e){return null;}
+        }
+        return null;
+      }
+
+      // === CLIENT-SIDE TEXT OVERLAY ===
+      // gpt-image-1 cannot reliably render Hebrew. The API generates the
+      // visual WITHOUT text, and we draw the exact Hebrew text here with
+      // a real Hebrew font.
+      function wrapHebrewText(text, maxLines){
+        if(maxLines <= 1) return [text];
+        const words = text.split(/\s+/).filter(Boolean);
+        if(words.length <= 1) return [text];
+        const perLine = Math.ceil(words.length / maxLines);
+        const lines = [];
+        for(let i = 0; i < words.length; i += perLine){
+          lines.push(words.slice(i, i + perLine).join(' '));
+        }
+        return lines;
+      }
+
+      async function overlayTextOnImage(imageBlob, overlayConfig, isFlat){
+        if(!imageBlob){console.warn('[overlay] no imageBlob, skipping');return imageBlob;}
+        if(!overlayConfig || !overlayConfig.text){console.log('[overlay] no overlayConfig, skipping');return imageBlob;}
+        console.log('[overlay] drawing text on '+(isFlat?'flat':'mockup')+':', overlayConfig.text);
+
+        return new Promise(resolve => {
+          const img = new Image();
+          // Do NOT set crossOrigin for blob URLs — it can prevent the load.
+          let settled = false;
+          const finish = (result) => {
+            if(settled) return;
+            settled = true;
+            try { URL.revokeObjectURL(img.src); } catch(e){}
+            resolve(result || imageBlob);
+          };
+
+          img.onload = function(){
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = img.naturalWidth || img.width;
+              canvas.height = img.naturalHeight || img.height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0);
+
+              const text = overlayConfig.text;
+              const color = overlayConfig.color || '#E85D2F';
+              // Lower position: AI tends to place the logo at center, so we
+              // put the text in the lower third of the cup, below the logo.
+              const yRatio = isFlat ? 0.75 : 0.78;
+              const xRatio = isFlat ? 0.5 : 0.46;
+
+              const base = Math.min(canvas.width, canvas.height);
+              const len = Array.from(text).length;
+              let fontSize;
+              if(len <= 8) fontSize = base * 0.085;
+              else if(len <= 16) fontSize = base * 0.062;
+              else if(len <= 25) fontSize = base * 0.048;
+              else fontSize = base * 0.038;
+
+              const lines = wrapHebrewText(text, len > 18 ? 2 : 1);
+
+              ctx.font = '900 ' + Math.round(fontSize) + 'px "Heebo", "Assistant", system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              try { ctx.direction = 'rtl'; } catch(e){}
+              ctx.lineJoin = 'round';
+              ctx.miterLimit = 2;
+
+              const lineHeight = fontSize * 1.15;
+              const x = canvas.width * xRatio;
+              const totalH = lines.length * lineHeight;
+              const startY = canvas.height * yRatio - ((lines.length - 1) * lineHeight) / 2;
+
+              // Soft white "plate" behind text — guarantees readability over
+              // any AI-generated background and creates a designed look.
+              const padX = fontSize * 0.6;
+              const padY = fontSize * 0.35;
+              const maxLineW = Math.max(...lines.map(l => ctx.measureText(l).width));
+              const plateW = maxLineW + padX * 2;
+              const plateH = totalH + padY * 2;
+              const plateX = x - plateW / 2;
+              const plateY = startY - lineHeight / 2 - padY;
+              const radius = plateH * 0.35;
+
+              ctx.save();
+              ctx.fillStyle = 'rgba(255,255,255,0.92)';
+              ctx.shadowColor = 'rgba(0,0,0,0.18)';
+              ctx.shadowBlur = fontSize * 0.4;
+              ctx.shadowOffsetY = fontSize * 0.08;
+              // Rounded rect
+              ctx.beginPath();
+              ctx.moveTo(plateX + radius, plateY);
+              ctx.lineTo(plateX + plateW - radius, plateY);
+              ctx.quadraticCurveTo(plateX + plateW, plateY, plateX + plateW, plateY + radius);
+              ctx.lineTo(plateX + plateW, plateY + plateH - radius);
+              ctx.quadraticCurveTo(plateX + plateW, plateY + plateH, plateX + plateW - radius, plateY + plateH);
+              ctx.lineTo(plateX + radius, plateY + plateH);
+              ctx.quadraticCurveTo(plateX, plateY + plateH, plateX, plateY + plateH - radius);
+              ctx.lineTo(plateX, plateY + radius);
+              ctx.quadraticCurveTo(plateX, plateY, plateX + radius, plateY);
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+
+              lines.forEach((line, i) => {
+                const y = startY + i * lineHeight;
+                ctx.fillStyle = color;
+                ctx.fillText(line, x, y);
+              });
+
+              // Output as JPEG (much smaller than PNG) — keeps the submission
+              // payload well under Vercel's body size limit. Quality 0.92 is
+              // visually indistinguishable from PNG for product mockups.
+              canvas.toBlob(b => {
+                console.log('[overlay] '+(isFlat?'flat':'mockup')+' done, blob size:', b ? b.size : 'null');
+                finish(b);
+              }, 'image/jpeg', 0.92);
+            } catch(err) {
+              console.error('[overlay] error during draw:', err);
+              finish(null);
+            }
+          };
+          img.onerror = function(err){
+            console.error('[overlay] image load error:', err);
+            finish(null);
+          };
+          img.src = URL.createObjectURL(imageBlob);
+        });
+      }
+
+      // Try to load Heebo Black so the canvas draws with it. Non-blocking — if
+      // it fails we fall back to system bold.
+      if(document.fonts && document.fonts.load){
+        try { await document.fonts.load('900 60px Heebo'); } catch(e) { console.warn('[overlay] Heebo load failed:', e); }
+      }
+
+      // Process both images in parallel
+      [mockupBlob,flatBlob]=await Promise.all([
+        imgToBlob(data.mockup),
+        imgToBlob(data.flat)
+      ]);
+
+      // Build the final 170×96mm print file (with bottom 8mm white strip).
+      // This becomes the customer preview AND what gets emailed to the designer.
+      const rawBlob=flatBlob||mockupBlob;
+      if(!rawBlob){
+        throw new Error('לא התקבלה תמונה מה-AI');
+      }
+      // Process to the final 170×96mm print file (with the white strip)
+      const printFileBlob = await buildPrintFile170x96(rawBlob);
+      // Replace flatBlob with the processed version so the email sends THIS one
+      flatBlob = printFileBlob;
+      const flatPreviewUrl=URL.createObjectURL(printFileBlob);
+
+      // Place the print file (with white strip) on the cup-body region of the template
+      const designRegion=document.getElementById('cup-design-region');
+      if(designRegion){
+        designRegion.style.backgroundImage='url("'+flatPreviewUrl+'")';
+      }
+      // The flat itself (fallback when template missing, and for the toggle)
+      document.getElementById('result-img').src=flatPreviewUrl;
+
+      // If the text verifier flagged a spelling mismatch (after retries), warn the customer
+      const verify=data.textVerification;
+      const warnEl=document.getElementById('text-warn');
+      if(warnEl){
+        if(verify && !verify.matches && verify.expected && verify.expected.length){
+          warnEl.innerHTML='<strong>⚠ בדקו את הכתיב בעיצוב</strong><br>הטקסט המבוקש: '+verify.expected.map(t=>'"'+t+'"').join(', ')+'<br><span style="font-size:0.85em;">ה-AI לפעמים טועה באיות עברית. אם יש שגיאה — רשמו בהערות מה הטקסט הנכון, והגרפיקאי שלנו יתקן ידנית לפני ההדפסה.</span>';
+          warnEl.style.display='block';
+        } else {
+          warnEl.style.display='none';
+        }
+      }
+
+      document.getElementById('ai-loading').classList.remove('show');
+      document.getElementById('ai-result').classList.add('show');
+      document.getElementById('submit-area').classList.add('show');
+    }catch(err){
+      console.error('Generation error:',err);
+      document.getElementById('ai-loading').classList.remove('show');
+      const errEl=document.getElementById('ai-error');
+      errEl.classList.add('show');
+      errEl.innerHTML='<strong>⚠ שגיאה ביצירת העיצוב</strong><br>'+(err.message||'')+'<br><br><span style="font-size:0.85em;color:#888;">בדיקות:<br>1. הקובץ api/generate.js הועלה ל-GitHub?<br>2. OPENAI_API_KEY מוגדר ב-Vercel?<br>3. יש קרדיט בחשבון OpenAI ($5+)?</span>';
+      document.getElementById('ai-empty').style.display='block';
+    }
+  }
+
+  document.getElementById('generate-btn').addEventListener('click',generateDesign);
+
+  // Toggle between cup mockup view and the raw flat print file view
+  document.getElementById('toggle-flat-view').addEventListener('click',()=>{
+    const cup=document.getElementById('cup-mockup-real');
+    const flatImg=document.getElementById('result-img');
+    const btn=document.getElementById('toggle-flat-view');
+    if(flatImg.style.display==='none' || !flatImg.style.display){
+      flatImg.style.display='block';
+      if(cup) cup.style.display='none';
+      btn.textContent='חזרה להדמיית הכוס';
+    } else {
+      flatImg.style.display='none';
+      if(cup) cup.style.display='block';
+      btn.textContent='הצג את קובץ ההדפסה השטוח';
+    }
+  });
+
+  document.getElementById('proceed-btn').addEventListener('click',()=>{
+    document.getElementById('submit-area').scrollIntoView({behavior:'smooth'});
+  });
+
+  // Helper: read a Blob/File as base64 (without the data: prefix)
+  function readBlobAsBase64(b){
+    return new Promise(function(resolve,reject){
+      const r=new FileReader();
+      r.onload=function(){
+        const s=String(r.result||'');
+        const i=s.indexOf(',');
+        resolve(i>=0?s.substring(i+1):s);
+      };
+      r.onerror=function(){reject(new Error('FileReader error'));};
+      r.readAsDataURL(b);
+    });
+  }
+
+  // Build the 170×96mm print file at 300 DPI (2008×1134 px) with:
+  // - Sharp corners (no rounding)
+  // - 8mm white strip at the bottom (for the cup base region)
+  // - Design fills the top 88mm
+  async function buildPrintFile170x96(blob){
+    if(!blob) return blob;
+    return new Promise(function(resolve){
+      const img = new Image();
+      img.onload = function(){
+        try {
+          // Final print dimensions: 170×96mm at 300 DPI
+          const PRINT_W = 2008;     // 170mm × 300/25.4 ≈ 2008 px
+          const PRINT_H = 1134;     // 96mm × 300/25.4 ≈ 1134 px
+          const STRIP_H = 94;       // 8mm × 300/25.4 ≈ 94 px (bottom white strip)
+          const DESIGN_H = PRINT_H - STRIP_H; // 1040 px = 88mm (design area only)
+
+          const srcW = img.naturalWidth || img.width;
+          const srcH = img.naturalHeight || img.height;
+          // Design area aspect: 170mm × 88mm = 1.932:1
+          const designAspect = 170 / 88;
+          const srcAspect = srcW / srcH;
+          // Crop the source to the design area aspect (center crop)
+          let cropX=0, cropY=0, cropW=srcW, cropH=srcH;
+          if(srcAspect > designAspect){
+            cropW = Math.round(srcH * designAspect);
+            cropX = Math.round((srcW - cropW)/2);
+          } else if(srcAspect < designAspect){
+            cropH = Math.round(srcW / designAspect);
+            cropY = Math.round((srcH - cropH)/2);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = PRINT_W;
+          canvas.height = PRINT_H;
+          const ctx = canvas.getContext('2d');
+          // White background for the entire canvas (including the bottom strip)
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, PRINT_W, PRINT_H);
+          ctx.imageSmoothingQuality = 'high';
+          // Draw the design into the top design area (sharp rectangular fit)
+          ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, PRINT_W, DESIGN_H);
+          // The bottom STRIP_H px stays pure white — the 8mm strip for the cup base
+          canvas.toBlob(function(b){
+            try { URL.revokeObjectURL(img.src); } catch(e){}
+            resolve(b || blob);
+          }, 'image/jpeg', 0.92);
+        } catch(err){
+          console.error('buildPrintFile170x96 error:', err);
+          resolve(blob);
+        }
+      };
+      img.onerror = function(){
+        console.error('buildPrintFile170x96: image load failed');
+        resolve(blob);
+      };
+      img.src = URL.createObjectURL(blob);
+    });
+  }
+
+  // Compress reference image (logo) for the email — smaller than the print file
+  async function compressImageBlob(blob, maxWidth, quality){
+    if(!blob) return blob;
+    return new Promise(function(resolve){
+      const img = new Image();
+      img.onload = function(){
+        try {
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if(w > maxWidth){
+            h = Math.round(h * (maxWidth / w));
+            w = maxWidth;
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          canvas.toBlob(function(b){
+            try { URL.revokeObjectURL(img.src); } catch(e){}
+            resolve(b || blob);
+          }, 'image/jpeg', quality);
+        } catch(err){
+          console.error('compressImageBlob error:', err);
+          resolve(blob);
+        }
+      };
+      img.onerror = function(){
+        console.error('compressImageBlob: image load failed');
+        resolve(blob);
+      };
+      img.src = URL.createObjectURL(blob);
+    });
+  }
+
+  // Form submission — POST JSON (with base64 files) to /api/submit-form
+  const form=document.getElementById('design-form');
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const desc=document.getElementById('design-description').value.trim();
+    const status=document.getElementById('design-status');
+    if(!desc){
+      status.style.display='block';status.style.background='#FCEBEB';status.style.color='#C73838';
+      status.textContent='נא תארו את הכוס לפני שליחה';
+      return;
+    }
+
+    document.getElementById('h-desc').value=desc;
+
+    status.style.display='block';status.style.background='#FFF8E6';status.style.color='#8B6300';
+    status.textContent='⏳ שולח...';
+
+    const submitBtn=form.querySelector('button[type="submit"]');
+    const originalBtnHtml=submitBtn?submitBtn.innerHTML:'';
+    if(submitBtn){submitBtn.disabled=true;}
+
+    try{
+      // Collect plain string fields
+      const fields={};
+      for(const el of form.elements){
+        if(!el.name||el.type==='file'||el.type==='submit'||el.type==='button')continue;
+        if(el.type==='checkbox'||el.type==='radio'){
+          if(el.checked)fields[el.name]=el.value;
+        }else{
+          fields[el.name]=el.value;
+        }
+      }
+
+      // Collect files for the email:
+      // 1. The customer's uploaded reference (logo) — compressed
+      // 2. The print file at EXACT 170×96 mm @ 300 DPI (2008×1134 px) — cropped and resized
+      // We do NOT send the cup mockup preview anymore — only the print file.
+      const files=[];
+      if(refFile){
+        const compressed = await compressImageBlob(refFile, 900, 0.85);
+        const b64=await readBlobAsBase64(compressed);
+        files.push({field:'reference_image',name:'reference-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
+      }
+      if(flatBlob){
+        // flatBlob is already the processed 170×96mm print file (built in generateDesign)
+        const b64=await readBlobAsBase64(flatBlob);
+        files.push({field:'print_file_170x96',name:'print-file-170x96mm-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
+      }
+
+      sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));
+
+      const payload=JSON.stringify({type:'design',fields:fields,files:files});
+      console.log('[submit] payload size:', (payload.length/1024/1024).toFixed(2), 'MB, files:', files.length);
+
+      const resp=await fetch('/api/submit-form',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:payload
+      });
+      const data=await resp.json().catch(()=>({}));
+      console.log('[submit] response status:', resp.status, 'data:', data);
+
+      if(!resp.ok||!data.success){
+        const detail=data.message||data.error||data.details||('HTTP '+resp.status);
+        throw new Error(detail);
+      }
+
+      // Success — redirect to the same page with ?sent=ok
+      window.location.href='designer.html?sent=ok';
+
+    }catch(err){
+      console.error('Submit error:',err);
+      if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML=originalBtnHtml;}
+      status.style.display='block';status.style.background='#FCEBEB';status.style.color='#C73838';
+      status.textContent='שגיאה בשליחה: '+(err.message||'לא ידוע')+'. אנא נסו שוב או התקשרו 03-9600550.';
+    }
+  });
+
+  if(window.location.search.indexOf('sent=ok')!==-1){
+    const status=document.getElementById('design-status');
+    const saved=sessionStorage.getItem('aspagilLastSubmit');
+    let name='';if(saved){try{name=JSON.parse(saved).name||'';}catch(e){}}
+    document.getElementById('submit-area').classList.add('show');
+    status.style.display='block';status.style.background='#E6F4EA';status.style.color='#1F6638';
+    status.innerHTML='✓ הבקשה נשלחה'+(name?', '+name:'')+'! המעצב הגרפי יחזור אליכם תוך 24 שעות.';
+    sessionStorage.removeItem('aspagilLastSubmit');
+    setTimeout(()=>{document.getElementById('submit-area').scrollIntoView({behavior:'smooth'});},200);
+    if(window.history.replaceState)window.history.replaceState({},'',window.location.pathname);
+  }
+})();
+</script>
+</body>
+</html>
