@@ -87,15 +87,20 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
 /* === מוקאפ כוס נייר אמיתית עם תבנית PNG === */
 .cup-mockup-real{position:relative;width:100%;max-width:420px;margin:0 auto;aspect-ratio:1/1;}
 .cup-template-bg{width:100%;height:100%;display:block;object-fit:contain}
-/* אזור הגוף של הכוס - איפה שהעיצוב מוטבע. הקואורדינטות מותאמות לתבנית כוס נייר סטנדרטית בזווית 3/4. */
+/* אזור הגוף של הכוס — מותאם לתמונת כוס נייר ישרה (straight-on).
+   גוף הכוס תופס ~82% רוחב ו-76% גובה, מתחיל מתחת לשפה. */
 .cup-design-region{
   position:absolute;
-  left:30%;top:30%;width:40%;height:40%;
-  background-repeat:no-repeat;background-position:center center;background-size:cover;
-  /* מצב משולב - מאפשר לצללה של הכוס לעבור דרך העיצוב, נראה כמו הדפסה אמיתית */
+  left:9%; top:10%; width:82%; height:75%;
+  background-repeat:no-repeat;
+  background-position:center top;
+  /* 100% 100% מותח את העיצוב על כל שטח גוף הכוס (מדמה עטיפה) */
+  background-size:100% 100%;
+  /* multiply מאפשר לצבעי הכוס ולאור לעבור דרך העיצוב */
   mix-blend-mode:multiply;
-  /* טרפז עדין שמתאים לעיקול גוף הכוס */
-  clip-path:polygon(2% 0,98% 0,94% 100%,6% 100%);
+  opacity:0.9;
+  /* טרפז המדמה את ההיצרות הקלה של הכוס כלפי מטה */
+  clip-path:polygon(2% 0%, 98% 0%, 95% 100%, 5% 100%);
   pointer-events:none;
 }
 @media (max-width:640px){.cup-mockup-real{max-width:280px}}
