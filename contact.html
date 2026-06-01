@@ -431,216 +431,105 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     });
   }
 
-  // "הוסף לעגלת הקניות" — validates form, adds cart item, saves prefill data, redirects to cart.
-  document.getElementById('submit-btn').addEventListener('click', async function(e){
-    e.preventDefault();
+})();
+</script>
 
-    if (fileReadError) {
-      showError('הקובץ לא נטען כראוי. בחרו אותו שוב או שלחו דרך WhatsApp 03-9600550.');
-      return;
-    }
+<script src="assets/js/cart.js"></script>
 
-    var btn = this;
-    var originalHtml = btn.innerHTML;
-
-    // Validate required fields
-    var nameVal  = (form.querySelector('#c-name')  || {}).value || '';
-    var phoneVal = (form.querySelector('#c-phone') || {}).value || '';
-    var emailVal = (form.querySelector('#c-email') || {}).value || '';
-    var taxVal   = (form.querySelector('#c-tax-id') || {}).value || '';
-    var qtyEl    = form.querySelector('#c-qty');
-    var qtyVal   = qtyEl ? qtyEl.value : '';
-
-    if (!nameVal.trim() || !phoneVal.trim()) { showError('נא למלא שם וטלפון.'); return; }
-    if (!emailVal.trim()) { showError('נא למלא כתובת אימייל.'); return; }
-    if (!taxVal.trim() || !/^\d{9}$/.test(taxVal.trim())) { showError('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
-    if (!qtyVal) { showError('נא לבחור כמות יחידות.'); return; }
-
-    btn.disabled = true;
-    btn.innerHTML = '⏳ מוסיף לעגלה...';
-
-    try {
-      // Map quantity to product details
-      var QTY_LABELS = {
-        '500':'500 יח׳','1000':'1,000 יח׳','2000':'2,000 יח׳','3000':'3,000 יח׳',
-        '5000':'5,000 יח׳','10000':'10,000 יח׳','50000':'50,000 יח׳',
-        '100000':'100,000 יח׳','100000+':'100,000+ יח׳'
-      };
-      var price = PRICE_MAP[qtyVal] || null;
-      var priceStr = price ? price.toLocaleString('he-IL') + ' ש"ח' : 'לפי הצעה';
-      var cartItem = {
-        id: 'cups-' + qtyVal,
-        name: 'כוסות נייר ממותגות',
-        price: priceStr,
-        priceNumeric: price,
-        note: QTY_LABELS[qtyVal] || qtyVal + ' יח׳',
-        category: 'cup'
-      };
-
-      // Save customer details to sessionStorage for checkout pre-fill
-      var prefill = {
-        name:        nameVal.trim(),
-        phone:       phoneVal.trim(),
-        email:       emailVal.trim(),
-        taxId:       taxVal.trim(),
-        invoiceName: ((form.querySelector('#c-invoice-name') || {}).value || '').trim(),
-        address:     ((form.querySelector('#c-address') || {}).value || '').trim(),
-        business:    ((form.querySelector('#c-business') || {}).value || '').trim(),
-        notes:       ((form.querySelector('#c-msg') || {}).value || '').trim(),
-      };
-      // Save file name as note if present
-      var fileToSend = cachedFile || (fileInput.files && fileInput.files[0]);
-      if (fileToSend) {
-        prefill.artworkFileName = fileToSend.name;
-        prefill.notes = (prefill.notes ? prefill.notes + '\n' : '') + 'קובץ גרפיקה: ' + fileToSend.name;
-      }
-      try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
-
-      // Add to cart and redirect
-      if (window.Cart) {
-        Cart.addItem(cartItem);
-      }
-      window.location.href = 'cart.html';
-
-    } catch(err) {
-      console.error(err);
-      showError('שגיאה: ' + (err.message || 'לא ידוע'));
-      btn.disabled = false;
-      btn.innerHTML = originalHtml;
-    }
-  });
-
-  // Keep legacy submit handler for direct form submissions (fallback)
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    var btn = document.getElementById('submit-btn');
-    if (btn) btn.click();
-  });
-
-  // --- legacy submit flow (kept for reference, not triggered by new button) ---
-  async function legacySubmit(fields, files) {
-      var resp = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'quote', fields: fields, files: files })
-      });
-
-      var data = await resp.json().catch(function(){ return {}; });
-
-      if (!resp.ok || !data.success) {
-        throw new Error(data.message || data.error || data.details || 'Submission failed');
-      }
-
-      // If online payment — call Sumit
-      var payMethodEl = form.querySelector('input[name="paymentMethod"]:checked');
-      var payMethod = payMethodEl ? payMethodEl.value : 'phone';
-      var qtyEl = form.querySelector('#c-qty');
-      var priceNumeric = PRICE_MAP[qtyEl ? qtyEl.value : ''] || null;
-
-      if (payMethod === 'online' && priceNumeric) {
-        var nameEl = form.querySelector('#c-name');
-        var phoneEl = form.querySelector('#c-phone');
-        var emailEl = form.querySelector('#c-email');
-        var taxEl = form.querySelector('#c-tax-id');
-        var addrEl = form.querySelector('#c-address');
-        var invoiceEl = form.querySelector('#c-invoice-name');
-        var orderId = data.orderId || ('ORD-' + Date.now());
-
-        try {
-          var payResp = await fetch('/api/create-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              amount: priceNumeric,
-              orderId: orderId,
-              customer: {
-                name: (invoiceEl && invoiceEl.value.trim()) || (nameEl && nameEl.value.trim()),
-                phone: phoneEl ? phoneEl.value.trim() : '',
-                email: emailEl ? emailEl.value.trim() : '',
-                address: addrEl ? addrEl.value.trim() : '',
-                taxId: taxEl ? taxEl.value.trim() : '',
-                invoiceName: invoiceEl ? invoiceEl.value.trim() : ''
-              },
-              successUrl: window.location.origin + '/order-success.html',
-              failureUrl: window.location.origin + '/contact.html'
-            })
-          });
-          var payData = await payResp.json().catch(function(){ return {}; });
-          if (payData.ok && payData.paymentUrl) {
-            window.location.href = payData.paymentUrl;
-            return;
-          }
-          // Fallback to direct Sumit URL
-          var SUMIT_URL = 'https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/';
-          var sp = new URLSearchParams({ amount: priceNumeric, name: nameEl ? nameEl.value.trim() : '' });
-          if (emailEl && emailEl.value) sp.set('email', emailEl.value.trim());
-          if (phoneEl && phoneEl.value) sp.set('phone', phoneEl.value.trim());
-          window.location.href = SUMIT_URL + '?' + sp.toString();
-          return;
-        } catch (payErr) {
-          console.error('Payment error:', payErr);
-          // Fall through to success page
-        }
-      }
-
-      // Phone payment or payment error fallback
-      window.location.href = 'order-success.html';
-
-    } catch (err) {
-      console.error('Submit error:', err);
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnHtml;
-      }
-      showError('שגיאה בשליחה: ' + (err.message || 'לא ידוע') + '. אנא נסו שוב או התקשרו 03-9600550.');
-    }
-  });
-
-  // Price map: quantity value → price in NIS
+<script>
+// ─── הוסף לעגלת הקניות ───
+(function() {
   var PRICE_MAP = {
-    '500': 500,
-    '1000': 800,
-    '2000': 1500,
-    '3000': 2100,
-    '5000': 2750,
-    '10000': 4500
-    // 50000, 100000, 100000+ → null (variable price)
+    '500':500,'1000':800,'2000':1500,'3000':2100,
+    '5000':2750,'10000':4500
+  };
+  var QTY_LABELS = {
+    '500':'500 יח׳','1000':'1,000 יח׳','2000':'2,000 יח׳','3000':'3,000 יח׳',
+    '5000':'5,000 יח׳','10000':'10,000 יח׳','50000':'50,000 יח׳',
+    '100000':'100,000 יח׳','100000+':'100,000+ יח׳'
   };
 
-  // Show/hide payment options based on selected quantity
-  var qtySelect = form.querySelector('#c-qty');
-  var paymentFieldset = document.getElementById('payment-fieldset');
-  var paymentNote = document.getElementById('payment-note');
-  var submitBtnEl = document.getElementById('submit-btn');
+  var form    = document.getElementById('quote-form');
+  var btn     = document.getElementById('submit-btn');
+  var errBox  = document.getElementById('quote-status');
+  var qtySel  = document.getElementById('c-qty');
 
-  function updatePaymentUI() {
-    var val = qtySelect ? qtySelect.value : '';
-    var price = PRICE_MAP[val] || null;
-    var isVariable = val && !price;
-
-    if (price) {
-      paymentFieldset.style.display = '';
-      paymentNote.style.display = 'none';
-      var onlineChecked = document.getElementById('pay-online') && document.getElementById('pay-online').checked;
-      submitBtnEl.innerHTML = onlineChecked
-        ? 'שלם עכשיו ' + price.toLocaleString('he-IL') + ' ש"ח ←'
-        : 'שלח הזמנה ←';
-    } else if (isVariable) {
-      paymentFieldset.style.display = 'none';
-      paymentNote.style.display = '';
-      submitBtnEl.innerHTML = 'שלח הזמנה ←';
-    } else {
-      paymentFieldset.style.display = 'none';
-      paymentNote.style.display = 'none';
-      submitBtnEl.innerHTML = 'שלח הזמנה ←';
-    }
+  function showErr(msg) {
+    errBox.textContent = msg;
+    errBox.style.background = '#FFF0F0';
+    errBox.style.color = '#C03030';
+    errBox.style.border = '1px solid #F5C6C6';
+    errBox.style.display = 'block';
+    errBox.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
-  if (qtySelect) qtySelect.addEventListener('change', updatePaymentUI);
-  form.querySelectorAll('input[name="paymentMethod"]').forEach(function(r) {
-    r.addEventListener('change', updatePaymentUI);
+  // Show payment options when a fixed-price qty is chosen
+  if (qtySel) {
+    qtySel.addEventListener('change', function() {
+      var price = PRICE_MAP[this.value] || null;
+      var fieldset = document.getElementById('payment-fieldset');
+      var note = document.getElementById('payment-note');
+      if (fieldset) fieldset.style.display = price ? '' : 'none';
+      if (note) note.style.display = (!price && this.value) ? '' : 'none';
+    });
+  }
+
+  if (!btn) return;
+
+  btn.addEventListener('click', function() {
+    errBox.style.display = 'none';
+
+    var name  = (document.getElementById('c-name')   || {value:''}).value.trim();
+    var phone = (document.getElementById('c-phone')  || {value:''}).value.trim();
+    var email = (document.getElementById('c-email')  || {value:''}).value.trim();
+    var taxId = (document.getElementById('c-tax-id') || {value:''}).value.trim();
+    var qty   = qtySel ? qtySel.value : '';
+
+    if (!name || !phone)            { showErr('נא למלא שם וטלפון.'); return; }
+    if (!email)                     { showErr('נא למלא כתובת אימייל.'); return; }
+    if (!/^\d{9}$/.test(taxId))    { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
+    if (!qty)                       { showErr('נא לבחור כמות יחידות.'); return; }
+
+    // Build cart item
+    var price    = PRICE_MAP[qty] || null;
+    var priceStr = price ? price.toLocaleString('he-IL') + ' ש"ח' : 'לפי הצעה';
+    var cartItem = {
+      id: 'cups-' + qty,
+      name: 'כוסות נייר ממותגות',
+      price: priceStr,
+      priceNumeric: price,
+      note: QTY_LABELS[qty] || qty + ' יח׳',
+      category: 'cup'
+    };
+
+    // Save form details for checkout pre-fill
+    var notes = (document.getElementById('c-msg') || {value:''}).value.trim();
+    // Pick up file name from the UI if selected
+    var fileNameEl = document.getElementById('c-artwork-filename');
+    var fileName   = fileNameEl && fileNameEl.textContent && fileNameEl.textContent !== 'קובץ נבחר'
+                     ? fileNameEl.textContent.trim() : '';
+    if (fileName) notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה: ' + fileName;
+
+    var prefill = {
+      name:        name,
+      phone:       phone,
+      email:       email,
+      taxId:       taxId,
+      invoiceName: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
+      address:     (document.getElementById('c-address')      || {value:''}).value.trim(),
+      notes:       notes
+    };
+    try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
+
+    // Add to cart
+    if (window.Cart) Cart.addItem(cartItem);
+
+    // Go to cart
+    window.location.href = 'cart.html';
   });
 
+  // Prevent native form submit
+  if (form) form.addEventListener('submit', function(e){ e.preventDefault(); btn && btn.click(); });
 })();
 </script>
 </body>
