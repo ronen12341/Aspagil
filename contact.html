@@ -476,7 +476,21 @@ if(window.location.search.indexOf('sent=ok')!==-1){
 
   if (!btn) return;
 
-  btn.addEventListener('click', function() {
+  // Read a File as base64 string
+  function readAsBase64(file) {
+    return new Promise(function(resolve, reject) {
+      var r = new FileReader();
+      r.onload = function() {
+        var s = String(r.result || '');
+        var idx = s.indexOf(',');
+        resolve(idx >= 0 ? s.substring(idx + 1) : s);
+      };
+      r.onerror = function() { reject(new Error('FileReader error')); };
+      r.readAsDataURL(file);
+    });
+  }
+
+  btn.addEventListener('click', async function() {
     errBox.style.display = 'none';
 
     var name  = (document.getElementById('c-name')   || {value:''}).value.trim();
@@ -485,47 +499,82 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     var taxId = (document.getElementById('c-tax-id') || {value:''}).value.trim();
     var qty   = qtySel ? qtySel.value : '';
 
-    if (!name || !phone)            { showErr('נא למלא שם וטלפון.'); return; }
-    if (!email)                     { showErr('נא למלא כתובת אימייל.'); return; }
-    if (!/^\d{9}$/.test(taxId))    { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
-    if (!qty)                       { showErr('נא לבחור כמות יחידות.'); return; }
+    if (!name || !phone)         { showErr('נא למלא שם וטלפון.'); return; }
+    if (!email)                  { showErr('נא למלא כתובת אימייל.'); return; }
+    if (!/^\d{9}$/.test(taxId)) { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
+    if (!qty)                    { showErr('נא לבחור כמות יחידות.'); return; }
 
-    // Build cart item
-    var price    = PRICE_MAP[qty] || null;
-    var priceStr = price ? price.toLocaleString('he-IL') + ' ש"ח' : 'לפי הצעה';
-    var cartItem = {
-      id: 'cups-' + qty,
-      name: 'כוסות נייר ממותגות',
-      price: priceStr,
-      priceNumeric: price,
-      note: QTY_LABELS[qty] || qty + ' יח׳',
-      category: 'cup'
-    };
+    var originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '⏳ מוסיף לעגלה...';
 
-    // Save form details for checkout pre-fill
-    var notes = (document.getElementById('c-msg') || {value:''}).value.trim();
-    // Pick up file name from the UI if selected
-    var fileNameEl = document.getElementById('c-artwork-filename');
-    var fileName   = fileNameEl && fileNameEl.textContent && fileNameEl.textContent !== 'קובץ נבחר'
-                     ? fileNameEl.textContent.trim() : '';
-    if (fileName) notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה: ' + fileName;
+    try {
+      var notes    = (document.getElementById('c-msg') || {value:''}).value.trim();
+      var fileInput = document.getElementById('c-artwork');
+      var file      = fileInput && fileInput.files && fileInput.files[0];
 
-    var prefill = {
-      name:        name,
-      phone:       phone,
-      email:       email,
-      taxId:       taxId,
-      invoiceName: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
-      address:     (document.getElementById('c-address')      || {value:''}).value.trim(),
-      notes:       notes
-    };
-    try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
+      // If file attached — send it now via submit-form so it arrives as email attachment
+      if (file) {
+        try {
+          var b64 = await readAsBase64(file);
+          await fetch('/api/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'quote',
+              fields: {
+                subject: '📎 קובץ גרפיקה להזמנה מהאתר',
+                name: name, phone: phone, email: email,
+                tax_id: taxId,
+                invoice_name: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
+                address: (document.getElementById('c-address') || {value:''}).value.trim(),
+                quantity: qty,
+                notes: notes || '—'
+              },
+              files: [{ field: 'artwork_file', name: file.name, type: file.type || 'application/octet-stream', contentBase64: b64 }]
+            })
+          });
+          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה נשלח בנפרד: ' + file.name;
+        } catch(fileErr) {
+          console.error('File send failed:', fileErr);
+          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה (לא נשלח - שגיאה): ' + file.name;
+        }
+      }
 
-    // Add to cart
-    if (window.Cart) Cart.addItem(cartItem);
+      // Build cart item
+      var price    = PRICE_MAP[qty] || null;
+      var priceStr = price ? price.toLocaleString('he-IL') + ' ש"ח' : 'לפי הצעה';
+      var cartItem = {
+        id: 'cups-' + qty,
+        name: 'כוסות נייר ממותגות',
+        price: priceStr,
+        priceNumeric: price,
+        note: QTY_LABELS[qty] || qty + ' יח׳',
+        category: 'cup'
+      };
 
-    // Go to cart
-    window.location.href = 'cart.html';
+      // Save form details for checkout pre-fill
+      var prefill = {
+        name:        name,
+        phone:       phone,
+        email:       email,
+        taxId:       taxId,
+        invoiceName: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
+        address:     (document.getElementById('c-address')      || {value:''}).value.trim(),
+        notes:       notes
+      };
+      try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
+
+      // Add to cart and go
+      if (window.Cart) Cart.addItem(cartItem);
+      window.location.href = 'cart.html';
+
+    } catch(err) {
+      console.error(err);
+      showErr('שגיאה: ' + (err.message || 'לא ידוע'));
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
   });
 
   // Prevent native form submit
