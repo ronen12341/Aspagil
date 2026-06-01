@@ -257,8 +257,10 @@ export default async function handler(req, res) {
       }
     }
 
+    const orderId = 'ORD-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + (Math.floor(Math.random()*9000)+1000);
     return res.status(200).json({
       success: true,
+      orderId: orderId,
       businessEmailId: businessResult.id,
       autoReplySent: !!(autoReplyResult && autoReplyResult.ok),
       attachmentCount: attachmentNames.length
