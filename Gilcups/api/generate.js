@@ -553,6 +553,15 @@ You are designing the printable surface that gets wrapped AROUND a paper cup. Th
 The viewer should see a flat printable design — like a label peeled off a can — not a picture of a cup.
 
 ═══════════════════════════════════════════════
+ABSOLUTE RULE — PURE WHITE BACKGROUND, NO CURVED LINES
+═══════════════════════════════════════════════
+- BACKGROUND COLOR: MUST be pure white #FFFFFF. NOT cream, NOT off-white, NOT beige, NOT #F5F0E8, NOT ivory. PURE WHITE ONLY.
+- TOP EDGE: The very top of the image is a straight horizontal line. NO curved arc at the top. NO smile-shaped curve. NO concave/convex line.
+- BOTTOM EDGE: The very bottom is also a straight horizontal line. NO curved arc at the bottom. NO curved base line.
+- NO thin lines, NO guide lines, NO border arcs anywhere in the image.
+- The 4 corners of the output image are clean sharp 90-degree corners on a white background.
+
+═══════════════════════════════════════════════
 ABSOLUTE RULE — DESCRIPTION IS NOT TEXT
 ═══════════════════════════════════════════════
 The user's description tells you HOW the cup looks (style, colors, what elements to include). It is NOT text to print on the cup.

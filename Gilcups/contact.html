@@ -222,7 +222,7 @@
             כמות זו דורשת תיאום מחיר — נחזור אליכם עם הצעה מפורטת.
           </div>
 
-          <button class="btn btn-primary form-submit" id="submit-btn" type="submit">שלח הזמנה <span class="arrow">←</span></button>
+          <button class="btn btn-primary form-submit" id="submit-btn" type="button" style="width:100%;justify-content:center;font-size:1.05rem;">🛒 הוסף לעגלת הקניות <span class="arrow">←</span></button>
           <div id="quote-status" style="display:none;margin-top:0.8rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.9rem;background:#E6F4EA;color:#1F6638;border:1px solid #B8E0C2;">✓ ההזמנה נשלחה בהצלחה! נחזור אליכם בהקדם.</div>
         </form>
       </div>
@@ -431,172 +431,154 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     });
   }
 
-  // Intercept the form submission — serialize to JSON, POST to /api/submit-form,
-  // then redirect to the success URL.
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
+})();
+</script>
 
-    if (fileReadError) {
-      showError('הקובץ לא נטען כראוי. בחרו אותו שוב או שלחו דרך WhatsApp 03-9600550.');
-      return false;
-    }
+<script src="assets/js/cart.js"></script>
 
-    var submitBtn = form.querySelector('button[type="submit"]');
-    var originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'שולח... <span class="arrow">⏳</span>';
-    }
+<script>
+// ─── הוסף לעגלת הקניות ───
+(function() {
+  var PRICE_MAP = {
+    '500':500,'1000':800,'2000':1500,'3000':2100,
+    '5000':2750,'10000':4500
+  };
+  var QTY_LABELS = {
+    '500':'500 יח׳','1000':'1,000 יח׳','2000':'2,000 יח׳','3000':'3,000 יח׳',
+    '5000':'5,000 יח׳','10000':'10,000 יח׳','50000':'50,000 יח׳',
+    '100000':'100,000 יח׳','100000+':'100,000+ יח׳'
+  };
+
+  var form    = document.getElementById('quote-form');
+  var btn     = document.getElementById('submit-btn');
+  var errBox  = document.getElementById('quote-status');
+  var qtySel  = document.getElementById('c-qty');
+
+  function showErr(msg) {
+    errBox.textContent = msg;
+    errBox.style.background = '#FFF0F0';
+    errBox.style.color = '#C03030';
+    errBox.style.border = '1px solid #F5C6C6';
+    errBox.style.display = 'block';
+    errBox.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  // Show payment options when a fixed-price qty is chosen
+  if (qtySel) {
+    qtySel.addEventListener('change', function() {
+      var price = PRICE_MAP[this.value] || null;
+      var fieldset = document.getElementById('payment-fieldset');
+      var note = document.getElementById('payment-note');
+      if (fieldset) fieldset.style.display = price ? '' : 'none';
+      if (note) note.style.display = (!price && this.value) ? '' : 'none';
+    });
+  }
+
+  if (!btn) return;
+
+  // Read a File as base64 string
+  function readAsBase64(file) {
+    return new Promise(function(resolve, reject) {
+      var r = new FileReader();
+      r.onload = function() {
+        var s = String(r.result || '');
+        var idx = s.indexOf(',');
+        resolve(idx >= 0 ? s.substring(idx + 1) : s);
+      };
+      r.onerror = function() { reject(new Error('FileReader error')); };
+      r.readAsDataURL(file);
+    });
+  }
+
+  btn.addEventListener('click', async function() {
+    errBox.style.display = 'none';
+
+    var name  = (document.getElementById('c-name')   || {value:''}).value.trim();
+    var phone = (document.getElementById('c-phone')  || {value:''}).value.trim();
+    var email = (document.getElementById('c-email')  || {value:''}).value.trim();
+    var taxId = (document.getElementById('c-tax-id') || {value:''}).value.trim();
+    var qty   = qtySel ? qtySel.value : '';
+
+    if (!name || !phone)         { showErr('נא למלא שם וטלפון.'); return; }
+    if (!email)                  { showErr('נא למלא כתובת אימייל.'); return; }
+    if (!/^\d{9}$/.test(taxId)) { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
+    if (!qty)                    { showErr('נא לבחור כמות יחידות.'); return; }
+
+    var originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '⏳ מוסיף לעגלה...';
 
     try {
-      // Collect plain string fields (skip the file input — we handle it separately)
-      var fields = {};
-      var els = form.elements;
-      for (var i = 0; i < els.length; i++) {
-        var el = els[i];
-        if (!el.name || el.type === 'file' || el.type === 'submit' || el.type === 'button') continue;
-        if (el.type === 'checkbox' || el.type === 'radio') {
-          if (el.checked) fields[el.name] = el.value;
-        } else {
-          fields[el.name] = el.value;
-        }
-      }
+      var notes    = (document.getElementById('c-msg') || {value:''}).value.trim();
+      var fileInput = document.getElementById('c-artwork');
+      var file      = fileInput && fileInput.files && fileInput.files[0];
 
-      // Collect file as base64 (if present)
-      var files = [];
-      var fileToSend = cachedFile || (fileInput.files && fileInput.files[0]);
-      if (fileToSend) {
-        var b64 = await readAsBase64(fileToSend);
-        files.push({
-          field: 'artwork_file',
-          name: fileToSend.name || 'artwork',
-          type: fileToSend.type || 'application/octet-stream',
-          contentBase64: b64
-        });
-      }
-
-      var resp = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'quote', fields: fields, files: files })
-      });
-
-      var data = await resp.json().catch(function(){ return {}; });
-
-      if (!resp.ok || !data.success) {
-        throw new Error(data.message || data.error || data.details || 'Submission failed');
-      }
-
-      // If online payment — call Sumit
-      var payMethodEl = form.querySelector('input[name="paymentMethod"]:checked');
-      var payMethod = payMethodEl ? payMethodEl.value : 'phone';
-      var qtyEl = form.querySelector('#c-qty');
-      var priceNumeric = PRICE_MAP[qtyEl ? qtyEl.value : ''] || null;
-
-      if (payMethod === 'online' && priceNumeric) {
-        var nameEl = form.querySelector('#c-name');
-        var phoneEl = form.querySelector('#c-phone');
-        var emailEl = form.querySelector('#c-email');
-        var taxEl = form.querySelector('#c-tax-id');
-        var addrEl = form.querySelector('#c-address');
-        var invoiceEl = form.querySelector('#c-invoice-name');
-        var orderId = data.orderId || ('ORD-' + Date.now());
-
+      // If file attached — send it now via submit-form so it arrives as email attachment
+      if (file) {
         try {
-          var payResp = await fetch('/api/create-payment', {
+          var b64 = await readAsBase64(file);
+          await fetch('/api/submit-form', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              amount: priceNumeric,
-              orderId: orderId,
-              customer: {
-                name: (invoiceEl && invoiceEl.value.trim()) || (nameEl && nameEl.value.trim()),
-                phone: phoneEl ? phoneEl.value.trim() : '',
-                email: emailEl ? emailEl.value.trim() : '',
-                address: addrEl ? addrEl.value.trim() : '',
-                taxId: taxEl ? taxEl.value.trim() : '',
-                invoiceName: invoiceEl ? invoiceEl.value.trim() : ''
+              type: 'quote',
+              fields: {
+                subject: '📎 קובץ גרפיקה להזמנה מהאתר',
+                name: name, phone: phone, email: email,
+                tax_id: taxId,
+                invoice_name: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
+                address: (document.getElementById('c-address') || {value:''}).value.trim(),
+                quantity: qty,
+                notes: notes || '—'
               },
-              successUrl: window.location.origin + '/order-success.html',
-              failureUrl: window.location.origin + '/contact.html'
+              files: [{ field: 'artwork_file', name: file.name, type: file.type || 'application/octet-stream', contentBase64: b64 }]
             })
           });
-          var payData = await payResp.json().catch(function(){ return {}; });
-          if (payData.ok && payData.paymentUrl) {
-            window.location.href = payData.paymentUrl;
-            return;
-          }
-          // Fallback to direct Sumit URL
-          var SUMIT_URL = 'https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/';
-          var sp = new URLSearchParams({ amount: priceNumeric, name: nameEl ? nameEl.value.trim() : '' });
-          if (emailEl && emailEl.value) sp.set('email', emailEl.value.trim());
-          if (phoneEl && phoneEl.value) sp.set('phone', phoneEl.value.trim());
-          window.location.href = SUMIT_URL + '?' + sp.toString();
-          return;
-        } catch (payErr) {
-          console.error('Payment error:', payErr);
-          // Fall through to success page
+          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה נשלח בנפרד: ' + file.name;
+        } catch(fileErr) {
+          console.error('File send failed:', fileErr);
+          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה (לא נשלח - שגיאה): ' + file.name;
         }
       }
 
-      // Phone payment or payment error fallback
-      window.location.href = 'order-success.html';
+      // Build cart item
+      var price    = PRICE_MAP[qty] || null;
+      var priceStr = price ? price.toLocaleString('he-IL') + ' ש"ח' : 'לפי הצעה';
+      var cartItem = {
+        id: 'cups-' + qty,
+        name: 'כוסות נייר ממותגות',
+        price: priceStr,
+        priceNumeric: price,
+        note: QTY_LABELS[qty] || qty + ' יח׳',
+        category: 'cup'
+      };
 
-    } catch (err) {
-      console.error('Submit error:', err);
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnHtml;
-      }
-      showError('שגיאה בשליחה: ' + (err.message || 'לא ידוע') + '. אנא נסו שוב או התקשרו 03-9600550.');
+      // Save form details for checkout pre-fill
+      var prefill = {
+        name:        name,
+        phone:       phone,
+        email:       email,
+        taxId:       taxId,
+        invoiceName: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
+        address:     (document.getElementById('c-address')      || {value:''}).value.trim(),
+        notes:       notes
+      };
+      try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
+
+      // Add to cart and go
+      if (window.Cart) Cart.addItem(cartItem);
+      window.location.href = 'cart.html';
+
+    } catch(err) {
+      console.error(err);
+      showErr('שגיאה: ' + (err.message || 'לא ידוע'));
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
     }
   });
 
-  // Price map: quantity value → price in NIS
-  var PRICE_MAP = {
-    '500': 500,
-    '1000': 800,
-    '2000': 1500,
-    '3000': 2100,
-    '5000': 2750,
-    '10000': 4500
-    // 50000, 100000, 100000+ → null (variable price)
-  };
-
-  // Show/hide payment options based on selected quantity
-  var qtySelect = form.querySelector('#c-qty');
-  var paymentFieldset = document.getElementById('payment-fieldset');
-  var paymentNote = document.getElementById('payment-note');
-  var submitBtnEl = document.getElementById('submit-btn');
-
-  function updatePaymentUI() {
-    var val = qtySelect ? qtySelect.value : '';
-    var price = PRICE_MAP[val] || null;
-    var isVariable = val && !price;
-
-    if (price) {
-      paymentFieldset.style.display = '';
-      paymentNote.style.display = 'none';
-      var onlineChecked = document.getElementById('pay-online') && document.getElementById('pay-online').checked;
-      submitBtnEl.innerHTML = onlineChecked
-        ? 'שלם עכשיו ' + price.toLocaleString('he-IL') + ' ש"ח ←'
-        : 'שלח הזמנה ←';
-    } else if (isVariable) {
-      paymentFieldset.style.display = 'none';
-      paymentNote.style.display = '';
-      submitBtnEl.innerHTML = 'שלח הזמנה ←';
-    } else {
-      paymentFieldset.style.display = 'none';
-      paymentNote.style.display = 'none';
-      submitBtnEl.innerHTML = 'שלח הזמנה ←';
-    }
-  }
-
-  if (qtySelect) qtySelect.addEventListener('change', updatePaymentUI);
-  form.querySelectorAll('input[name="paymentMethod"]').forEach(function(r) {
-    r.addEventListener('change', updatePaymentUI);
-  });
-
+  // Prevent native form submit
+  if (form) form.addEventListener('submit', function(e){ e.preventDefault(); btn && btn.click(); });
 })();
 </script>
 </body>
