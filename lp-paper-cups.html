@@ -3,333 +3,283 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>כוסות נייר ממותגות מ-500 יח׳ | הדמיה והצעת מחיר תוך 24 שעות | אספגיל</title>
-<meta name="description" content="כוסות נייר ממותגות עם הלוגו שלכם — מינימום 500 יח׳, הדפסה דיגיטלית ללא הגבלת צבעים. הצעת מחיר והדמיה תוך 24 שעות. מפעל ישראלי מאז 1995. ☎ 03-9600550">
-
-<!-- דף נחיתה לקמפיין — לא לאינדוקס במנועי חיפוש -->
+<title>כוסות נייר ממותגות מ-500 יח׳ | הדמיה תוך 24 שעות | אספגיל</title>
+<meta name="description" content="כוסות נייר ממותגות עם הלוגו שלכם — מ-500 יח׳, ללא הגבלת צבעים. הדמיה והצעת מחיר תוך 24 שעות. ☎ 03-9600550">
 <meta name="robots" content="noindex, nofollow">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  /* ===== Landing-page-specific styles (scoped, no nav/footer) ===== */
-  .lp-topbar{background:#fff;border-bottom:1px solid #f0e6da;position:sticky;top:0;z-index:50;}
-  .lp-topbar .container{display:flex;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px;gap:1rem;}
-  .lp-brand-name{font-weight:900;font-size:1.4rem;color:var(--orange-deep,#b85a00);}
-  .lp-brand-tag{font-size:.72rem;color:#8a7a68;font-weight:600;}
-  .lp-top-actions{display:flex;align-items:center;gap:10px;}
-  .lp-phone{font-weight:800;font-size:1.15rem;color:var(--orange-deep,#b85a00);white-space:nowrap;}
-  @media(max-width:620px){.lp-phone span{display:none;}}
+  :root{
+    --ink:#1c1410;
+    --brand:#E8590C;        /* vibrant orange */
+    --brand-d:#C24806;
+    --brand-l:#FF7A2E;
+    --accent:#1F9D55;       /* fresh green */
+    --wa:#25D366;
+    --cream:#FFF6ED;
+    --sand:#FBEEDD;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);background:#fff;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px;}
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
 
-  .lp-hero{background:linear-gradient(135deg,#FFF8F0,#FFEEDD);padding:0;}
-  .lp-hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center;padding:3rem 0 3.2rem;}
-  @media(max-width:900px){.lp-hero-grid{grid-template-columns:1fr;gap:1.5rem;padding:2rem 0;}}
-  .lp-hero h1{font-size:2.7rem;line-height:1.12;margin:.4rem 0 1rem;font-weight:900;}
-  @media(max-width:900px){.lp-hero h1{font-size:2rem;}}
-  .lp-hero h1 .hl{color:var(--orange-deep,#b85a00);}
-  .lp-lead{font-size:1.18rem;color:#4a4036;line-height:1.6;margin:0 0 1.2rem;}
-  .lp-bullets{list-style:none;padding:0;margin:0 0 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;}
-  .lp-bullets li{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1rem;color:#33291f;}
-  .lp-bullets .ck{color:#1F6638;font-size:1.2rem;font-weight:900;}
-  .lp-hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
-  .lp-trust-line{margin-top:1.2rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#6b5d4d;font-size:.95rem;font-weight:600;}
-  .lp-trust-line .stars{color:#F5A623;letter-spacing:1px;}
+  /* ===== Buttons ===== */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:800;font-size:1.05rem;
+       padding:15px 30px;border-radius:60px;border:none;cursor:pointer;transition:transform .15s,box-shadow .15s,filter .15s;
+       font-family:inherit;line-height:1;white-space:nowrap;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-main{background:linear-gradient(135deg,var(--brand-l),var(--brand-d));color:#fff;box-shadow:0 10px 24px rgba(232,89,12,.38);}
+  .btn-main:hover{box-shadow:0 14px 30px rgba(232,89,12,.5);}
+  .btn-wa{background:var(--wa);color:#fff;box-shadow:0 10px 24px rgba(37,211,102,.35);}
+  .btn-ghost{background:#fff;color:var(--brand-d);border:2px solid var(--brand);}
+  .btn-ghost:hover{background:var(--cream);}
+  .btn-lg{font-size:1.18rem;padding:18px 38px;}
+  .btn-block{width:100%;}
 
-  /* Quote form card */
-  .lp-form-card{background:#fff;border:1px solid #f0e0cc;border-radius:18px;box-shadow:0 18px 48px rgba(120,70,0,.14);padding:1.8rem 1.6rem;}
-  .lp-form-card h2{font-size:1.4rem;margin:0 0 .3rem;font-weight:800;}
-  .lp-form-card .sub{color:#7a6a58;font-size:.95rem;margin:0 0 1.2rem;}
-  .lp-form-card label{display:block;font-weight:700;font-size:.9rem;margin:0 0 5px;color:#3a3026;}
-  .lp-form-card input,.lp-form-card select,.lp-form-card textarea{width:100%;box-sizing:border-box;padding:11px 13px;border:1.5px solid #e2d6c6;border-radius:10px;font-family:inherit;font-size:1rem;margin-bottom:.85rem;background:#fffdfa;transition:border-color .15s;}
-  .lp-form-card input:focus,.lp-form-card select:focus,.lp-form-card textarea:focus{outline:none;border-color:var(--orange-deep,#b85a00);}
-  .lp-form-card .row2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}
-  @media(max-width:480px){.lp-form-card .row2{grid-template-columns:1fr;}}
-  .lp-submit{width:100%;font-size:1.15rem;padding:14px;margin-top:.3rem;}
-  .lp-form-note{text-align:center;font-size:.82rem;color:#9a8b78;margin:.8rem 0 0;}
-  .lp-hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;}
-  .lp-form-msg{display:none;padding:14px;border-radius:10px;margin-bottom:1rem;font-weight:600;}
-  .lp-form-msg.ok{display:block;background:#E7F5EC;color:#1F6638;border:1px solid #A8D8BB;}
-  .lp-form-msg.err{display:block;background:#FCEAEA;color:#A03030;border:1px solid #E8B4B4;}
+  /* ===== Top bar ===== */
+  .top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid #f1e4d4;}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;}
+  .logo{font-weight:900;font-size:1.5rem;color:var(--brand-d);letter-spacing:-.5px;}
+  .logo small{display:block;font-size:.66rem;font-weight:600;color:#9a8675;letter-spacing:.3px;}
+  .top-phone{font-weight:900;font-size:1.2rem;color:var(--brand-d);}
+  .top-actions{display:flex;align-items:center;gap:14px;}
+  @media(max-width:560px){.top-phone span{display:none;}.top .btn{padding:11px 20px;font-size:.95rem;}}
 
-  /* Sections */
-  .lp-section{padding:3.2rem 0;}
-  .lp-section.gray{background:#FAF6F0;}
-  .lp-section-head{text-align:center;max-width:640px;margin:0 auto 2.2rem;}
-  .lp-section-head h2{font-size:2rem;font-weight:800;margin:.3rem 0 .6rem;}
-  .lp-section-head p{color:#6b5d4d;font-size:1.05rem;margin:0;}
-  .lp-eyebrow{display:inline-block;color:var(--orange-deep,#b85a00);font-weight:800;font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;}
+  /* ===== Hero ===== */
+  .hero{position:relative;overflow:hidden;background:
+        radial-gradient(900px 500px at 85% -10%,#FFE2C2 0%,transparent 60%),
+        linear-gradient(160deg,#FFF6ED 0%,#FFE9D3 100%);}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:54px 22px 60px;}
+  @media(max-width:920px){.hero .wrap{grid-template-columns:1fr;gap:26px;padding:36px 22px 40px;}}
+  .pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #f0d9bf;color:var(--brand-d);
+        font-weight:800;font-size:.82rem;padding:7px 15px;border-radius:30px;box-shadow:0 4px 12px rgba(0,0,0,.05);}
+  .hero h1{font-size:3.1rem;line-height:1.08;font-weight:900;letter-spacing:-1px;margin:18px 0 14px;}
+  .hero h1 .hl{color:var(--brand);}
+  @media(max-width:920px){.hero h1{font-size:2.2rem;}}
+  .hero p.sub{font-size:1.25rem;color:#5a4a3a;max-width:480px;margin-bottom:22px;}
+  @media(max-width:920px){.hero p.sub{font-size:1.08rem;}}
+  .hero-cta{display:flex;gap:13px;flex-wrap:wrap;}
+  .micro{margin-top:18px;display:flex;align-items:center;gap:10px;font-weight:700;color:#7a6857;font-size:.95rem;flex-wrap:wrap;}
+  .micro .stars{color:#F5A623;letter-spacing:1px;font-size:1.05rem;}
 
-  .lp-feats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
-  @media(max-width:840px){.lp-feats{grid-template-columns:1fr 1fr;}}
-  @media(max-width:480px){.lp-feats{grid-template-columns:1fr;}}
-  .lp-feat{background:#fff;border:1px solid #f0e6da;border-radius:14px;padding:1.4rem 1.2rem;text-align:center;}
-  .lp-feat .ic{font-size:2rem;margin-bottom:.5rem;}
-  .lp-feat h3{font-size:1.1rem;margin:0 0 .4rem;font-weight:800;}
-  .lp-feat p{color:#6b5d4d;font-size:.92rem;margin:0;line-height:1.55;}
+  /* hero visual */
+  .hero-art{position:relative;display:flex;justify-content:center;align-items:center;min-height:300px;}
+  .hero-art .blob{position:absolute;width:115%;height:115%;background:radial-gradient(circle at 50% 45%,#fff 0%,rgba(255,255,255,.4) 45%,transparent 70%);}
+  .hero-art img{position:relative;width:min(330px,80%);filter:drop-shadow(0 30px 45px rgba(120,60,0,.28));animation:float 5s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
 
-  /* Pricing */
-  .lp-prices{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:920px;margin:0 auto;}
-  @media(max-width:780px){.lp-prices{grid-template-columns:1fr 1fr;}}
-  .lp-price{background:#fff;border:1.5px solid #f0e0cc;border-radius:14px;padding:1.4rem 1rem;text-align:center;position:relative;}
-  .lp-price .qty{font-weight:700;color:#6b5d4d;font-size:1rem;}
-  .lp-price .amt{font-size:1.9rem;font-weight:900;color:var(--orange-deep,#b85a00);margin:.4rem 0 .1rem;}
-  .lp-price .per{font-size:.8rem;color:#9a8b78;}
-  .lp-price.popular{border-color:var(--orange-deep,#b85a00);box-shadow:0 10px 28px rgba(184,90,0,.16);}
-  .lp-price .badge{position:absolute;top:-12px;right:50%;transform:translateX(50%);background:var(--orange-deep,#b85a00);color:#fff;font-size:.72rem;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap;}
-  .lp-price-note{text-align:center;color:#9a8b78;font-size:.85rem;margin:1.2rem 0 0;}
+  /* ===== Form card ===== */
+  .formcard{background:#fff;border-radius:22px;box-shadow:0 22px 60px rgba(120,60,0,.18);padding:26px 24px;border:1px solid #fbe6d2;}
+  .formcard h2{font-size:1.45rem;font-weight:900;}
+  .formcard .lead{color:#7a6857;font-size:.95rem;margin:4px 0 16px;}
+  .formcard label{display:block;font-weight:700;font-size:.85rem;margin-bottom:5px;}
+  .formcard input,.formcard select,.formcard textarea{width:100%;padding:13px 14px;border:1.5px solid #ead9c6;border-radius:12px;
+       font-family:inherit;font-size:1rem;margin-bottom:13px;background:#fffdfa;transition:border-color .15s,box-shadow .15s;}
+  .formcard input:focus,.formcard select:focus,.formcard textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(232,89,12,.12);}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}
+  @media(max-width:440px){.row2{grid-template-columns:1fr;}}
+  .hp{position:absolute;left:-9999px;width:0;height:0;opacity:0;}
+  .formnote{text-align:center;font-size:.85rem;color:#9a8675;margin-top:12px;}
+  .formnote a{color:var(--brand-d);font-weight:700;}
+  .msg{display:none;padding:13px 15px;border-radius:12px;margin-bottom:14px;font-weight:700;font-size:.95rem;}
+  .msg.ok{display:block;background:#E7F7EE;color:#147a40;border:1px solid #ade3c5;}
+  .msg.err{display:block;background:#FCEBEB;color:#a03030;border:1px solid #ebb6b6;}
 
-  /* Steps */
-  .lp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:880px;margin:0 auto;}
-  @media(max-width:700px){.lp-steps{grid-template-columns:1fr;}}
-  .lp-step{text-align:center;}
-  .lp-step .n{width:48px;height:48px;border-radius:50%;background:var(--orange-deep,#b85a00);color:#fff;font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto .7rem;}
-  .lp-step h3{font-size:1.1rem;margin:0 0 .4rem;font-weight:800;}
-  .lp-step p{color:#6b5d4d;font-size:.92rem;margin:0;line-height:1.55;}
+  /* ===== Strip of benefits ===== */
+  .benefits{background:var(--ink);color:#fff;}
+  .benefits .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:26px 22px;}
+  @media(max-width:760px){.benefits .wrap{grid-template-columns:1fr 1fr;gap:22px 16px;}}
+  .ben{display:flex;align-items:center;gap:12px;}
+  .ben .ic{font-size:1.7rem;}
+  .ben b{display:block;font-size:1.05rem;}
+  .ben span{font-size:.84rem;color:#bdae9d;}
 
-  /* Testimonials */
-  .lp-tests{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
-  @media(max-width:780px){.lp-tests{grid-template-columns:1fr;}}
-  .lp-test{background:#fff;border:1px solid #f0e6da;border-radius:14px;padding:1.4rem;}
-  .lp-test .stars{color:#F5A623;margin-bottom:.5rem;}
-  .lp-test .q{font-size:.98rem;line-height:1.6;color:#3a3026;margin:0 0 1rem;}
-  .lp-test .who{font-weight:700;font-size:.9rem;color:#6b5d4d;}
+  /* ===== Pricing ===== */
+  .sec{padding:60px 0;}
+  .sec.tint{background:linear-gradient(180deg,#FFF9F2,#FFF3E7);}
+  .sec h2{text-align:center;font-size:2.1rem;font-weight:900;letter-spacing:-.5px;}
+  .sec .desc{text-align:center;color:#7a6857;font-size:1.05rem;margin:8px auto 34px;max-width:520px;}
+  .prices{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;margin:0 auto;}
+  @media(max-width:740px){.prices{grid-template-columns:1fr 1fr;}}
+  .price{background:#fff;border:2px solid #f3e5d4;border-radius:18px;padding:26px 16px;text-align:center;position:relative;transition:transform .15s,box-shadow .15s;}
+  .price:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(120,60,0,.12);}
+  .price .q{font-weight:700;color:#7a6857;}
+  .price .a{font-size:2.1rem;font-weight:900;color:var(--brand);margin:8px 0 2px;}
+  .price .u{font-size:.82rem;color:#9a8675;}
+  .price.hot{border-color:var(--brand);box-shadow:0 16px 36px rgba(232,89,12,.18);}
+  .price .tag{position:absolute;top:-13px;right:50%;transform:translateX(50%);background:var(--brand);color:#fff;font-weight:800;font-size:.72rem;padding:4px 14px;border-radius:30px;}
 
-  /* Final CTA */
-  .lp-final{background:linear-gradient(135deg,#b85a00,#d97a1f);color:#fff;text-align:center;padding:3.4rem 0;}
-  .lp-final h2{font-size:2rem;font-weight:900;margin:0 0 .6rem;color:#fff;}
-  .lp-final p{font-size:1.1rem;margin:0 0 1.6rem;color:#ffe8d0;}
-  .lp-final .btn{background:#fff;color:var(--orange-deep,#b85a00);border:none;}
-  .lp-final .btn.wa{background:#25D366;color:#fff;}
-  .lp-final-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  /* ===== Steps ===== */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:860px;margin:0 auto;}
+  @media(max-width:680px){.steps{grid-template-columns:1fr;}}
+  .step{text-align:center;padding:0 8px;}
+  .step .n{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--brand-l),var(--brand-d));
+       color:#fff;font-weight:900;font-size:1.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+       box-shadow:0 10px 22px rgba(232,89,12,.32);}
+  .step h3{font-size:1.2rem;font-weight:800;margin-bottom:6px;}
+  .step p{color:#7a6857;font-size:.96rem;}
 
-  .lp-foot{background:#2a221a;color:#c9bba9;text-align:center;padding:1.6rem 1rem;font-size:.88rem;}
-  .lp-foot a{color:#f0c896;}
+  /* ===== Final CTA ===== */
+  .final{background:linear-gradient(135deg,var(--brand-d),var(--brand-l));color:#fff;text-align:center;padding:62px 0;}
+  .final h2{font-size:2.2rem;font-weight:900;color:#fff;}
+  .final p{font-size:1.15rem;color:#ffe5cf;margin:10px 0 26px;}
+  .final-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .final .btn-main{background:#fff;color:var(--brand-d);box-shadow:0 10px 24px rgba(0,0,0,.18);}
 
-  /* Sticky mobile call bar */
-  .lp-mobilebar{display:none;}
+  /* ===== Footer ===== */
+  .foot{background:#241c15;color:#b8a896;text-align:center;padding:24px 18px;font-size:.88rem;}
+  .foot a{color:#f0c08a;font-weight:600;}
+
+  /* ===== Mobile sticky bar ===== */
+  .mbar{display:none;}
   @media(max-width:760px){
-    .lp-mobilebar{display:grid;grid-template-columns:1fr 1fr;gap:0;position:fixed;bottom:0;left:0;right:0;z-index:60;box-shadow:0 -4px 16px rgba(0,0,0,.15);}
-    .lp-mobilebar a{padding:14px;text-align:center;font-weight:800;font-size:1.02rem;color:#fff;text-decoration:none;}
-    .lp-mobilebar .call{background:var(--orange-deep,#b85a00);}
-    .lp-mobilebar .wa{background:#25D366;}
+    .mbar{display:grid;grid-template-columns:1fr 1fr;position:fixed;bottom:0;left:0;right:0;z-index:60;box-shadow:0 -3px 14px rgba(0,0,0,.18);}
+    .mbar a{padding:15px;text-align:center;font-weight:800;color:#fff;}
+    .mbar .c{background:var(--brand-d);}
+    .mbar .w{background:var(--wa);}
     body{padding-bottom:54px;}
   }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<header class="lp-topbar">
-  <div class="container">
-    <div>
-      <div class="lp-brand-name">אספגיל</div>
-      <div class="lp-brand-tag">כוסות נייר ממותגות · מאז 1995</div>
-    </div>
-    <div class="lp-top-actions">
-      <a class="lp-phone" href="tel:039600550">☎ <span>חייגו </span>03-9600550</a>
-      <a class="btn btn-primary" href="#quote">להצעת מחיר</a>
+<!-- TOP -->
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">אספגיל<small>כוסות נייר ממותגות · מאז 1995</small></a>
+    <div class="top-actions">
+      <a class="top-phone" href="tel:039600550">☎ <span>03-9600550</span></a>
+      <a class="btn btn-main" href="#quote">להצעת מחיר</a>
     </div>
   </div>
 </header>
 
-<!-- HERO + FORM -->
-<section class="lp-hero">
-  <div class="container lp-hero-grid">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
     <div>
-      <span class="lp-eyebrow">מפעל ישראלי · הדפסה דיגיטלית · מאז 1995</span>
-      <h1><span class="hl">כוסות נייר ממותגות</span> עם הלוגו שלכם — מ-500 יחידות בלבד</h1>
-      <p class="lp-lead">הדפסה דיגיטלית איכותית, ללא הגבלת צבעים. שולחים לוגו — מקבלים הדמיה והצעת מחיר תוך 24 שעות. מתאים לבתי קפה, מסעדות, אירועים ועסקים.</p>
-      <ul class="lp-bullets">
-        <li><span class="ck">✓</span> מינימום 500 יח׳ — הנמוך בשוק</li>
-        <li><span class="ck">✓</span> ללא הגבלת צבעים</li>
-        <li><span class="ck">✓</span> הדמיה תוך 24 שעות</li>
-        <li><span class="ck">✓</span> אספקה תוך 5-7 ימי עסקים</li>
-      </ul>
-      <div class="lp-trust-line">
-        <span class="stars">★★★★★</span>
-        <span>500+ עסקים מרוצים</span>
-        <span>·</span>
-        <span>🇮🇱 מיוצר בישראל</span>
+      <span class="pill">🇮🇱 מפעל ישראלי · מאז 1995</span>
+      <h1>כוסות נייר <span class="hl">ממותגות</span><br>עם הלוגו שלכם</h1>
+      <p class="sub">מ-500 יחידות · ללא הגבלת צבעים · הדמיה והצעת מחיר תוך 24 שעות.</p>
+      <div class="hero-cta">
+        <a class="btn btn-main btn-lg" href="#quote">קבלו הצעת מחיר ←</a>
+        <a class="btn btn-wa btn-lg" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a>
       </div>
+      <div class="micro"><span class="stars">★★★★★</span> 500+ עסקים מרוצים · אספקה תוך 5-7 ימים</div>
     </div>
 
-    <!-- QUOTE FORM -->
-    <div class="lp-form-card" id="quote">
-      <h2>קבלו הצעת מחיר תוך 24 שעות</h2>
-      <p class="sub">מלאו את הפרטים ונחזור אליכם עם הדמיה והצעה — ללא התחייבות.</p>
-      <div class="lp-form-msg" id="formMsg"></div>
+    <!-- FORM -->
+    <div class="formcard" id="quote">
+      <h2>הצעת מחיר תוך 24 שעות</h2>
+      <p class="lead">משאירים פרטים — חוזרים אליכם עם הדמיה והצעה.</p>
+      <div class="msg" id="formMsg"></div>
       <form id="lpForm">
-        <input type="text" class="lp-hp" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="text" class="hp" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label for="f-name">שם מלא *</label>
         <input type="text" id="f-name" name="name" required placeholder="ישראל ישראלי">
         <div class="row2">
-          <div>
-            <label for="f-phone">טלפון *</label>
-            <input type="tel" id="f-phone" name="phone" required placeholder="050-0000000">
-          </div>
-          <div>
-            <label for="f-email">דוא"ל</label>
-            <input type="email" id="f-email" name="email" placeholder="name@example.com">
+          <div><label for="f-phone">טלפון *</label><input type="tel" id="f-phone" name="phone" required placeholder="050-0000000"></div>
+          <div><label for="f-qty">כמות</label>
+            <select id="f-qty" name="quantity">
+              <option value="">בחרו</option>
+              <option value="500">500 יח׳</option>
+              <option value="1000">1,000 יח׳</option>
+              <option value="5000">5,000 יח׳</option>
+              <option value="10000">10,000 יח׳</option>
+              <option value="10000+">10,000+ יח׳</option>
+            </select>
           </div>
         </div>
-        <label for="f-business">שם העסק</label>
-        <input type="text" id="f-business" name="business" placeholder="בית קפה / חברה / אירוע">
-        <label for="f-qty">כמות משוערת</label>
-        <select id="f-qty" name="quantity">
-          <option value="">בחרו כמות</option>
-          <option value="500">500 יחידות</option>
-          <option value="1000">1,000 יחידות</option>
-          <option value="5000">5,000 יחידות</option>
-          <option value="10000">10,000 יחידות</option>
-          <option value="10000+">מעל 10,000 יחידות</option>
-        </select>
-        <label for="f-notes">פרטים נוספים</label>
-        <textarea id="f-notes" name="notes" rows="2" placeholder="ספרו לנו על העיצוב / יש לוגו מוכן?"></textarea>
-        <button type="submit" class="btn btn-primary lp-submit" id="lpSubmit">שלחו ואקבל הצעת מחיר ←</button>
-        <p class="lp-form-note">או חייגו עכשיו: <a href="tel:039600550">03-9600550</a> · <a href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a></p>
+        <label for="f-email">דוא"ל</label>
+        <input type="email" id="f-email" name="email" placeholder="name@example.com">
+        <button type="submit" class="btn btn-main btn-block btn-lg" id="lpSubmit">שלחו וקבלו הצעה ←</button>
+        <p class="formnote">או חייגו <a href="tel:039600550">03-9600550</a></p>
       </form>
     </div>
   </div>
 </section>
 
-<!-- WHY US -->
-<section class="lp-section">
-  <div class="container">
-    <div class="lp-section-head">
-      <span class="lp-eyebrow">למה אספגיל</span>
-      <h2>מפעל אחד, אחריות מלאה</h2>
-      <p>אנחנו לא מתווכים — מייצרים ומדפיסים במפעל שלנו בבני ברק.</p>
-    </div>
-    <div class="lp-feats">
-      <div class="lp-feat"><div class="ic">🎨</div><h3>ללא הגבלת צבעים</h3><p>הדפסה דיגיטלית בצבעי מותג מדויקים, תמונות וגרדיאנטים — ללא תוספת מחיר.</p></div>
-      <div class="lp-feat"><div class="ic">⚡</div><h3>הדמיה תוך 24ש'</h3><p>שולחים לוגו ומקבלים הדמיה והצעת מחיר ביום העסקים הבא.</p></div>
-      <div class="lp-feat"><div class="ic">📦</div><h3>מינימום 500 יח׳</h3><p>הכמות המינימלית הנמוכה בשוק — מתאים גם לעסקים קטנים ולאירועים.</p></div>
-      <div class="lp-feat"><div class="ic">🇮🇱</div><h3>מיוצר בישראל</h3><p>מפעל ישראלי הפועל מאז 1995, בתקני איכות מחמירים.</p></div>
-    </div>
+<!-- BENEFITS STRIP -->
+<section class="benefits">
+  <div class="wrap">
+    <div class="ben"><div class="ic">🎨</div><div><b>ללא הגבלת צבעים</b><span>הדפסה דיגיטלית</span></div></div>
+    <div class="ben"><div class="ic">⚡</div><div><b>הדמיה תוך 24ש'</b><span>שולחים לוגו, מקבלים הדמיה</span></div></div>
+    <div class="ben"><div class="ic">📦</div><div><b>מ-500 יחידות</b><span>הנמוך בשוק</span></div></div>
+    <div class="ben"><div class="ic">🏭</div><div><b>מיוצר בישראל</b><span>מפעל משלנו</span></div></div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section class="lp-section gray">
-  <div class="container">
-    <div class="lp-section-head">
-      <span class="lp-eyebrow">מחירים</span>
-      <h2>מחיר הוגן, ככל שמזמינים יותר — משלמים פחות</h2>
-      <p>כוסות נייר 9oz (250 מ"ל) ממותגות. המחירים כוללים מע"מ, ללא משלוח.</p>
+<section class="sec tint">
+  <div class="wrap">
+    <h2>מחיר הוגן — יותר כמות, פחות ליחידה</h2>
+    <p class="desc">כוסות 9oz ממותגות. כולל מע"מ, ללא משלוח.</p>
+    <div class="prices">
+      <div class="price"><div class="q">500 יח׳</div><div class="a">₪500</div><div class="u">₪1.00 ליח׳</div></div>
+      <div class="price hot"><div class="tag">הכי פופולרי</div><div class="q">1,000 יח׳</div><div class="a">₪800</div><div class="u">₪0.80 ליח׳</div></div>
+      <div class="price"><div class="q">5,000 יח׳</div><div class="a">₪2,750</div><div class="u">₪0.55 ליח׳</div></div>
+      <div class="price"><div class="q">10,000 יח׳</div><div class="a">₪4,500</div><div class="u">₪0.45 ליח׳</div></div>
     </div>
-    <div class="lp-prices">
-      <div class="lp-price"><div class="qty">500 יחידות</div><div class="amt">₪500</div><div class="per">₪1.00 ליחידה</div></div>
-      <div class="lp-price popular"><div class="badge">הכי פופולרי</div><div class="qty">1,000 יחידות</div><div class="amt">₪800</div><div class="per">₪0.80 ליחידה</div></div>
-      <div class="lp-price"><div class="qty">5,000 יחידות</div><div class="amt">₪2,750</div><div class="per">₪0.55 ליחידה</div></div>
-      <div class="lp-price"><div class="qty">10,000 יחידות</div><div class="amt">₪4,500</div><div class="per">₪0.45 ליחידה</div></div>
-    </div>
-    <p class="lp-price-note">צריכים כמות אחרת? <a href="#quote">בקשו הצעה מותאמת ←</a></p>
   </div>
 </section>
 
 <!-- STEPS -->
-<section class="lp-section">
-  <div class="container">
-    <div class="lp-section-head">
-      <span class="lp-eyebrow">איך זה עובד</span>
-      <h2>שלושה צעדים פשוטים</h2>
-    </div>
-    <div class="lp-steps">
-      <div class="lp-step"><div class="n">1</div><h3>משאירים פרטים</h3><p>ממלאים את הטופס או מתקשרים — ומספרים מה אתם צריכים.</p></div>
-      <div class="lp-step"><div class="n">2</div><h3>מקבלים הדמיה</h3><p>אנו מכינים הדמיה של הכוס והצעת מחיר תוך 24 שעות.</p></div>
-      <div class="lp-step"><div class="n">3</div><h3>מאשרים ומקבלים</h3><p>לאחר אישור — ייצור ואספקה תוך 5-7 ימי עסקים.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="lp-section gray">
-  <div class="container">
-    <div class="lp-section-head">
-      <span class="lp-eyebrow">המלצות לקוחות</span>
-      <h2>500+ עסקים סומכים עלינו</h2>
-    </div>
-    <div class="lp-tests">
-      <div class="lp-test"><div class="stars">★★★★★</div><p class="q">עובדים עם אספגיל כבר 3 שנים. תמיד עומדים בזמנים, האיכות מצוינת.</p><div class="who">דניאל כהן · רשת בתי קפה</div></div>
-      <div class="lp-test"><div class="stars">★★★★★</div><p class="q">הזמנו 50,000 כוסות לכנס. ההדמיה הייתה מדויקת והאספקה הגיעה יום לפני.</p><div class="who">שירה לוי · חברת היי-טק</div></div>
-      <div class="lp-test"><div class="stars">★★★★★</div><p class="q">בעלת פודטראק, הצוות עזר לי עם הקבצים — תוצאה מושלמת.</p><div class="who">מירב אבני · פודטראק</div></div>
+<section class="sec">
+  <div class="wrap">
+    <h2>ככה זה עובד</h2>
+    <p class="desc">שלושה צעדים — בלי כאב ראש.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>משאירים פרטים</h3><p>טופס קצר או שיחת טלפון.</p></div>
+      <div class="step"><div class="n">2</div><h3>מקבלים הדמיה</h3><p>הדמיה והצעת מחיר תוך 24 שעות.</p></div>
+      <div class="step"><div class="n">3</div><h3>מקבלים כוסות</h3><p>ייצור ואספקה תוך 5-7 ימים.</p></div>
     </div>
   </div>
 </section>
 
 <!-- FINAL CTA -->
-<section class="lp-final">
-  <div class="container">
-    <h2>מוכנים להזמין כוסות ממותגות?</h2>
-    <p>קבלו הדמיה והצעת מחיר תוך 24 שעות — ללא התחייבות.</p>
-    <div class="lp-final-cta">
-      <a class="btn btn-large" href="#quote">למילוי הטופס ←</a>
-      <a class="btn btn-large" href="tel:039600550">☎ 03-9600550</a>
-      <a class="btn btn-large wa" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a>
+<section class="final">
+  <div class="wrap">
+    <h2>מוכנים להתחיל?</h2>
+    <p>הדמיה והצעת מחיר תוך 24 שעות — ללא התחייבות.</p>
+    <div class="final-cta">
+      <a class="btn btn-main btn-lg" href="#quote">למילוי הטופס ←</a>
+      <a class="btn btn-wa btn-lg" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a>
     </div>
   </div>
 </section>
 
-<footer class="lp-foot">
-  אספגיל · רחוב הירקון 39, בני ברק · <a href="tel:039600550">03-9600550</a> · <a href="mailto:salesaspagil@gmail.com">salesaspagil@gmail.com</a><br>
-  © <span id="year"></span> אספגיל — כל הזכויות שמורות
+<footer class="foot">
+  אספגיל · רחוב הירקון 39, בני ברק · <a href="tel:039600550">03-9600550</a> · <a href="mailto:salesaspagil@gmail.com">salesaspagil@gmail.com</a>
 </footer>
 
-<!-- Sticky mobile bar -->
-<div class="lp-mobilebar">
-  <a class="call" href="tel:039600550">☎ חייגו</a>
-  <a class="wa" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a>
+<div class="mbar">
+  <a class="c" href="tel:039600550">☎ חייגו</a>
+  <a class="w" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a>
 </div>
 
 <script>
-document.getElementById('year').textContent=new Date().getFullYear();
-
-const form=document.getElementById('lpForm');
-const msg=document.getElementById('formMsg');
-const btn=document.getElementById('lpSubmit');
-
+const form=document.getElementById('lpForm'),msg=document.getElementById('formMsg'),btn=document.getElementById('lpSubmit');
 form.addEventListener('submit',async(e)=>{
   e.preventDefault();
-  msg.className='lp-form-msg';msg.style.display='none';
-
-  const fd=new FormData(form);
-  const fields={};
-  fd.forEach((v,k)=>{fields[k]=v;});
-
-  // Honeypot
-  if(fields.botcheck){return;}
-
-  btn.disabled=true;const orig=btn.textContent;btn.textContent='שולח…';
-
+  msg.className='msg';
+  const fd=new FormData(form),fields={};fd.forEach((v,k)=>fields[k]=v);
+  if(fields.botcheck)return;
+  btn.disabled=true;const o=btn.textContent;btn.textContent='שולח…';
   try{
-    const res=await fetch('/api/submit-form',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        type:'quote',
-        fields:Object.assign({subject:'📧 ליד מקמפיין Google Ads — כוסות נייר ממותגות'},fields),
-        files:[]
-      })
-    });
-    const data=await res.json();
-    if(res.ok&&data.success){
-      msg.className='lp-form-msg ok';
-      msg.textContent='תודה! קיבלנו את הפנייה ונחזור אליכם תוך 24 שעות עם הדמיה והצעת מחיר.';
-      form.reset();
-      // Google Ads conversion hook — add your conversion snippet / gtag here
-      if(typeof gtag_report_conversion==='function'){gtag_report_conversion();}
-    }else{
-      throw new Error(data.message||'שגיאה בשליחה');
-    }
-  }catch(err){
-    msg.className='lp-form-msg err';
-    msg.textContent='אירעה שגיאה בשליחה. אנא נסו שוב או חייגו 03-9600550.';
-  }finally{
-    btn.disabled=false;btn.textContent=orig;
-    msg.scrollIntoView({behavior:'smooth',block:'center'});
-  }
+    const r=await fetch('/api/submit-form',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'quote',fields:Object.assign({subject:'📧 ליד מקמפיין Google Ads — כוסות נייר ממותגות'},fields),files:[]})});
+    const d=await r.json();
+    if(r.ok&&d.success){
+      msg.className='msg ok';msg.textContent='תודה! נחזור אליכם תוך 24 שעות עם הדמיה והצעת מחיר.';form.reset();
+      if(typeof gtag_report_conversion==='function')gtag_report_conversion();
+    }else throw new Error();
+  }catch(_){msg.className='msg err';msg.textContent='אירעה שגיאה. נסו שוב או חייגו 03-9600550.';}
+  finally{btn.disabled=false;btn.textContent=o;msg.scrollIntoView({behavior:'smooth',block:'center'});}
 });
 </script>
 </body>
