@@ -50,23 +50,23 @@
   /* HERO with photo */
   .hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;
         background:#111 center/cover no-repeat;
-        background-image:linear-gradient(90deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.3) 48%,rgba(0,0,0,.04) 100%),
+        background-image:linear-gradient(90deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.18) 48%,rgba(0,0,0,0) 100%),
                           url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=1740&auto=format&fit=crop');}
   @media(max-width:940px){.hero{min-height:auto;padding:96px 0 44px;
-        background-image:linear-gradient(180deg,rgba(0,0,0,.58),rgba(0,0,0,.5)),
+        background-image:linear-gradient(180deg,rgba(0,0,0,.32),rgba(0,0,0,.26)),
                           url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=1740&auto=format&fit=crop');}}
   .hero .wrap{position:relative;z-index:3;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center;width:100%;}
   @media(max-width:940px){.hero .wrap{grid-template-columns:1fr;gap:30px;}}
 
-  .eyebrow{display:inline-block;color:rgba(255,255,255,.7);font-weight:600;font-size:.82rem;letter-spacing:3px;margin-bottom:18px;}
-  .hero h1{font-size:3.6rem;line-height:1.07;font-weight:900;letter-spacing:-1.5px;color:#fff;margin-bottom:18px;}
+  .eyebrow{display:inline-block;color:rgba(255,255,255,.82);font-weight:600;font-size:.82rem;letter-spacing:3px;margin-bottom:18px;text-shadow:0 2px 12px rgba(0,0,0,.5);}
+  .hero h1{font-size:3.6rem;line-height:1.07;font-weight:900;letter-spacing:-1.5px;color:#fff;margin-bottom:18px;text-shadow:0 2px 20px rgba(0,0,0,.45);}
   @media(max-width:940px){.hero h1{font-size:2.4rem;}}
   .hero h1 em{font-style:normal;position:relative;white-space:nowrap;}
   .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:3px;background:#fff;opacity:.85;}
-  .hero .sub{font-size:1.3rem;font-weight:300;color:rgba(255,255,255,.86);max-width:440px;margin-bottom:30px;}
+  .hero .sub{font-size:1.3rem;font-weight:300;color:rgba(255,255,255,.94);max-width:440px;margin-bottom:30px;text-shadow:0 2px 14px rgba(0,0,0,.5);}
   @media(max-width:940px){.hero .sub{font-size:1.08rem;}}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
-  .micro{margin-top:26px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:rgba(255,255,255,.8);font-weight:500;font-size:.95rem;}
+  .micro{margin-top:26px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:rgba(255,255,255,.9);font-weight:500;font-size:.95rem;text-shadow:0 2px 12px rgba(0,0,0,.5);}
   .micro .stars{color:#fff;letter-spacing:2px;}
   .micro .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);}
 
