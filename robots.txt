@@ -11,4 +11,3 @@ User-agent: CCBot
 Disallow: /
 
 Sitemap: https://www.gilcups.com/sitemap.xml
-Sitemap: https://www.aspagil.com/sitemap.xml
