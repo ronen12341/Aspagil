@@ -120,13 +120,6 @@
                 <div class="payment-option-desc">חיוב מיידי באתר מאובטח של Sumit. תקבלו חשבונית במייל.</div>
               </div>
             </label>
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="phone">
-              <div>
-                <div class="payment-option-title">📞 חיוב טלפוני</div>
-                <div class="payment-option-desc">נחזור אליכם תוך יום עסקים ונחייב בשיחה.</div>
-              </div>
-            </label>
           </fieldset>
 
           <div class="how-it-works" id="howItWorks">
@@ -232,29 +225,18 @@
 
   function getPaymentMethod() {
     const sel = document.querySelector('input[name="paymentMethod"]:checked');
-    return sel ? sel.value : (canPayOnline ? "online" : "phone");
+    return sel ? sel.value : "online";
   }
 
   function updateHowItWorks() {
-    const method = getPaymentMethod();
     const list = document.getElementById("howItWorksList");
-    if (method === "online") {
-      list.innerHTML = `
-        <li>לחצו על "שלם עכשיו" ותועברו לדף תשלום מאובטח</li>
-        <li>מלאו את פרטי כרטיס האשראי</li>
-        <li>תקבלו חשבונית מס במייל</li>
-        <li>נשלח את ההזמנה תוך 5–7 ימי עסקים</li>
-      `;
-      document.getElementById("submitBtn").textContent = "שלם עכשיו " + total.toLocaleString("he-IL") + ' ש"ח ←';
-    } else {
-      list.innerHTML = `
-        <li>שלחו את ההזמנה (ללא חיוב)</li>
-        <li>נחזור אליכם תוך יום עסקים לאישור</li>
-        <li>נחייב את הכרטיס בשיחה טלפונית מאובטחת</li>
-        <li>נשלח את ההזמנה תוך 5–7 ימי עסקים</li>
-      `;
-      document.getElementById("submitBtn").textContent = "שלח הזמנה ←";
-    }
+    list.innerHTML = `
+      <li>לחצו על "שלם עכשיו" ותועברו לדף תשלום מאובטח</li>
+      <li>מלאו את פרטי כרטיס האשראי</li>
+      <li>תקבלו חשבונית מס במייל</li>
+      <li>נשלח את ההזמנה תוך 5–7 ימי עסקים</li>
+    `;
+    document.getElementById("submitBtn").textContent = "שלם עכשיו " + total.toLocaleString("he-IL") + ' ש"ח ←';
   }
 
   updateHowItWorks();
