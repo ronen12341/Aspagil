@@ -188,13 +188,15 @@
                 <div style="font-size:0.85rem;color:var(--gray-700);margin-top:4px;">PDF, AI, PSD, EPS, SVG, PNG, JPG, TIFF — עד 10MB</div>
               </div>
               <div id="c-artwork-selected" style="display:none;">
+                <img id="c-artwork-preview" alt="תצוגה מקדימה" style="display:none;max-width:160px;max-height:160px;border-radius:8px;margin:0 auto 8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
                 <div style="font-size:1.5rem;line-height:1;margin-bottom:6px;color:#1F6638;">✓</div>
                 <div style="font-weight:700;color:#1F6638;" id="c-artwork-filename">קובץ נבחר</div>
                 <div id="c-artwork-filesize" style="font-size:0.85rem;color:var(--gray-700);margin-top:4px;"></div>
+                <div id="c-artwork-progress" style="display:none;margin-top:8px;font-size:0.9rem;color:var(--orange);font-weight:700;"></div>
                 <button type="button" id="c-artwork-remove" style="margin-top:8px;background:transparent;border:none;color:#C03;font-size:0.85rem;cursor:pointer;text-decoration:underline;">הסר קובץ</button>
               </div>
             </div>
-            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">אם יש לכם עיצוב מוכן — צרפו אותו כאן. הקובץ יישלח אוטומטית יחד עם הטופס.</small>
+            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">אם יש לכם עיצוב מוכן — צרפו אותו כאן (עד 10MB). קובץ גדול יותר? שלחו בוואטסאפ ל-03-9600550.</small>
           </div>
           <div class="form-group"><label for="c-msg">פרטים נוספים</label><textarea id="c-msg" name="notes" rows="4" placeholder="צבעי מותג, מועד נדרש, יעד אספקה..."></textarea></div>
 
@@ -322,6 +324,10 @@ if(window.location.search.indexOf('sent=ok')!==-1){
   function showEmpty(){
     emptyView.style.display = 'block';
     selView.style.display = 'none';
+    var preview = document.getElementById('c-artwork-preview');
+    if (preview) { preview.style.display = 'none'; preview.removeAttribute('src'); }
+    var prog = document.getElementById('c-artwork-progress');
+    if (prog) { prog.style.display = 'none'; prog.textContent = ''; }
     dropzone.style.background = '#FAFAFA';
     dropzone.style.borderColor = '';
     dropzone.style.borderStyle = 'dashed';
@@ -338,6 +344,7 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     e.stopPropagation();
     fileInput.value = '';
     cachedFile = null;
+    window.__artworkCachedFile = null;
     fileReadError = null;
     showEmpty();
   });
@@ -380,9 +387,9 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     var file = e.target.files && e.target.files[0];
     if (!file) { showEmpty(); return; }
 
-    // 25 MB safety limit
-    if (file.size > 25 * 1024 * 1024) {
-      showError('הקובץ גדול מ-25MB. אנא דחסו או שלחו דרך WhatsApp ל-03-9600550.');
+    // 10 MB limit — Cloudinary free plan caps single image/graphic files at 10MB
+    if (file.size > 10 * 1024 * 1024) {
+      showError('הקובץ גדול מ-10MB. אפשר לדחוס אותו, או לשלוח דרך WhatsApp ל-03-9600550 ונשייך אותו להזמנה.');
       fileInput.value = '';
       showEmpty();
       return;
@@ -391,7 +398,19 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     // Show visual confirmation immediately
     showSelected(file);
 
-    // Read into RAM so OS file invalidation doesn't break the upload
+    // Image preview thumbnail (for image files only)
+    var preview = document.getElementById('c-artwork-preview');
+    if (preview) {
+      if (file.type && file.type.indexOf('image/') === 0) {
+        try { preview.src = URL.createObjectURL(file); preview.style.display = 'block'; }
+        catch (e) { preview.style.display = 'none'; }
+      } else {
+        preview.removeAttribute('src');
+        preview.style.display = 'none';
+      }
+    }
+
+    // Read into RAM so OS file invalidation doesn't break the upload (mobile)
     var reader = new FileReader();
     reader.onload = function(ev){
       try {
@@ -400,6 +419,7 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         cachedFile = new Blob([ev.target.result], { type: file.type || 'application/octet-stream' });
         cachedFile.name = file.name;
       }
+      window.__artworkCachedFile = cachedFile;
     };
     reader.onerror = function(){
       fileReadError = true;
@@ -467,6 +487,43 @@ if(window.location.search.indexOf('sent=ok')!==-1){
 
   if (!btn) return;
 
+  // ── Cloudinary direct upload (bypasses Vercel's 4.5MB serverless limit) ──
+  var CLOUDINARY_CLOUD  = 'ddqog3qb8';
+  var CLOUDINARY_PRESET = 'gilcups_unsigned';
+
+  function uploadToCloudinary(file) {
+    return new Promise(function(resolve, reject) {
+      var endpoint = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/auto/upload';
+      var fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', CLOUDINARY_PRESET);
+      var progEl = document.getElementById('c-artwork-progress');
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', endpoint, true);
+      xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+          var pct = Math.round((e.loaded / e.total) * 100);
+          if (progEl) { progEl.style.display = 'block'; progEl.textContent = 'מעלה קובץ... ' + pct + '%'; }
+          btn.innerHTML = '⬆️ מעלה קובץ ' + pct + '%';
+        }
+      };
+      xhr.onload = function() {
+        if (progEl) progEl.style.display = 'none';
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            if (data && data.secure_url) return resolve(data.secure_url);
+            reject(new Error('no secure_url in response'));
+          } catch (err) { reject(err); }
+        } else {
+          reject(new Error('upload failed with status ' + xhr.status));
+        }
+      };
+      xhr.onerror = function() { if (progEl) progEl.style.display = 'none'; reject(new Error('network error')); };
+      xhr.send(fd);
+    });
+  }
+
   // Read a File as base64 string
   function readAsBase64(file) {
     return new Promise(function(resolve, reject) {
@@ -502,33 +559,48 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     try {
       var notes    = (document.getElementById('c-msg') || {value:''}).value.trim();
       var fileInput = document.getElementById('c-artwork');
-      var file      = fileInput && fileInput.files && fileInput.files[0];
+      var file      = (window.__artworkCachedFile) || (fileInput && fileInput.files && fileInput.files[0]);
 
-      // If file attached — send it now via submit-form so it arrives as email attachment
+      // If file attached — upload it straight to Cloudinary (bypasses the 4.5MB
+      // serverless limit), then send the download LINK with the order.
       if (file) {
+        btn.innerHTML = '⬆️ מעלה קובץ...';
+        var artworkUrl = null;
         try {
-          var b64 = await readAsBase64(file);
-          await fetch('/api/submit-form', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'quote',
-              fields: {
-                subject: '📎 קובץ גרפיקה להזמנה מהאתר',
-                name: name, phone: phone, email: email,
-                tax_id: taxId,
-                invoice_name: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
-                address: (document.getElementById('c-address') || {value:''}).value.trim(),
-                quantity: qty,
-                notes: notes || '—'
-              },
-              files: [{ field: 'artwork_file', name: file.name, type: file.type || 'application/octet-stream', contentBase64: b64 }]
-            })
-          });
-          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה נשלח בנפרד: ' + file.name;
-        } catch(fileErr) {
-          console.error('File send failed:', fileErr);
-          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה (לא נשלח - שגיאה): ' + file.name;
+          artworkUrl = await uploadToCloudinary(file);
+        } catch (upErr) {
+          console.error('Cloudinary upload failed:', upErr);
+        }
+
+        if (artworkUrl) {
+          // Notify the business immediately with the download link
+          try {
+            await fetch('/api/submit-form', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'quote',
+                fields: {
+                  subject: '📎 קובץ גרפיקה להזמנה מהאתר',
+                  name: name, phone: phone, email: email,
+                  tax_id: taxId,
+                  invoice_name: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
+                  address: (document.getElementById('c-address') || {value:''}).value.trim(),
+                  quantity: qty,
+                  artwork_url: artworkUrl,
+                  artwork_name: file.name,
+                  notes: notes || '—'
+                }
+              })
+            });
+          } catch (sendErr) { console.error('submit-form notify failed:', sendErr); }
+          notes = (notes ? notes + '\n' : '') + 'קובץ גרפיקה: ' + file.name + ' — ' + artworkUrl;
+        } else {
+          // Upload failed — don't silently drop the file; let the customer choose.
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showErr('לא הצלחנו להעלות את הקובץ. נסו שוב, או לחצו "הסר קובץ" כדי להמשיך בלי הקובץ (נתאם איתכם את הגרפיקה), או שלחו אותו בוואטסאפ ל-03-9600550.');
+          return;
         }
       }
 

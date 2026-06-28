@@ -73,6 +73,7 @@ function buildEmailHtml(type, fields, attachmentNames) {
   for (const key of Object.keys(fields)) {
     if (ORDER.includes(key)) continue;
     if (key === 'subject' || key === 'from_name' || key === 'access_key' || key === 'redirect' || key === 'botcheck') continue;
+    if (key === 'artwork_url' || key === 'artwork_name') continue; // rendered as a download button below
     if (fields[key] != null && String(fields[key]).trim() !== '') {
       const value = escapeHtml(fields[key]).replace(/\n/g, '<br>');
       rows.push(`<tr><td align="right" valign="top" style="font-weight:bold;padding:8px 12px;border-bottom:1px solid #dddddd;background:#f5f5f5;width:30%;color:#333333;">${escapeHtml(FIELD_LABELS[key] || key)}</td><td align="right" valign="top" style="padding:8px 12px;border-bottom:1px solid #dddddd;color:#1a1a1a;">${value}</td></tr>`);
@@ -87,6 +88,19 @@ function buildEmailHtml(type, fields, attachmentNames) {
   let attachmentSection = '';
   if (attachmentNames && attachmentNames.length) {
     attachmentSection = `<p align="right" style="margin:18px 0 0;padding:12px;background:#fff4e5;border-right:4px solid #e0a23a;color:#7a4e00;direction:rtl;"><strong>קבצים מצורפים (${attachmentNames.length}):</strong><br>${attachmentNames.map(n => escapeHtml(n)).join('<br>')}</p>`;
+  }
+
+  // Artwork uploaded to cloud storage — show a prominent download button
+  let artworkSection = '';
+  if (fields.artwork_url) {
+    const safeUrl  = escapeHtml(fields.artwork_url);
+    const safeName = escapeHtml(fields.artwork_name || 'קובץ גרפיקה');
+    artworkSection = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0 0;direction:rtl;"><tr><td align="right" style="padding:16px;background:#E6F4EA;border-right:4px solid #1F6638;color:#14532d;">
+<strong style="font-size:15px;">📎 הלקוח צירף קובץ גרפיקה להזמנה:</strong><br>
+<span style="color:#333;">${safeName}</span><br>
+<a href="${safeUrl}" target="_blank" style="display:inline-block;margin-top:12px;background:#1F6638;color:#ffffff;padding:11px 22px;border-radius:6px;text-decoration:none;font-weight:bold;">⬇ הורד את הקובץ</a>
+<br><span style="font-size:11px;color:#5a7a64;word-break:break-all;">${safeUrl}</span>
+</td></tr></table>`;
   }
 
   return `<!DOCTYPE html>
@@ -104,6 +118,7 @@ function buildEmailHtml(type, fields, attachmentNames) {
 ${rows.join('')}
 </table>
 ${attachmentSection}
+${artworkSection}
 <p align="right" style="margin:24px 0 0;color:#999999;font-size:12px;border-top:1px solid #eeeeee;padding-top:12px;direction:rtl;">
 מייל זה נוצר אוטומטית. ענה ישירות ללקוח דרך כתובת המייל / מספר הטלפון שמופיעים למעלה.
 </p>
