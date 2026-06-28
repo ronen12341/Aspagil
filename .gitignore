@@ -1,0 +1,12 @@
+# Local helper scripts (not part of the website)
+*.bat
+
+# Dropbox / editor temporary files
+*.tmp
+*.tmp.*
+
+# Internal marketing notes - keep out of the public repo
+facebook_lead_campaign.md
+google_ads_copy_pack.md
+google_ads_negatives_kafe_misrad.txt
+video_script_jura_x10.md

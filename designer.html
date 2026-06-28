@@ -93,9 +93,9 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
   position:absolute;
   left:9%; top:10%; width:82%; height:75%;
   background-repeat:no-repeat;
-  background-position:center top;
-  /* 100% 100% מותח את העיצוב על כל שטח גוף הכוס (מדמה עטיפה) */
-  background-size:100% 100%;
+  /* 220% רוחב → מציג את החלק המרכזי בלבד (~45% מהרוחב) כמו מבט חזיתי על הכוס */
+  background-size:220% auto;
+  background-position:center 8%;
   /* multiply מאפשר לצבעי הכוס ולאור לעבור דרך העיצוב */
   mix-blend-mode:multiply;
   opacity:0.9;
@@ -663,6 +663,13 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
           ctx.imageSmoothingQuality = 'high';
           // Draw the design into the top design area (sharp rectangular fit)
           ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, PRINT_W, DESIGN_H);
+          // Post-process: mask any curved arc lines the AI adds at top/bottom.
+          // Cover the top 7% and bottom 7% of the design area with white to eliminate
+          // cup-sleeve arc guides that sometimes appear despite prompt instructions.
+          const maskH = Math.round(DESIGN_H * 0.07);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, PRINT_W, maskH);                       // top mask
+          ctx.fillRect(0, DESIGN_H - maskH, PRINT_W, maskH);        // bottom mask
           // The bottom STRIP_H px stays pure white — the 8mm strip for the cup base
           canvas.toBlob(function(b){
             try { URL.revokeObjectURL(img.src); } catch(e){}
