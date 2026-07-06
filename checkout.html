@@ -86,21 +86,49 @@
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group" style="grid-column:1/-1">
-              <label class="form-label" for="address">כתובת למשלוח</label>
-              <input class="form-input" id="address" name="address" type="text" autocomplete="street-address">
+          <!-- Fulfillment method -->
+          <fieldset class="payment-fieldset" id="fulfillmentFieldset">
+            <legend>אופן קבלת ההזמנה</legend>
+            <label class="payment-option">
+              <input type="radio" name="fulfillmentMethod" value="delivery" checked>
+              <div>
+                <div class="payment-option-title">🚚 משלוח עד הבית</div>
+                <div class="payment-option-desc">עלות המשלוח מחושבת לפי כמות ההזמנה ומתווספת לסה"כ.</div>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="fulfillmentMethod" value="pickup">
+              <div>
+                <div class="payment-option-title">🏭 איסוף עצמי מהמפעל</div>
+                <div class="payment-option-desc">ללא עלות. רחוב הירקון 39, בני ברק — יש לתאם מראש.</div>
+              </div>
+            </label>
+          </fieldset>
+
+          <div id="pickupNote" style="display:none;background:#FFF4D6;border-right:4px solid var(--orange);padding:12px 14px;border-radius:8px;margin-bottom:1.2rem;font-size:0.9rem;color:#7A4E00">
+            ⚠ <strong>יש לתאם מראש את מועד האיסוף</strong> בטלפון
+            <a href="tel:039600550" style="color:#7A4E00;font-weight:700">03-9600550</a>
+            לפני ההגעה למפעל. אין להגיע ללא תיאום מוקדם.
+          </div>
+
+          <div id="addressSection">
+            <div class="form-row">
+              <div class="form-group" style="grid-column:1/-1">
+                <label class="form-label" for="address">כתובת למשלוח</label>
+                <input class="form-input" id="address" name="address" type="text" autocomplete="street-address">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="city">עיר</label>
+                <input class="form-input" id="city" name="city" type="text" autocomplete="address-level2">
+              </div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="city">עיר</label>
-              <input class="form-input" id="city" name="city" type="text" autocomplete="address-level2">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="business">שם העסק</label>
-              <input class="form-input" id="business" name="business" type="text">
-            </div>
+
+          <div class="form-group">
+            <label class="form-label" for="business">שם העסק</label>
+            <input class="form-input" id="business" name="business" type="text">
           </div>
 
           <div class="form-group">
@@ -137,6 +165,10 @@
         <aside class="order-summary-card">
           <h2 style="margin-bottom:1rem;font-size:1.1rem">סיכום הזמנה</h2>
           <div id="summaryItems"></div>
+          <div id="summaryShippingRow" class="order-summary-item" style="display:none;border-top:1px dashed var(--gray-200);padding-top:0.6rem;margin-top:0.4rem">
+            <div>משלוח <span id="summaryShippingUnits" style="color:var(--gray-500);font-size:0.78rem"></span></div>
+            <div id="summaryShippingCost" style="font-weight:600;white-space:nowrap;margin-right:0.5rem"></div>
+          </div>
           <div id="summaryTotal" class="order-summary-total" style="display:none">
             <span class="order-summary-total-label">סה"כ</span>
             <span class="order-summary-total-price" id="summaryTotalPrice"></span>
@@ -144,8 +176,11 @@
           <p id="summaryUnpricedNote" style="display:none;font-size:0.82rem;color:var(--gray-500);margin-top:0.75rem;background:var(--orange-soft);padding:8px 12px;border-radius:8px;border-right:3px solid var(--orange)">
             * חלק מהפריטים דורשים תיאום מחיר
           </p>
+          <p id="summaryShippingNote" style="display:none;font-size:0.82rem;color:var(--gray-500);margin-top:0.75rem;background:var(--orange-soft);padding:8px 12px;border-radius:8px;border-right:3px solid var(--orange)">
+            * מעל 5,000 יח' — עלות המשלוח תתואם איתכם בנפרד
+          </p>
           <p style="font-size:0.78rem;color:var(--gray-500);margin-top:1rem">
-            * המחירים כוללים מע"מ, אינם כוללים משלוח
+            * המחירים כוללים מע"מ · עלות המשלוח מחושבת לפי כמות ההזמנה
           </p>
         </aside>
 
@@ -189,11 +224,12 @@
     document.getElementById("checkoutContent").style.display = "none";
   }
 
-  const total = Cart.totalPrice();
+  const itemsTotal = Cart.totalPrice();
   const hasUnpriced = Cart.hasUnpricedItems();
-  const canPayOnline = total > 0 && !hasUnpriced;
+  const shipping = Cart.shippingInfo();
+  let total = itemsTotal;
 
-  // Summary
+  // Summary — items
   const summaryEl = document.getElementById("summaryItems");
   summaryEl.innerHTML = items.map(i => `
     <div class="order-summary-item">
@@ -209,17 +245,13 @@
     </div>
   `).join("");
 
-  if (total > 0) {
-    document.getElementById("summaryTotal").style.display = "flex";
-    document.getElementById("summaryTotalPrice").textContent = total.toLocaleString("he-IL") + ' ש"ח';
-  }
   if (hasUnpriced) {
     document.getElementById("summaryUnpricedNote").style.display = "";
   }
 
-  // Payment fieldset
-  if (canPayOnline) {
-    document.getElementById("paymentFieldset").style.display = "";
+  function getFulfillmentMethod() {
+    const sel = document.querySelector('input[name="fulfillmentMethod"]:checked');
+    return sel ? sel.value : "delivery";
   }
 
   function getPaymentMethod() {
@@ -227,9 +259,69 @@
     return sel ? sel.value : "online";
   }
 
+  // Recomputes shipping/total based on the chosen fulfillment method,
+  // updates the summary card, payment section, and submit button.
+  function refreshFulfillment() {
+    const method = getFulfillmentMethod();
+    const isPickup = method === "pickup";
+
+    document.getElementById("pickupNote").style.display = isPickup ? "" : "none";
+    document.getElementById("addressSection").style.display = isPickup ? "none" : "";
+
+    const shippingRow = document.getElementById("summaryShippingRow");
+    const shippingNote = document.getElementById("summaryShippingNote");
+    shippingNote.style.display = "none";
+
+    if (isPickup) {
+      total = itemsTotal;
+      if (shipping.units > 0) {
+        shippingRow.style.display = "flex";
+        document.getElementById("summaryShippingUnits").textContent = "";
+        document.getElementById("summaryShippingCost").textContent = "איסוף עצמי — ללא עלות";
+      } else {
+        shippingRow.style.display = "none";
+      }
+    } else {
+      total = itemsTotal + (shipping.needsArrangement ? 0 : shipping.cost);
+      if (shipping.units > 0) {
+        shippingRow.style.display = "flex";
+        document.getElementById("summaryShippingUnits").textContent =
+          "(" + shipping.units.toLocaleString("he-IL") + " יח')";
+        document.getElementById("summaryShippingCost").textContent = shipping.needsArrangement
+          ? "לפי תיאום"
+          : shipping.label;
+        if (shipping.needsArrangement) shippingNote.style.display = "";
+      } else {
+        shippingRow.style.display = "none";
+      }
+    }
+
+    const totalRow = document.getElementById("summaryTotal");
+    if (total > 0) {
+      totalRow.style.display = "flex";
+      document.getElementById("summaryTotalPrice").textContent = total.toLocaleString("he-IL") + ' ש"ח';
+    } else {
+      totalRow.style.display = "none";
+    }
+
+    document.getElementById("paymentFieldset").style.display = canPayOnline() ? "" : "none";
+
+    updateHowItWorks();
+  }
+
+  function canPayOnline() {
+    return total > 0 && !hasUnpriced;
+  }
+
   function updateHowItWorks() {
     const list = document.getElementById("howItWorksList");
-    list.innerHTML = `
+    const isPickup = getFulfillmentMethod() === "pickup";
+    list.innerHTML = isPickup ? `
+      <li>לחצו על "שלם עכשיו" ותועברו לדף תשלום מאובטח</li>
+      <li>מלאו את פרטי כרטיס האשראי</li>
+      <li>תקבלו חשבונית מס במייל</li>
+      <li>ניצור קשר לתיאום מועד איסוף מהמפעל — אין להגיע ללא תיאום</li>
+    ` : `
       <li>לחצו על "שלם עכשיו" ותועברו לדף תשלום מאובטח</li>
       <li>מלאו את פרטי כרטיס האשראי</li>
       <li>תקבלו חשבונית מס במייל</li>
@@ -238,7 +330,10 @@
     document.getElementById("submitBtn").textContent = "שלם עכשיו " + total.toLocaleString("he-IL") + ' ש"ח ←';
   }
 
-  updateHowItWorks();
+  refreshFulfillment();
+  document.querySelectorAll('input[name="fulfillmentMethod"]').forEach(r =>
+    r.addEventListener("change", refreshFulfillment)
+  );
   document.querySelectorAll('input[name="paymentMethod"]').forEach(r =>
     r.addEventListener("change", updateHowItWorks)
   );
@@ -276,19 +371,27 @@
     };
 
     const paymentMethod = getPaymentMethod();
+    const fulfillmentMethod = getFulfillmentMethod();
+    const isPickup = fulfillmentMethod === "pickup";
+    const shippingForOrder = isPickup
+      ? { units: shipping.units, cost: 0, label: "איסוף עצמי", needsArrangement: false }
+      : shipping;
 
     try {
       const res = await fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customer, items, totalPrice: total, hasUnpricedItems: hasUnpriced, paymentMethod }),
+        body: JSON.stringify({
+          customer, items, totalPrice: total, hasUnpricedItems: hasUnpriced,
+          paymentMethod, fulfillmentMethod, shipping: shippingForOrder,
+        }),
       });
 
       if (!res.ok) throw new Error("send failed");
       const data = await res.json();
       const orderId = data.orderId || ("ORD-" + Date.now());
 
-      if (paymentMethod === "online" && canPayOnline) {
+      if (paymentMethod === "online" && canPayOnline()) {
         // Try Sumit
         try {
           const payRes = await fetch("/api/create-payment", {

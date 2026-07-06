@@ -34,12 +34,17 @@ function generateOrderId() {
 }
 
 function buildEmailHtml(orderId, body) {
-  const { customer, items, totalPrice, hasUnpricedItems, paymentMethod } = body;
+  const { customer, items, totalPrice, hasUnpricedItems, paymentMethod, shipping, fulfillmentMethod } = body;
   const waLink = `https://wa.me/${toIsraeliE164(customer.phone)}`;
+  const isPickup = fulfillmentMethod === "pickup";
 
   const paymentBadge = paymentMethod === "online"
     ? `<span style="display:inline-block;background:#16a34a;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">💳 תשלום אונליין — הלקוח מועבר לסומיט</span>`
     : `<span style="display:inline-block;background:#E85D2F;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">📞 חיוב טלפוני — צריך להתקשר ללקוח</span>`;
+
+  const fulfillmentBadge = isPickup
+    ? `<span style="display:inline-block;background:#7A4E00;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">🏭 איסוף עצמי מהמפעל</span>`
+    : `<span style="display:inline-block;background:#2563eb;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">🚚 משלוח עד הבית</span>`;
 
   const itemRows = (items || []).map(i => {
     const lineTotal = i.priceNumeric
@@ -58,7 +63,11 @@ function buildEmailHtml(orderId, body) {
   <h2 style="color:#1A1A1A;border-bottom:2px solid #E85D2F;padding-bottom:8px;margin-top:0;">🛒 הזמנה חדשה מאתר אספגיל</h2>
   <p style="color:#666;margin:4px 0;">מספר הזמנה: <strong style="color:#1A1A1A;">${orderId}</strong></p>
   <p style="color:#666;margin:4px 0;">${new Date().toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}</p>
-  <p style="margin:12px 0;">${paymentBadge}</p>
+  <p style="margin:12px 0;">${paymentBadge} ${fulfillmentBadge}</p>
+
+  ${isPickup ? `<div style="background:#7A4E00;color:#fff;padding:14px 16px;border-radius:8px;margin:12px 0;font-size:15px;font-weight:bold;">
+    ⚠️ איסוף עצמי — יש ליצור קשר עם הלקוח ולתאם מראש מועד איסוף מהמפעל. אין לאפשר הגעה ללא תיאום.
+  </div>` : ""}
 
   <h3 style="color:#C44A24;margin-top:24px;">פרטי לקוח</h3>
   <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;">
@@ -82,7 +91,14 @@ function buildEmailHtml(orderId, body) {
         <th style="padding:10px 8px;text-align:end;">סה"כ</th>
       </tr>
     </thead>
-    <tbody>${itemRows}</tbody>
+    <tbody>${itemRows}
+      ${shipping && shipping.units > 0 ? `<tr style="border-bottom:1px solid #eee;">
+        <td style="padding:10px 8px;color:#1A1A1A;"><strong>${isPickup ? "איסוף עצמי" : "משלוח"}</strong><div style="font-size:11px;color:#888">${shipping.units.toLocaleString("he-IL")} יח' בהזמנה</div></td>
+        <td style="padding:10px 8px;color:#1A1A1A;text-align:center;">—</td>
+        <td style="padding:10px 8px;color:#1A1A1A;text-align:end;">—</td>
+        <td style="padding:10px 8px;color:#1A1A1A;text-align:end;font-weight:bold;">${isPickup ? "ללא עלות" : (shipping.needsArrangement ? "לפי תיאום" : Number(shipping.cost).toLocaleString("he-IL") + ' ש"ח')}</td>
+      </tr>` : ""}
+    </tbody>
     ${totalPrice > 0 ? `
     <tfoot>
       <tr style="background:#E85D2F;color:#fff;">
@@ -93,6 +109,7 @@ function buildEmailHtml(orderId, body) {
   </table>
 
   ${hasUnpricedItems ? `<p style="background:#FFF4D6;border-right:4px solid #E85D2F;padding:12px;margin-top:16px;color:#7A4E00;">⚠️ יש פריטים ללא מחיר — צריך לקבוע מחיר בשיחה עם הלקוח.</p>` : ""}
+  ${shipping && shipping.needsArrangement ? `<p style="background:#FFF4D6;border-right:4px solid #E85D2F;padding:12px;margin-top:16px;color:#7A4E00;">🚚 הזמנה מעל 5,000 יח' — צריך לתאם עלות משלוח מול הלקוח בנפרד.</p>` : ""}
 
   <div style="margin-top:24px;padding:16px;background:#fff;border-radius:8px;text-align:center;">
     <p style="margin:0 0 8px;color:#C44A24;font-weight:bold;">פעולות מהירות:</p>

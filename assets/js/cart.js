@@ -15,6 +15,25 @@
 
   const STORAGE_KEY = "gilcups-cart-v1";
 
+  /* ─── Shipping tiers (by total unit count in cart) ───
+   * 500–1,000 יח' → 50 ש"ח | 2,000 → 100 ש"ח | 3,000 → 150 ש"ח | 5,000 → 200 ש"ח
+   * מעל 5,000 יח' — עלות המשלוח מתואמת בנפרד מול הלקוח.
+   */
+  const SHIPPING_TIERS = [
+    { maxUnits: 1000, cost: 50 },
+    { maxUnits: 2000, cost: 100 },
+    { maxUnits: 3000, cost: 150 },
+    { maxUnits: 5000, cost: 200 },
+  ];
+
+  function parseUnits(item) {
+    // Units are embedded in the item's note (e.g. "1,000 יח׳") or id (e.g. "9oz-1000").
+    const fromNote = (item.note || "").replace(/[^\d]/g, "");
+    if (fromNote) return parseInt(fromNote, 10);
+    const fromId = (item.id || "").match(/(\d+)\s*$/);
+    return fromId ? parseInt(fromId[1], 10) : 0;
+  }
+
   /* ─── State ─── */
   let items = [];
 
@@ -48,6 +67,19 @@
     totalPrice: () => items.reduce((s, i) => s + (i.priceNumeric ? i.priceNumeric * i.qty : 0), 0),
 
     hasUnpricedItems: () => items.some(i => !i.priceNumeric),
+
+    totalUnits: () => items.reduce((s, i) => s + parseUnits(i) * i.qty, 0),
+
+    // Returns { units, cost, label, needsArrangement }
+    shippingInfo() {
+      const units = Cart.totalUnits();
+      if (units <= 0) return { units, cost: 0, label: "", needsArrangement: false };
+      const tier = SHIPPING_TIERS.find(t => units <= t.maxUnits);
+      if (tier) {
+        return { units, cost: tier.cost, label: tier.cost.toLocaleString("he-IL") + ' ש"ח', needsArrangement: false };
+      }
+      return { units, cost: 0, label: "לפי תיאום מול נציג", needsArrangement: true };
+    },
 
     addItem(item, qty = 1) {
       const existing = items.find(p => p.id === item.id);
