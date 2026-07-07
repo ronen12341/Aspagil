@@ -51,15 +51,15 @@
 .ai-step h3{margin:0 0 0.6rem;font-size:1.05rem;color:var(--ink)}
 .ai-step{margin-bottom:1.5rem}
 .ai-input{width:100%;padding:14px 16px;border:1.5px solid var(--gray-300);border-radius:10px;font-size:1.05rem;font-family:inherit;background:#fff;color:var(--ink);box-sizing:border-box}
-.ai-input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,93,47,0.16)}
+.ai-input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(200,146,42,0.18)}
 textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
 .ai-hint{font-size:0.85rem;color:var(--gray-500);margin-top:6px;line-height:1.5}
 .examples-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .example-pill{padding:7px 14px;background:var(--orange-soft);border:1px solid var(--orange-light);border-radius:100px;font-size:0.85rem;color:var(--orange-dark);cursor:pointer;transition:all .2s}
 .example-pill:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
 .file-input-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.file-upload-btn{display:flex;align-items:center;gap:14px;width:100%;padding:18px 20px;background:linear-gradient(135deg,#FFF7F2,#FFEDDF);border:2px dashed var(--orange);border-radius:12px;color:var(--orange-dark,#B5410F);cursor:pointer;transition:all 0.2s;box-sizing:border-box;text-align:right;font-family:inherit}
-.file-upload-btn:hover{background:linear-gradient(135deg,#FFEDDF,#FFE0CC);border-color:var(--orange-deep,#A03A0F);transform:translateY(-1px);box-shadow:0 4px 12px -4px rgba(232,93,47,0.3)}
+.file-upload-btn{display:flex;align-items:center;gap:14px;width:100%;padding:18px 20px;background:linear-gradient(135deg,#FAF3E3,#F5E9CE);border:2px dashed var(--orange);border-radius:12px;color:var(--orange-dark,#A87520);cursor:pointer;transition:all 0.2s;box-sizing:border-box;text-align:right;font-family:inherit}
+.file-upload-btn:hover{background:linear-gradient(135deg,#F5E9CE,#EDDBAE);border-color:var(--orange-dark,#A87520);transform:translateY(-1px);box-shadow:0 4px 12px -4px rgba(200,146,42,0.3)}
 .file-upload-btn:active{transform:translateY(0)}
 .file-upload-btn svg{flex-shrink:0;color:var(--orange)}
 .file-upload-text{display:flex;flex-direction:column;gap:2px;flex:1}
@@ -71,8 +71,8 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
 .ai-thumb{max-width:90px;max-height:90px;border-radius:10px;border:2px solid var(--gray-200);object-fit:cover}
 .ai-thumb-label{font-size:0.88rem;color:var(--gray-700)}
 .ai-thumb-remove{background:none;border:none;color:#C73838;cursor:pointer;font-size:1.2rem;padding:4px;line-height:1}
-.ai-generate-btn{width:100%;padding:18px 24px;background:linear-gradient(135deg,#E85D2F,#FF7A4A);color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;box-shadow:0 8px 22px -8px rgba(232,93,47,0.55);margin-top:1.5rem}
-.ai-generate-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px -8px rgba(232,93,47,0.65)}
+.ai-generate-btn{width:100%;padding:18px 24px;background:#C8922A;color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;box-shadow:0 4px 12px -4px rgba(168,117,32,0.45);margin-top:1.5rem}
+.ai-generate-btn:hover{background:#A87520;box-shadow:0 6px 16px -4px rgba(168,117,32,0.5)}
 .ai-generate-btn:disabled{background:var(--gray-300);cursor:not-allowed;transform:none;box-shadow:none}
 .ai-right{position:sticky;top:90px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.8rem;text-align:center;min-height:520px;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .ai-empty{color:var(--gray-500);padding:2rem 1rem}
@@ -444,7 +444,7 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
               ctx.drawImage(img, 0, 0);
 
               const text = overlayConfig.text;
-              const color = overlayConfig.color || '#E85D2F';
+              const color = overlayConfig.color || '#C8922A';
               // Lower position: AI tends to place the logo at center, so we
               // put the text in the lower third of the cup, below the logo.
               const yRatio = isFlat ? 0.75 : 0.78;

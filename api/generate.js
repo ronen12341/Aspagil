@@ -749,8 +749,8 @@ Do not repeat the previous mistakes.`;
         text: cupText.trim(),
         // Suggested vertical position (0=top, 1=bottom) and font size hint
         position: { yRatio: 0.62 },
-        // Brand orange — matches the site theme
-        color: '#E85D2F'
+        // Brand gold — matches the site theme
+        color: '#C8922A'
       } : null,
       textVerification: expectedLines.length > 0 ? {
         expected: expectedLines,
