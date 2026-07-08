@@ -3,21 +3,99 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/old-home", "destination": "/", "permanent": true }
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/שכפול-דיסקים",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/שכפול-dvd",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/שכפול-דיסק-און-קי",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסת-משי",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/גרפיקה-לקופסה-dvd",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/שכפול-דיסקים-לצרכי-לימודים-והעשרה",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/בונדי",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/category/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/old-home",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     }
   ]
