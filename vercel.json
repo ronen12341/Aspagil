@@ -31,7 +31,17 @@
       "permanent": true
     },
     {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7%D7%99%D7%9D",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
       "source": "/שכפול-dvd",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-dvd",
       "destination": "/disc-duplication",
       "permanent": true
     },
@@ -41,7 +51,17 @@
       "permanent": true
     },
     {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7-%D7%90%D7%95%D7%9F-%D7%A7%D7%99",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
       "source": "/הדפסת-משי",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%AA-%D7%9E%D7%A9%D7%99",
       "destination": "/printing",
       "permanent": true
     },
@@ -51,12 +71,27 @@
       "permanent": true
     },
     {
+      "source": "/%D7%92%D7%A8%D7%A4%D7%99%D7%A7%D7%94-%D7%9C%D7%A7%D7%95%D7%A4%D7%A1%D7%94-dvd",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
       "source": "/שכפול-דיסקים-לצרכי-לימודים-והעשרה",
       "destination": "/disc-duplication",
       "permanent": true
     },
     {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7%D7%99%D7%9D-%D7%9C%D7%A6%D7%A8%D7%9B%D7%99-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%9D-%D7%95%D7%94%D7%A2%D7%A9%D7%A8%D7%94",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
       "source": "/בונדי",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%91%D7%95%D7%A0%D7%93%D7%99",
       "destination": "/",
       "permanent": true
     },
