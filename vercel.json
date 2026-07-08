@@ -8,10 +8,10 @@
       "has": [
         {
           "type": "host",
-          "value": "www.gilcups.com"
+          "value": "www.aspagil.com"
         }
       ],
-      "destination": "https://www.aspagil.com/:path*",
+      "destination": "https://www.gilcups.com/:path*",
       "permanent": true
     },
     {
@@ -19,14 +19,19 @@
       "has": [
         {
           "type": "host",
-          "value": "gilcups.com"
+          "value": "aspagil.com"
         }
       ],
-      "destination": "https://www.aspagil.com/:path*",
+      "destination": "https://www.gilcups.com/:path*",
       "permanent": true
     },
     {
       "source": "/שכפול-דיסקים",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7%D7%99%D7%9D",
       "destination": "/disc-duplication",
       "permanent": true
     },
@@ -36,7 +41,17 @@
       "permanent": true
     },
     {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-dvd",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
       "source": "/שכפול-דיסק-און-קי",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7-%D7%90%D7%95%D7%9F-%D7%A7%D7%99",
       "destination": "/disc-duplication",
       "permanent": true
     },
@@ -46,7 +61,17 @@
       "permanent": true
     },
     {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%AA-%D7%9E%D7%A9%D7%99",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
       "source": "/גרפיקה-לקופסה-dvd",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%92%D7%A8%D7%A4%D7%99%D7%A7%D7%94-%D7%9C%D7%A7%D7%95%D7%A4%D7%A1%D7%94-dvd",
       "destination": "/disc-duplication",
       "permanent": true
     },
@@ -56,8 +81,68 @@
       "permanent": true
     },
     {
+      "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7%D7%99%D7%9D-%D7%9C%D7%A6%D7%A8%D7%9B%D7%99-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%9D-%D7%95%D7%94%D7%A2%D7%A9%D7%A8%D7%94",
+      "destination": "/disc-duplication",
+      "permanent": true
+    },
+    {
       "source": "/בונדי",
       "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%91%D7%95%D7%A0%D7%93%D7%99",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/אודות",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%90%D7%95%D7%93%D7%95%D7%AA",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-מעוצבות/:path*",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA/:path*",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוסות-נייר/:path*",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8/:path*",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-ממותגות-לכל-הזדמנות-אפשר",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9C%D7%9B%D7%9C-%D7%94%D7%96%D7%93%D7%9E%D7%A0%D7%95%D7%AA-%D7%90%D7%A4%D7%A9%D7%A8",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-מודפסות-מיתוג-נכון-ועיצוב",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%95%D7%93%D7%A4%D7%A1%D7%95%D7%AA-%D7%9E%D7%99%D7%AA%D7%95%D7%92-%D7%A0%D7%9B%D7%95%D7%9F-%D7%95%D7%A2%D7%99%D7%A6%D7%95%D7%91",
+      "destination": "/paper-cups",
       "permanent": true
     },
     {
