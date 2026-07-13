@@ -3,6 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Google tag (gtag.js) — Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-766413183"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-766413183');
+
+  // Fires the "ליד כוסות" conversion when the order form is submitted successfully.
+  function gtag_report_conversion(){
+    gtag('event', 'conversion', {'send_to': 'AW-766413183/57OGCOyn0KcBEP-Suu0C'});
+    return false;
+  }
+</script>
+
 <title>הצעת מחיר לכוסות נייר ממותגות | צור קשר | אספגיל</title>
 <meta name="description" content="הצעת מחיר וייעוץ חינם לכוסות נייר ממותגות וכוסות קרטון עם הדפסה דיגיטלית. מענה תוך 24 שעות. טלפון: 03-9600550, אימייל: salesaspagil@gmail.com. כתובת: רחוב הירקון 39, בני ברק.">
 <meta name="keywords" content="הצעת מחיר כוסות נייר, מחיר כוסות ממותגות, הזמנת כוסות נייר, צור קשר אספגיל, מחיר הדפסה על כוסות, כוסות נייר 500 יחידות, מפעל כוסות נייר, אספגיל בני ברק">
@@ -629,6 +645,10 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         notes:       notes
       };
       try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
+
+      // Report the Google Ads "ליד כוסות" conversion — the order form was
+      // filled and validated, so this is a qualified lead.
+      if (typeof gtag_report_conversion === 'function') gtag_report_conversion();
 
       // Add to cart and go
       if (window.Cart) Cart.addItem(cartItem);
