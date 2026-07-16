@@ -11,12 +11,6 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'AW-766413183');
-
-  // Fires the "ליד כוסות" conversion when the order form is submitted successfully.
-  function gtag_report_conversion(){
-    gtag('event', 'conversion', {'send_to': 'AW-766413183/57OGCOyn0KcBEP-Suu0C'});
-    return false;
-  }
 </script>
 
 <title>הצעת מחיר לכוסות נייר ממותגות | צור קשר | אספגיל</title>
@@ -296,6 +290,10 @@ const t=document.getElementById('menuToggle'),n=document.getElementById('mainNav
 t.addEventListener('click',()=>{n.classList.toggle('is-open');});
 if(window.location.search.indexOf('sent=ok')!==-1){
   document.getElementById('quote-status').style.display='block';
+  // Google Ads conversion — order submitted successfully (cups lead)
+  if(typeof gtag==='function'){
+    gtag('event','conversion',{'send_to':'AW-766413183/57OGCOyn0KcBEP-Suu0C'});
+  }
   setTimeout(()=>{document.getElementById('quote').scrollIntoView({behavior:'smooth'});},200);
   if(window.history.replaceState)window.history.replaceState({},'',window.location.pathname);
 }
@@ -645,10 +643,6 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         notes:       notes
       };
       try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
-
-      // Report the Google Ads "ליד כוסות" conversion — the order form was
-      // filled and validated, so this is a qualified lead.
-      if (typeof gtag_report_conversion === 'function') gtag_report_conversion();
 
       // Add to cart and go
       if (window.Cart) Cart.addItem(cartItem);
