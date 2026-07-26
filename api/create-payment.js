@@ -62,7 +62,11 @@ export default async function handler(req, res) {
       RedirectURL: successUrl,
       CancelRedirectURL: failureUrl,
       ExternalIdentifier: orderId,
-      DraftDocument: true,
+      // Finalized (not draft) so the transaction is included in Sumit's
+      // "Export to Hashavshevet" feed, which only picks up documents that
+      // have been moved to the books. UpdateCustomerOnSuccess stays false so
+      // Sumit still doesn't email the customer directly.
+      DraftDocument: false,
       UpdateCustomerOnSuccess: false,
     };
 
