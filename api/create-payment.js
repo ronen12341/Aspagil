@@ -10,7 +10,9 @@
  * Body: { amount, orderId, customer, successUrl, failureUrl }
  */
 
-const SUMIT_API_KEY     = process.env.SUMIT_API_KEY     || "2IQgqpoHESFTdBbeUKG5NiIEHD5NoIkp9x2b9UTEmD2xio9tA1";
+// SUMIT_API_KEY must come ONLY from the environment (this repo is public on
+// GitHub) — set it in Vercel project settings. No hardcoded fallback here.
+const SUMIT_API_KEY     = process.env.SUMIT_API_KEY;
 const SUMIT_COMPANY_ID  = Number(process.env.SUMIT_COMPANY_ID || "1947861983");
 const SUMIT_REDIRECT_URL = "https://api.sumit.co.il/billing/payments/beginredirect/";
 
@@ -20,6 +22,9 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (!SUMIT_API_KEY) {
+    return res.status(500).json({ ok: false, error: "sumit_not_configured", message: "SUMIT_API_KEY is not set on the server." });
+  }
 
   try {
     const body = req.body || {};
