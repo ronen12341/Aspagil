@@ -28,11 +28,35 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body || {};
-    const { amount, orderId, customer, successUrl, failureUrl } = body;
+    const { amount, orderId, customer, successUrl, failureUrl, items } = body;
 
     if (!amount || !orderId || !customer) {
       return res.status(400).json({ ok: false, error: "missing fields" });
     }
+
+    // Itemize by cart line (falls back to one lump-sum line if the caller
+    // didn't send items) so the Sumit document — and the eventual
+    // Hashavshevet invoice — shows each product instead of one generic line.
+    const lineItems = Array.isArray(items) && items.length > 0
+      ? items.map((line) => ({
+          Item: {
+            Name: line.name,
+            Description: `הזמנה ${orderId}`,
+          },
+          Quantity: line.qty,
+          UnitPrice: line.priceNumeric,
+          Description: `הזמנה ${orderId}`,
+        }))
+      : [
+          {
+            Item: {
+              Name: "הזמנה מאתר אספגיל – גילקאפס",
+              Description: `מספר הזמנה: ${orderId}`,
+            },
+            Quantity: 1,
+            UnitPrice: amount,
+          },
+        ];
 
     const sumitBody = {
       Credentials: {
@@ -48,16 +72,7 @@ export default async function handler(req, res) {
         CompanyNumber: customer.taxId || null,
         SearchMode: 0,
       },
-      Items: [
-        {
-          Item: {
-            Name: "הזמנה מאתר אספגיל – גילקאפס",
-            Description: `מספר הזמנה: ${orderId}`,
-          },
-          Quantity: 1,
-          UnitPrice: amount,
-        },
-      ],
+      Items: lineItems,
       VATIncluded: true,
       RedirectURL: successUrl,
       CancelRedirectURL: failureUrl,
