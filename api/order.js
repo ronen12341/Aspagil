@@ -40,7 +40,7 @@ function buildEmailHtml(orderId, body) {
 
   const paymentBadge = paymentMethod === "online"
     ? `<span style="display:inline-block;background:#16a34a;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">💳 תשלום אונליין — הלקוח מועבר לסומיט</span>`
-    : `<span style="display:inline-block;background:#C8922A;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">📞 חיוב טלפוני — צריך להתקשר ללקוח</span>`;
+    : `<span style="display:inline-block;background:#C8922A;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">📞 הצעת מחיר — יש ליצור קשר עם הלקוח</span>`;
 
   const fulfillmentBadge = isPickup
     ? `<span style="display:inline-block;background:#7A4E00;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">🏭 איסוף עצמי מהמפעל</span>`
