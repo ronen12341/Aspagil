@@ -9,6 +9,8 @@
  * Body: { customer, items, totalPrice, hasUnpricedItems, paymentMethod }
  */
 
+import { getCatalogPrice } from "./_pricing.js";
+
 const BUSINESS_EMAIL = "salesaspagil@gmail.com";
 const RESEND_FROM    = "Aspagil <onboarding@resend.dev>";
 
@@ -155,6 +157,18 @@ export default async function handler(req, res) {
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "empty cart" });
     }
+
+    // Re-price from the catalog wherever possible — the cart's priceNumeric
+    // is only a client-side snapshot (stale cache, or an edited request),
+    // and this email is what drives fulfillment/charging the order.
+    body.items = items.map((item) => {
+      const catalogPrice = getCatalogPrice(item.id);
+      return catalogPrice !== undefined ? { ...item, priceNumeric: catalogPrice } : item;
+    });
+    body.totalPrice = body.items.reduce(
+      (sum, i) => sum + (i.priceNumeric ? i.priceNumeric * i.qty : 0),
+      0
+    );
 
     const orderId = generateOrderId();
     const html = buildEmailHtml(orderId, body);

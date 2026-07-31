@@ -10,6 +10,8 @@
  * Body: { amount, orderId, customer, successUrl, failureUrl }
  */
 
+import { getCatalogPrice } from "./_pricing.js";
+
 // SUMIT_API_KEY must come ONLY from the environment (this repo is public on
 // GitHub) — set it in Vercel project settings. No hardcoded fallback here.
 const SUMIT_API_KEY     = process.env.SUMIT_API_KEY;
@@ -37,26 +39,48 @@ export default async function handler(req, res) {
     // Itemize by cart line (falls back to one lump-sum line if the caller
     // didn't send items) so the Sumit document — and the eventual
     // Hashavshevet invoice — shows each product instead of one generic line.
-    const lineItems = Array.isArray(items) && items.length > 0
-      ? items.map((line) => ({
+    // Every line is re-priced from the server-side catalog — never trust the
+    // client-supplied priceNumeric for an actual charge. A stale cart or a
+    // directly-edited request body would otherwise let a customer pay
+    // whatever they choose. If any line's id doesn't resolve to a known
+    // catalog price, refuse the whole charge instead of silently falling
+    // back to what the client sent.
+    let lineItems;
+    if (Array.isArray(items) && items.length > 0) {
+      const unresolved = [];
+      lineItems = items.map((line) => {
+        const catalogPrice = getCatalogPrice(line.id);
+        if (catalogPrice === undefined) unresolved.push(`${line.name} (${line.id})`);
+        return {
           Item: {
             Name: line.name,
             Description: `הזמנה ${orderId}`,
           },
           Quantity: line.qty,
-          UnitPrice: line.priceNumeric,
+          UnitPrice: catalogPrice ?? 0,
           Description: `הזמנה ${orderId}`,
-        }))
-      : [
-          {
-            Item: {
-              Name: "הזמנה מאתר אספגיל – גילקאפס",
-              Description: `מספר הזמנה: ${orderId}`,
-            },
-            Quantity: 1,
-            UnitPrice: amount,
+        };
+      });
+      if (unresolved.length > 0) {
+        console.error("create-payment: unresolved catalog price for line(s):", unresolved);
+        return res.status(400).json({
+          ok: false,
+          error: "price_lookup_failed",
+          message: "לא ניתן לאמת את המחיר עבור אחד או יותר מהפריטים בעגלה. רענן/י את העמוד ונסה/י שוב.",
+        });
+      }
+    } else {
+      lineItems = [
+        {
+          Item: {
+            Name: "הזמנה מאתר אספגיל – גילקאפס",
+            Description: `מספר הזמנה: ${orderId}`,
           },
-        ];
+          Quantity: 1,
+          UnitPrice: amount,
+        },
+      ];
+    }
 
     const sumitBody = {
       Credentials: {
