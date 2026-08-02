@@ -353,12 +353,19 @@
   }
 
   refreshFulfillment();
-  document.querySelectorAll('input[name="fulfillmentMethod"]').forEach(r =>
-    r.addEventListener("change", refreshFulfillment)
-  );
-  document.querySelectorAll('input[name="paymentMethod"]').forEach(r =>
-    r.addEventListener("change", updateHowItWorks)
-  );
+  // Bind both "change" and "click" — some mobile WebViews (in-app browsers
+  // like WhatsApp/Instagram, certain Android WebViews) don't reliably fire
+  // "change" for a tapped radio in a group, so "click" is a fallback that's
+  // safe to double-fire since refreshFulfillment()/updateHowItWorks() just
+  // re-apply state from whatever's currently checked.
+  document.querySelectorAll('input[name="fulfillmentMethod"]').forEach(r => {
+    r.addEventListener("change", refreshFulfillment);
+    r.addEventListener("click", refreshFulfillment);
+  });
+  document.querySelectorAll('input[name="paymentMethod"]').forEach(r => {
+    r.addEventListener("change", updateHowItWorks);
+    r.addEventListener("click", updateHowItWorks);
+  });
 
   // Submit — bound to the button's click (not the form's "submit" event) so a
   // native GET-to-self submission can never slip through and wipe the form.
