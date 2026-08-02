@@ -419,6 +419,7 @@
             body: JSON.stringify({
               amount: total,
               orderId,
+              shippingFee: shippingForOrder.cost || 0,
               items: items.map((i) => ({ id: i.id, name: i.name, qty: i.qty, priceNumeric: i.priceNumeric || 0 })),
               customer: { name: customer.invoiceName || customer.name, phone: customer.phone, email: customer.email, address: customer.address, city: customer.city, taxId: customer.taxId, invoiceName: customer.invoiceName },
               successUrl: window.location.origin + "/order-success.html",

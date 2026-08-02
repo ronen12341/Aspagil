@@ -31,6 +31,7 @@ export default async function handler(req, res) {
   try {
     const body = req.body || {};
     const { amount, orderId, customer, successUrl, failureUrl, items } = body;
+    const shippingFee = Math.max(0, Number(body.shippingFee) || 0);
 
     if (!amount || !orderId || !customer) {
       return res.status(400).json({ ok: false, error: "missing fields" });
@@ -80,6 +81,22 @@ export default async function handler(req, res) {
           UnitPrice: amount,
         },
       ];
+    }
+
+    // Shipping isn't in the catalog-priced product lines above — add it as
+    // its own line so the charged total (and the Hashavshevet invoice)
+    // actually includes it instead of silently undercharging by the
+    // shipping fee.
+    if (shippingFee > 0) {
+      lineItems.push({
+        Item: {
+          Name: "דמי משלוח",
+          Description: `הזמנה ${orderId}`,
+        },
+        Quantity: 1,
+        UnitPrice: shippingFee,
+        Description: "דמי משלוח",
+      });
     }
 
     const sumitBody = {
