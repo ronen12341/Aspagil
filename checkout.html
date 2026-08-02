@@ -156,7 +156,7 @@
 
           <div class="form-error" id="formError" style="display:none"></div>
 
-          <button type="submit" id="submitBtn" class="btn btn-primary btn-large" style="width:100%;justify-content:center">
+          <button type="button" id="submitBtn" class="btn btn-primary btn-large" style="width:100%;justify-content:center">
             שלח הזמנה ←
           </button>
         </form>
@@ -360,8 +360,13 @@
     r.addEventListener("change", updateHowItWorks)
   );
 
-  // Submit
-  document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
+  // Submit — bound to the button's click (not the form's "submit" event) so a
+  // native GET-to-self submission can never slip through and wipe the form.
+  // type="submit" + only a JS preventDefault() on "submit" was exactly that
+  // risk: if the listener didn't attach in time (or at all) on some mobile
+  // browsers, the browser would fall back to submitting all fields as a GET
+  // query string, reloading the page with everything cleared.
+  document.getElementById("submitBtn").addEventListener("click", async function (e) {
     e.preventDefault();
     const err = document.getElementById("formError");
     err.style.display = "none";
@@ -461,6 +466,14 @@
       btn.disabled = false;
       updateHowItWorks();
     }
+  });
+
+  // Backup: if Enter is pressed in a field and the form still tries to
+  // submit natively, swallow it and delegate to the same click handler
+  // instead of letting it fall through to a native GET submission.
+  document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    document.getElementById("submitBtn").click();
   });
 
   function showError(msg) {
