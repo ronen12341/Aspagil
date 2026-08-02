@@ -165,10 +165,17 @@ export default async function handler(req, res) {
       const catalogPrice = getCatalogPrice(item.id);
       return catalogPrice !== undefined ? { ...item, priceNumeric: catalogPrice } : item;
     });
-    body.totalPrice = body.items.reduce(
+    const itemsTotal = body.items.reduce(
       (sum, i) => sum + (i.priceNumeric ? i.priceNumeric * i.qty : 0),
       0
     );
+    // Shipping cost isn't a cart item — fold it in separately, matching the
+    // Sumit charge and the checkout page's displayed total. Skip it when the
+    // shipping cost still needs manual arrangement (not a fixed fee yet).
+    const shippingCost = body.shipping && !body.shipping.needsArrangement
+      ? Number(body.shipping.cost) || 0
+      : 0;
+    body.totalPrice = itemsTotal + shippingCost;
 
     const orderId = generateOrderId();
     const html = buildEmailHtml(orderId, body);
