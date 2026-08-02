@@ -122,9 +122,7 @@
           ${item.note ? `<div class="cart-item-note">${item.note}</div>` : ""}
           <div class="cart-item-price">${item.price || "מחיר לפי הצעה"}</div>
           <div class="cart-item-controls">
-            <button class="qty-btn" onclick="Cart.updateQty('${item.id}', ${item.qty - 1}); renderCart()" aria-label="הפחת">−</button>
-            <span class="qty-val">${item.qty}</span>
-            <button class="qty-btn" onclick="Cart.updateQty('${item.id}', ${item.qty + 1}); renderCart()" aria-label="הוסף">+</button>
+            <span class="qty-val">כמות: ${item.qty}</span>
             <button class="btn-remove" onclick="Cart.removeItem('${item.id}'); renderCart()">🗑 הסר</button>
           </div>
         </div>
