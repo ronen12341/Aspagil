@@ -116,7 +116,7 @@
           <div class="form-group"><label for="c-email">דוא"ל</label><input id="c-email" type="email" name="email" required></div>
           <div class="form-row">
             <div class="form-group"><label for="c-invoice-name">שם לחשבונית</label><input id="c-invoice-name" type="text" name="invoice_name" required></div>
-            <div class="form-group"><label for="c-tax-id">מספר ח.פ / ת.ז *</label><input id="c-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" placeholder="9 ספרות" title="מספר ח.פ או ת.ז — 9 ספרות" required></div>
+            <div class="form-group"><label for="c-tax-id" id="c-tax-id-label">מספר ח.פ / ת.ז (לא חובה מתחת ל-5,000 ש"ח)</label><input id="c-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" placeholder="9 ספרות" title="מספר ח.פ או ת.ז — 9 ספרות"></div>
           </div>
           <div class="form-group"><label for="c-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד) <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="c-address" type="text" name="address"></div>
 
@@ -479,6 +479,24 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     errBox.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
+  // Israeli law only requires a customer ID (ת.ז/ח.פ) on tax invoices at or
+  // above this amount (NIS) — below it we don't force a government-ID field.
+  var TAX_ID_REQUIRED_THRESHOLD = 5000;
+
+  function taxIdRequired() {
+    var price = qtySel ? (PRICE_MAP[qtySel.value] || null) : null;
+    return !!price && price >= TAX_ID_REQUIRED_THRESHOLD;
+  }
+
+  function refreshTaxIdRequirement() {
+    var input = document.getElementById('c-tax-id');
+    var label = document.getElementById('c-tax-id-label');
+    if (!input || !label) return;
+    var required = taxIdRequired();
+    input.required = required;
+    label.textContent = required ? 'מספר ח.פ / ת.ז *' : 'מספר ח.פ / ת.ז (לא חובה מתחת ל-5,000 ש"ח)';
+  }
+
   // Show payment options when a fixed-price qty is chosen
   if (qtySel) {
     qtySel.addEventListener('change', function() {
@@ -487,8 +505,10 @@ if(window.location.search.indexOf('sent=ok')!==-1){
       var note = document.getElementById('payment-note');
       if (fieldset) fieldset.style.display = price ? '' : 'none';
       if (note) note.style.display = (!price && this.value) ? '' : 'none';
+      refreshTaxIdRequirement();
     });
   }
+  refreshTaxIdRequirement();
 
   if (!btn) return;
 
@@ -554,8 +574,9 @@ if(window.location.search.indexOf('sent=ok')!==-1){
 
     if (!name || !phone)         { showErr('נא למלא שם וטלפון.'); return; }
     if (!email)                  { showErr('נא למלא כתובת אימייל.'); return; }
-    if (!/^\d{9}$/.test(taxId)) { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
     if (!qty)                    { showErr('נא לבחור כמות יחידות.'); return; }
+    if (taxIdRequired() && !taxId) { showErr('נא למלא ח.פ או ת.ז (חובה בחוק בהזמנות מעל 5,000 ש"ח).'); return; }
+    if ((taxIdRequired() || taxId) && !/^\d{9}$/.test(taxId)) { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
 
     var originalHtml = btn.innerHTML;
     btn.disabled = true;
