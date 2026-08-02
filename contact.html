@@ -652,7 +652,7 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         address:     (document.getElementById('c-address')      || {value:''}).value.trim(),
         notes:       notes
       };
-      try { sessionStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
+      try { localStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
 
       // Add to cart and go
       if (window.Cart) Cart.addItem(cartItem);

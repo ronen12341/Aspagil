@@ -201,9 +201,12 @@
 
 <script src="assets/js/cart.js"></script>
 <script>
-  // Pre-fill from contact form (sessionStorage)
+  // Pre-fill from contact form. Uses localStorage (not sessionStorage) so it
+  // survives a mobile browser reclaiming/reloading the tab between filling
+  // the quote form and reaching checkout (e.g. while backgrounded for the
+  // file picker) — the same storage the cart itself already relies on.
   try {
-    const prefill = JSON.parse(sessionStorage.getItem('aspagil-checkout-prefill') || 'null');
+    const prefill = JSON.parse(localStorage.getItem('aspagil-checkout-prefill') || 'null');
     if (prefill) {
       if (prefill.name)        document.getElementById('name').value        = prefill.name;
       if (prefill.phone)       document.getElementById('phone').value       = prefill.phone;
@@ -213,7 +216,7 @@
       if (prefill.address)     document.getElementById('address').value     = prefill.address;
       if (prefill.business)    document.getElementById('business').value    = prefill.business;
       if (prefill.notes)       document.getElementById('notes').value       = prefill.notes;
-      sessionStorage.removeItem('aspagil-checkout-prefill');
+      localStorage.removeItem('aspagil-checkout-prefill');
     }
   } catch(ex) {}
 
