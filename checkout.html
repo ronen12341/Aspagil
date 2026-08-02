@@ -75,9 +75,9 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="taxId">ח.פ / ת.ז *</label>
+              <label class="form-label" for="taxId" id="taxIdLabel">ח.פ / ת.ז (לא חובה מתחת ל-5,000 ש"ח)</label>
               <input class="form-input" id="taxId" name="taxId" type="text" inputmode="numeric"
-                     pattern="[0-9]{9}" maxlength="9" placeholder="9 ספרות" dir="ltr" required>
+                     pattern="[0-9]{9}" maxlength="9" placeholder="9 ספרות" dir="ltr">
             </div>
             <div class="form-group">
               <label class="form-label" for="invoiceName">שם לחשבונית (אם שונה)</label>
@@ -217,6 +217,11 @@
     }
   } catch(ex) {}
 
+  // Israeli law only requires a customer ID (ת.ז/ח.פ) on tax invoices at or
+  // above this amount (NIS) — below it we don't force a government-ID field
+  // on small consumer purchases.
+  const TAX_ID_REQUIRED_THRESHOLD = 5000;
+
   const items = Cart.getItems();
 
   if (items.length === 0) {
@@ -296,6 +301,8 @@
       }
     }
 
+    refreshTaxIdRequirement();
+
     const totalRow = document.getElementById("summaryTotal");
     if (total > 0) {
       totalRow.style.display = "flex";
@@ -311,6 +318,18 @@
 
   function canPayOnline() {
     return total > 0 && !hasUnpriced;
+  }
+
+  function taxIdRequired() {
+    return total >= TAX_ID_REQUIRED_THRESHOLD;
+  }
+
+  function refreshTaxIdRequirement() {
+    const input = document.getElementById("taxId");
+    const label = document.getElementById("taxIdLabel");
+    const required = taxIdRequired();
+    input.required = required;
+    label.textContent = required ? 'ח.פ / ת.ז *' : 'ח.פ / ת.ז (לא חובה מתחת ל-5,000 ש"ח)';
   }
 
   function updateHowItWorks() {
@@ -351,8 +370,8 @@
 
     if (!name || !phone) { showError("נא למלא שם וטלפון."); return; }
     if (!email) { showError("נא למלא כתובת אימייל."); return; }
-    if (!taxId) { showError("נא למלא ח.פ או ת.ז."); return; }
-    if (!/^\d{9}$/.test(taxId)) { showError("ח.פ או ת.ז חייבים להכיל 9 ספרות בדיוק."); return; }
+    if (taxIdRequired() && !taxId) { showError('נא למלא ח.פ או ת.ז (חובה בחוק בהזמנות מעל 5,000 ש"ח).'); return; }
+    if ((taxIdRequired() || taxId) && !/^\d{9}$/.test(taxId)) { showError("ח.פ או ת.ז חייבים להכיל 9 ספרות בדיוק."); return; }
 
     const btn = document.getElementById("submitBtn");
     btn.disabled = true;
