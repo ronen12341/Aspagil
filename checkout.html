@@ -225,6 +225,16 @@
   // on small consumer purchases.
   const TAX_ID_REQUIRED_THRESHOLD = 5000;
 
+  // Everything below depends on cart.js having loaded and on the DOM below
+  // being present. Wrapped in try/catch so a failure here (e.g. cart.js
+  // didn't load) shows a visible, actionable message instead of leaving a
+  // page where every button silently does nothing — which is exactly what
+  // was reported and impossible to diagnose without this.
+  try {
+  if (typeof Cart === "undefined") {
+    throw new Error("Cart script (assets/js/cart.js) did not load");
+  }
+
   const items = Cart.getItems();
 
   if (items.length === 0) {
@@ -494,6 +504,14 @@
   document.getElementById("menuToggle").addEventListener("click", function () {
     document.getElementById("mainNav").classList.toggle("is-open");
   });
+
+  } catch (err) {
+    console.error("checkout page failed to initialize:", err);
+    var banner = document.createElement("div");
+    banner.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:9999;background:#C03030;color:#fff;padding:14px 16px;font-size:0.9rem;text-align:center;direction:rtl";
+    banner.textContent = "אירעה שגיאה בטעינת הדף. רעננו את הדף או צרו קשר: 03-9600550. (" + (err && err.message ? err.message : err) + ")";
+    document.body.prepend(banner);
+  }
 </script>
 </body>
 </html>
