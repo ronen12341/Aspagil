@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Google tag (gtag.js) — Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-766413183"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-766413183');
+</script>
+
 <title>ההזמנה התקבלה! | אספגיל</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,6 +66,19 @@
 
   </div>
 </main>
+
+<script>
+(function(){
+  var value = sessionStorage.getItem('aspagil-order-value');
+  sessionStorage.removeItem('aspagil-order-value');
+  var params = {'send_to': 'AW-766413183/57OGCOyn0KcBEP-Suu0C'};
+  if (value && !isNaN(parseFloat(value))) {
+    params.value = parseFloat(value);
+    params.currency = 'ILS';
+  }
+  if (typeof gtag === 'function') { gtag('event', 'conversion', params); }
+})();
+</script>
 
 <footer style="background:var(--gray-900);color:#fff;padding:2.5rem 0;margin-top:4rem;text-align:center">
   <div class="container">

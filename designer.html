@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Google tag (gtag.js) — Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-766413183"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-766413183');
+</script>
+
 <title>מעצב כוסות AI חינמי | עיצוב כוסות נייר אונליין עם בינה מלאכותית | אספגיל</title>
 <meta name="description" content="מעצב כוסות AI חינמי — תארו במילים מה תרצו על הכוס וקבלו הדמיה תוך 30 שניות. ללא תשלום, ללא רישום. עצבו את כוס המותג שלכם עכשיו.">
 <meta name="keywords" content="מעצב כוסות AI, עיצוב כוסות אונליין, עצב כוס באינטרנט, מעצב כוסות חינמי, עיצוב כוסות בינה מלאכותית, מעצב כוסות נייר, איך לעצב כוס, כוסות עם הדמיה, הדמיית כוס, מעצב גרפי לכוסות, כוסות ממותגות אונליין, אספגיל">
@@ -811,6 +821,7 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     status.style.display='block';status.style.background='#E6F4EA';status.style.color='#1F6638';
     status.innerHTML='✓ הבקשה נשלחה'+(name?', '+name:'')+'! המעצב הגרפי יחזור אליכם תוך 24 שעות.';
     sessionStorage.removeItem('aspagilLastSubmit');
+    if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-766413183/57OGCOyn0KcBEP-Suu0C'});}
     setTimeout(()=>{document.getElementById('submit-area').scrollIntoView({behavior:'smooth'});},200);
     if(window.history.replaceState)window.history.replaceState({},'',window.location.pathname);
   }

@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Google tag (gtag.js) — Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-766413183"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-766413183');
+</script>
 <title>פרטי הזמנה | אספגיל</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -454,6 +463,7 @@
 
           const payData = await payRes.json();
           if (payData.ok && payData.paymentUrl) {
+            try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
             Cart.clear();
             window.location.href = payData.paymentUrl;
             return;
@@ -463,6 +473,7 @@
           const p = new URLSearchParams({ amount: total, name: customer.name });
           if (customer.email) p.set("email", customer.email);
           if (customer.phone) p.set("phone", customer.phone);
+          try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
           Cart.clear();
           window.location.href = SUMIT_URL + "?" + p.toString();
           return;
@@ -470,12 +481,14 @@
           // Same fallback
           const SUMIT_URL = "https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/";
           const p = new URLSearchParams({ amount: total, name: customer.name });
+          try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
           Cart.clear();
           window.location.href = SUMIT_URL + "?" + p.toString();
           return;
         }
       }
 
+      try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
       Cart.clear();
       window.location.href = "order-success.html";
     } catch (ex) {
