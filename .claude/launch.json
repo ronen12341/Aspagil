@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gintz-coffee-dev",
+      "runtimeExecutable": "C:\\Users\\sales\\OneDrive\\913C~1\\Gilcups\\.claude\\gintz-dev.bat",
+      "runtimeArgs": [],
+      "port": 3000
+    },
+    {
+      "name": "gilcups-static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\sales\\OneDrive\\913C~1\\Gilcups\\.claude\\static-server.js"],
+      "port": 8934
+    }
+  ]
+}
