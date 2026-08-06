@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /*.tmp.*
+Disallow: /wp-content/
 
 Sitemap: https://www.gilcups.com/sitemap.xml
