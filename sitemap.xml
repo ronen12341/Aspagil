@@ -134,4 +134,10 @@
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://www.gilcups.com/blog/paper-vs-plastic-cups</loc>
+    <lastmod>2026-08-08</lastmod>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
