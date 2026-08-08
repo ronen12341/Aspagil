@@ -134,10 +134,4 @@
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
   </url>
-  <url>
-    <loc>https://www.gilcups.com/blog/cup-size-guide</loc>
-    <lastmod>2026-08-06</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
 </urlset>
