@@ -58,7 +58,7 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function buildEmailHtml(type, fields, attachmentNames) {
+function buildEmailHtml(type, fields, attachmentNames, orderId) {
   const title = type === 'design'
     ? 'בקשת עיצוב AI חדשה מהאתר'
     : 'בקשת הצעת מחיר חדשה מהאתר';
@@ -115,7 +115,7 @@ function buildEmailHtml(type, fields, attachmentNames) {
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;background:#ffffff;border:1px solid #e0e0e0;">
 <tr><td align="right" style="background:#b85a00;color:#ffffff;padding:20px 24px;direction:rtl;">
 <div style="font-size:20px;font-weight:bold;margin:0;">${escapeHtml(title)}</div>
-<div style="font-size:13px;margin-top:6px;color:#ffe8d0;">נשלח מ-${SITE_URL}</div>
+<div style="font-size:13px;margin-top:6px;color:#ffe8d0;">מספר הזמנה: ${escapeHtml(orderId)} · נשלח מ-${SITE_URL}</div>
 </td></tr>
 <tr><td style="padding:20px 24px;" align="right">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;direction:rtl;">
@@ -133,7 +133,7 @@ ${artworkSection}
 </body></html>`;
 }
 
-function buildAutoReplyHtml(customerName) {
+function buildAutoReplyHtml(customerName, orderId) {
   const greet = customerName ? `שלום ${escapeHtml(customerName)},` : 'שלום,';
   return `<!DOCTYPE html>
 <html dir="rtl" lang="he"><head><meta charset="utf-8"><title>תודה על פנייתכם - חברת אספגיל</title></head>
@@ -147,7 +147,7 @@ function buildAutoReplyHtml(customerName) {
 </td></tr>
 <tr><td align="right" style="padding:24px;color:#1a1a1a;line-height:1.7;font-size:15px;direction:rtl;">
 <p style="margin:0 0 12px;">${greet}</p>
-<p style="margin:0 0 12px;"><strong>תודה ששלחתם לנו הזמנה</strong> — קיבלנו את הפנייה שלכם בהצלחה.</p>
+<p style="margin:0 0 12px;"><strong>תודה ששלחתם לנו הזמנה</strong> — קיבלנו את הפנייה שלכם בהצלחה (מספר הזמנה: <strong>${escapeHtml(orderId)}</strong>).</p>
 <p style="margin:0 0 12px;">אנו נחזור אליכם בהקדם עם הצעת מחיר מפורטת והדמיה.</p>
 <p style="margin:24px 0 0;font-weight:bold;">בברכה,<br>חברת אספגיל</p>
 <div style="margin-top:24px;padding-top:14px;border-top:1px solid #eeeeee;color:#666666;font-size:13px;">
@@ -236,11 +236,17 @@ export default async function handler(req, res) {
       attachmentNames.push(f.name);
     }
 
+    // Generated once, up front, so the business email, the customer
+    // auto-reply, and the JSON response all reference the same order number
+    // (previously this was generated after both emails were sent, so neither
+    // email actually contained the order id returned to the client).
+    const orderId = 'ORD-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + (Math.floor(Math.random()*9000)+1000);
+
     // 1. Send notification to the business
-    const businessHtml = buildEmailHtml(type, fields, attachmentNames);
+    const businessHtml = buildEmailHtml(type, fields, attachmentNames, orderId);
     const subject = fields.subject || (type === 'design'
-      ? '🎨 בקשת עיצוב AI חדשה מהאתר'
-      : '📧 בקשת הצעת מחיר חדשה מהאתר');
+      ? `🎨 בקשת עיצוב AI חדשה מהאתר ${orderId}`
+      : `📧 בקשת הצעת מחיר חדשה מהאתר ${orderId}`);
 
     const replyTo = (fields.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) ? fields.email : undefined;
 
@@ -264,11 +270,11 @@ export default async function handler(req, res) {
     // 2. Send auto-reply to customer (best-effort — don't fail the request if this fails)
     let autoReplyResult = null;
     if (replyTo) {
-      const replyHtml = buildAutoReplyHtml(fields.name);
+      const replyHtml = buildAutoReplyHtml(fields.name, orderId);
       autoReplyResult = await sendViaResend(apiKey, {
         from: RESEND_FROM_CUSTOMER,
         to: [replyTo],
-        subject: 'תודה על פנייתכם - חברת אספגיל',
+        subject: `תודה על פנייתכם - חברת אספגיל (${orderId})`,
         html: replyHtml
       });
       if (!autoReplyResult.ok) {
@@ -276,7 +282,6 @@ export default async function handler(req, res) {
       }
     }
 
-    const orderId = 'ORD-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + (Math.floor(Math.random()*9000)+1000);
     return res.status(200).json({
       success: true,
       orderId: orderId,
