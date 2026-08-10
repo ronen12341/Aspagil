@@ -29,6 +29,10 @@ export const config = {
 
 const BUSINESS_EMAIL = 'salesaspagil@gmail.com';
 const RESEND_FROM    = 'Aspagil <onboarding@resend.dev>'; // safe default; switch to a verified domain later for better deliverability
+// gilcups.com is now verified in Resend — required for the customer-facing
+// auto-replies below, since onboarding@resend.dev can only send to the
+// account's own verified address, not to arbitrary customer addresses.
+const RESEND_FROM_CUSTOMER = 'אספגיל <orders@gilcups.com>';
 const SITE_URL       = 'https://aspagil.vercel.app';
 
 const FIELD_LABELS = {
@@ -262,7 +266,7 @@ export default async function handler(req, res) {
     if (replyTo) {
       const replyHtml = buildAutoReplyHtml(fields.name);
       autoReplyResult = await sendViaResend(apiKey, {
-        from: 'חברת אספגיל <onboarding@resend.dev>',
+        from: RESEND_FROM_CUSTOMER,
         to: [replyTo],
         subject: 'תודה על פנייתכם - חברת אספגיל',
         html: replyHtml

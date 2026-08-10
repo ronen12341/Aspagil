@@ -13,6 +13,10 @@ import { getCatalogPrice } from "./_pricing.js";
 
 const BUSINESS_EMAIL = "salesaspagil@gmail.com";
 const RESEND_FROM    = "Aspagil <onboarding@resend.dev>";
+// Verified gilcups.com domain — required for the customer-facing auto-reply,
+// since Resend's shared onboarding@resend.dev sender can only send to the
+// account's own verified address, not to arbitrary customer addresses.
+const RESEND_FROM_CUSTOMER = "אספגיל <orders@gilcups.com>";
 
 function toIsraeliE164(raw) {
   const digits = (raw || "").replace(/\D/g, "");
@@ -206,7 +210,7 @@ export default async function handler(req, res) {
 <p style="margin-top:24px;">בברכה,<br><strong>צוות אספגיל</strong></p>
 </div></body></html>`;
       sendViaResend(apiKey, {
-        from: RESEND_FROM,
+        from: RESEND_FROM_CUSTOMER,
         to: [customer.email],
         subject: `תודה על הזמנתכם — אספגיל (${orderId})`,
         html: replyHtml,
