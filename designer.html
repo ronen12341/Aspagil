@@ -192,7 +192,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         </button>
 
         <div class="info-box">
-          <strong>איך זה עובד?</strong> משתמשים ב-AI של OpenAI (אותה טכנולוגיה שמפעילה את ChatGPT). תוך 15-30 שניות תקבלו הדמיה תלת-ממדית של הכוס שלכם. כשתשלחו את הבקשה — קובץ ההדפסה השטוח במידה 170×96 מ"מ נשלח אוטומטית למעצב הגרפי שלנו.
+          <strong>איך זה עובד?</strong> משתמשים ב-AI של OpenAI (אותה טכנולוגיה שמפעילה את ChatGPT). תוך 15-30 שניות תקבלו הדמיה תלת-ממדית של הכוס שלכם. כשתשלחו את הבקשה — קובץ ההדפסה השטוח במידה 165×83 מ"מ נשלח אוטומטית למעצב הגרפי שלנו.
         </div>
 
         <a href="cup-template.pdf" download style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:1rem;padding:14px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;text-decoration:none;transition:all 0.15s;">
@@ -230,7 +230,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
           <div class="ai-actions">
             <button type="button" class="btn btn-primary" id="proceed-btn">שלח לאספגיל ←</button>
           </div>
-          <p style="margin-top:0.7rem;font-size:0.82rem;color:var(--gray-500);">📐 קובץ הדפסה שטוח (170×96 מ"מ) נשלח אוטומטית למעצב הגרפי</p>
+          <p style="margin-top:0.7rem;font-size:0.82rem;color:var(--gray-500);">📐 קובץ הדפסה שטוח (165×83 מ"מ) נשלח אוטומטית למעצב הגרפי</p>
         </div>
 
         <div class="ai-error" id="ai-error"></div>
@@ -279,7 +279,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
         <div class="form-group"><label for="d-notes">הערות נוספות</label><textarea id="d-notes" name="notes" rows="2"></textarea></div>
 
         <input type="file" name="reference_image" id="h-ref-file" style="display:none">
-        <input type="file" name="print_file_170x96" id="h-flat-file" style="display:none">
+        <input type="file" name="print_file_165x83" id="h-flat-file" style="display:none">
         <input type="file" name="cup_mockup_preview" id="h-mockup-file" style="display:none">
 
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:1.05rem;">שלח לאספגיל <span class="arrow">←</span></button>
@@ -338,7 +338,7 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
 
 (function(){
   let refFile=null,refBase64=null;
-  let flatBlob=null;   // flat 170×96 print file (sent to email)
+  let flatBlob=null;   // flat 165×83 print file (sent to email)
   let mockupBlob=null; // 3D cup mockup (shown to customer)
 
   // Example pills (if any are added to the HTML in the future)
@@ -554,14 +554,14 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         imgToBlob(data.flat)
       ]);
 
-      // Build the final 170×96mm print file (with bottom 8mm white strip).
+      // Build the final 165×83mm print file (with bottom 8mm white strip).
       // This becomes the customer preview AND what gets emailed to the designer.
       const rawBlob=flatBlob||mockupBlob;
       if(!rawBlob){
         throw new Error('לא התקבלה תמונה מה-AI');
       }
-      // Process to the final 170×96mm print file (with the white strip)
-      const printFileBlob = await buildPrintFile170x96(rawBlob);
+      // Process to the final 165×83mm print file (with the white strip)
+      const printFileBlob = await buildPrintFile165x83(rawBlob);
       // Replace flatBlob with the processed version so the email sends THIS one
       flatBlob = printFileBlob;
       const flatPreviewUrl=URL.createObjectURL(printFileBlob);
@@ -635,26 +635,26 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
     });
   }
 
-  // Build the 170×96mm print file at 300 DPI (2008×1134 px) with:
+  // Build the 165×83mm print file at 300 DPI (1949×980 px) with:
   // - Sharp corners (no rounding)
   // - 8mm white strip at the bottom (for the cup base region)
-  // - Design fills the top 88mm
-  async function buildPrintFile170x96(blob){
+  // - Design fills the top 75mm
+  async function buildPrintFile165x83(blob){
     if(!blob) return blob;
     return new Promise(function(resolve){
       const img = new Image();
       img.onload = function(){
         try {
-          // Final print dimensions: 170×96mm at 300 DPI
-          const PRINT_W = 2008;     // 170mm × 300/25.4 ≈ 2008 px
-          const PRINT_H = 1134;     // 96mm × 300/25.4 ≈ 1134 px
+          // Final print dimensions: 165×83mm at 300 DPI
+          const PRINT_W = 1949;     // 165mm × 300/25.4 ≈ 1949 px
+          const PRINT_H = 980;      // 83mm × 300/25.4 ≈ 980 px
           const STRIP_H = 94;       // 8mm × 300/25.4 ≈ 94 px (bottom white strip)
-          const DESIGN_H = PRINT_H - STRIP_H; // 1040 px = 88mm (design area only)
+          const DESIGN_H = PRINT_H - STRIP_H; // 886 px = 75mm (design area only)
 
           const srcW = img.naturalWidth || img.width;
           const srcH = img.naturalHeight || img.height;
-          // Design area aspect: 170mm × 88mm = 1.932:1
-          const designAspect = 170 / 88;
+          // Design area aspect: 165mm × 75mm = 2.2:1
+          const designAspect = 165 / 75;
           const srcAspect = srcW / srcH;
           // Crop the source to the design area aspect (center crop)
           let cropX=0, cropY=0, cropW=srcW, cropH=srcH;
@@ -689,12 +689,12 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
             resolve(b || blob);
           }, 'image/jpeg', 0.92);
         } catch(err){
-          console.error('buildPrintFile170x96 error:', err);
+          console.error('buildPrintFile165x83 error:', err);
           resolve(blob);
         }
       };
       img.onerror = function(){
-        console.error('buildPrintFile170x96: image load failed');
+        console.error('buildPrintFile165x83: image load failed');
         resolve(blob);
       };
       img.src = URL.createObjectURL(blob);
@@ -773,7 +773,7 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
 
       // Collect files for the email:
       // 1. The customer's uploaded reference (logo) — compressed
-      // 2. The print file at EXACT 170×96 mm @ 300 DPI (2008×1134 px) — cropped and resized
+      // 2. The print file at EXACT 165×83 mm @ 300 DPI (1949×980 px) — cropped and resized
       // We do NOT send the cup mockup preview anymore — only the print file.
       const files=[];
       if(refFile){
@@ -782,9 +782,9 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
         files.push({field:'reference_image',name:'reference-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
       if(flatBlob){
-        // flatBlob is already the processed 170×96mm print file (built in generateDesign)
+        // flatBlob is already the processed 165×83mm print file (built in generateDesign)
         const b64=await readBlobAsBase64(flatBlob);
-        files.push({field:'print_file_170x96',name:'print-file-170x96mm-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
+        files.push({field:'print_file_165x83',name:'print-file-165x83mm-'+Date.now()+'.jpg',type:'image/jpeg',contentBase64:b64});
       }
 
       sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));

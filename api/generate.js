@@ -1,6 +1,6 @@
 // Vercel Serverless Function
 // Two-step generation pipeline:
-//   Step 1: Generate FLAT 170×96 print design (uses user's reference photo if uploaded)
+//   Step 1: Generate FLAT 165×83 print design (uses user's reference photo if uploaded)
 //   Step 2: Take that flat design and render it wrapped around a 3D cup (consistent design)
 // This guarantees the customer preview and the print file show the SAME design.
 // Requires OPENAI_API_KEY environment variable in Vercel
@@ -344,7 +344,7 @@ export default async function handler(req, res) {
     const hasExplicitCupText = (typeof cupText === 'string');
     const explicitNoText = hasExplicitCupText && cupText.trim().length === 0;
 
-    // The AI generates the flat print file (170×96) including the customer's
+    // The AI generates the flat print file (165×83) including the customer's
     // Hebrew text. Hebrew rendering may have spelling issues — the graphic
     // designer corrects them when preparing the actual print plate. The
     // customer preview (mockup) also gets a client-side text overlay using
@@ -482,7 +482,7 @@ ABSOLUTE PROHIBITIONS:
 `) : '';
 
     // ============================================================
-    // STEP 1: Generate the FLAT 170×96 print design
+    // STEP 1: Generate the FLAT 165×83 print design
     // ============================================================
     // The user may upload either (a) a personal photograph of a person,
     // or (b) a logo / graphic asset. We branch based on whether the
@@ -611,7 +611,7 @@ Hebrew letters are extremely easy to get wrong. Follow these rules:
 DESIGN RULES
 ═══════════════════════════════════════════════
 - Modern, clean, contemporary aesthetic — 2026 graphic design style
-- Wide horizontal landscape rectangle, proportion ~170:96 (roughly 1.77:1)
+- Wide horizontal landscape rectangle, proportion ~165:83 (roughly 1.99:1)
 - Artwork fills the ENTIRE rectangle edge-to-edge — no empty white margins
 - ABSOLUTELY NO decorative frames, NO ornate borders, NO Victorian flourishes, NO ribbon banners
 - Use ONLY the visual elements the user described — do not invent extra decorations
@@ -652,7 +652,7 @@ DESIGN RULES
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       attemptsUsed = attempt;
-      // 1536x1024 is the closest available size to the 170:96 cup aspect ratio (1.77:1)
+      // 1536x1024 is the closest available size to the 165:83 cup aspect ratio (1.99:1)
       if (userBlob) {
         flatResult = await callEdits(apiKey, augmentedPrompt, userBlob, '1536x1024', 'user-photo.png');
         if (!flatResult.ok) {
