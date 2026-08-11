@@ -209,12 +209,20 @@ export default async function handler(req, res) {
 <p>לשאלות: <a href="tel:039600550" style="color:#C8922A;">03-9600550</a></p>
 <p style="margin-top:24px;">בברכה,<br><strong>צוות אספגיל</strong></p>
 </div></body></html>`;
-      sendViaResend(apiKey, {
-        from: RESEND_FROM_CUSTOMER,
-        to: [customer.email],
-        subject: `תודה על הזמנתכם — אספגיל (${orderId})`,
-        html: replyHtml,
-      }).catch(err => console.error("auto-reply failed:", err));
+      // Awaited (not fire-and-forget) — on Vercel's serverless runtime, the
+      // function can be frozen the instant the response is sent, which was
+      // cutting this request off mid-flight before it ever reached Resend.
+      try {
+        const replyResult = await sendViaResend(apiKey, {
+          from: RESEND_FROM_CUSTOMER,
+          to: [customer.email],
+          subject: `תודה על הזמנתכם — אספגיל (${orderId})`,
+          html: replyHtml,
+        });
+        if (!replyResult.ok) console.error("auto-reply failed:", replyResult.error);
+      } catch (err) {
+        console.error("auto-reply failed:", err);
+      }
     }
 
     return res.status(200).json({ ok: true, orderId });
