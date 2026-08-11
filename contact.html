@@ -453,7 +453,7 @@ if(window.location.search.indexOf('sent=ok')!==-1){
 })();
 </script>
 
-<script src="assets/js/cart.js?v=2"></script>
+<script src="assets/js/cart.js?v=3"></script>
 
 <script>
 // ─── הוסף לעגלת הקניות ───
@@ -657,9 +657,9 @@ if(window.location.search.indexOf('sent=ok')!==-1){
       };
       try { localStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
 
-      // Add to cart and go
+      // Add to cart and go straight to checkout (no separate cart-review page)
       if (window.Cart) Cart.addItem(cartItem);
-      window.location.href = 'cart.html';
+      window.location.href = 'checkout.html';
 
     } catch(err) {
       console.error(err);

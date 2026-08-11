@@ -122,9 +122,9 @@
 
   /* ─── Inject cart icon into header ─── */
   function injectCartIcon() {
-    // Don't inject on cart/checkout pages
+    // Don't inject on the checkout/order-success pages
     const path = window.location.pathname;
-    if (path.endsWith("cart.html") || path.endsWith("checkout.html") || path.endsWith("order-success.html")) {
+    if (path.endsWith("checkout.html") || path.endsWith("order-success.html")) {
       updateBadge();
       return;
     }
@@ -134,7 +134,7 @@
 
     const qty = Cart.totalQty();
     const link = document.createElement("a");
-    link.href = "cart.html";
+    link.href = "checkout.html";
     link.className = "cart-icon-link";
     link.setAttribute("aria-label", "עגלת קניות");
     link.title = "עגלת קניות";

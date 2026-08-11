@@ -33,7 +33,7 @@
       <a href="contact.html">צור קשר</a>
     </nav>
     <div class="header-cta">
-      <a class="cart-icon-link" href="cart.html" aria-label="עגלת קניות">
+      <a class="cart-icon-link is-active" href="checkout.html" aria-label="עגלת קניות">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
         </svg>
@@ -207,7 +207,7 @@
   </div>
 </footer>
 
-<script src="assets/js/cart.js?v=2"></script>
+<script src="assets/js/cart.js?v=3"></script>
 <script>
   // Pre-fill from contact form. Uses localStorage (not sessionStorage) so it
   // survives a mobile browser reclaiming/reloading the tab between filling
@@ -243,37 +243,63 @@
     throw new Error("Cart script (assets/js/cart.js) did not load");
   }
 
-  const items = Cart.getItems();
-
-  if (items.length === 0) {
-    document.getElementById("emptyMsg").style.display = "";
-    document.getElementById("checkoutContent").style.display = "none";
-  }
-
-  const itemsTotal = Cart.totalPrice();
-  const hasUnpriced = Cart.hasUnpricedItems();
-  const shipping = Cart.shippingInfo();
+  let items = Cart.getItems();
+  let itemsTotal = Cart.totalPrice();
+  let hasUnpriced = Cart.hasUnpricedItems();
+  let shipping = Cart.shippingInfo();
   let total = itemsTotal;
 
-  // Summary — items
-  const summaryEl = document.getElementById("summaryItems");
-  summaryEl.innerHTML = items.map(i => `
-    <div class="order-summary-item">
-      <div>
-        <div style="font-weight:600">${i.name}</div>
-        <div style="font-size:0.78rem;color:var(--gray-500)">כמות: ${i.qty}</div>
+  // Summary — items. Each line has a remove button so customers can fix a
+  // wrong add without a separate cart page (there is no cart.html anymore —
+  // this checkout page IS the cart review step).
+  function renderSummaryItems() {
+    const summaryEl = document.getElementById("summaryItems");
+    summaryEl.innerHTML = items.map(i => `
+      <div class="order-summary-item">
+        <div>
+          <div style="font-weight:600">${i.name}</div>
+          <div style="font-size:0.78rem;color:var(--gray-500)">כמות: ${i.qty}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-right:0.5rem">
+          <div style="font-weight:600;white-space:nowrap">
+            ${i.priceNumeric
+              ? (i.priceNumeric * i.qty).toLocaleString("he-IL") + ' ש"ח'
+              : "לפי הצעה"}
+          </div>
+          <button type="button" class="btn-remove" data-remove-id="${i.id}" aria-label="הסר פריט">🗑</button>
+        </div>
       </div>
-      <div style="font-weight:600;white-space:nowrap;margin-right:0.5rem">
-        ${i.priceNumeric
-          ? (i.priceNumeric * i.qty).toLocaleString("he-IL") + ' ש"ח'
-          : "לפי הצעה"}
-      </div>
-    </div>
-  `).join("");
+    `).join("");
 
-  if (hasUnpriced) {
-    document.getElementById("summaryUnpricedNote").style.display = "";
+    document.getElementById("summaryUnpricedNote").style.display = hasUnpriced ? "" : "none";
+
+    summaryEl.querySelectorAll("[data-remove-id]").forEach(btn => {
+      btn.addEventListener("click", function () {
+        Cart.removeItem(btn.getAttribute("data-remove-id"));
+        refreshCart();
+      });
+    });
   }
+
+  // Re-reads cart state from storage and re-renders. Called on load and
+  // after removing a line item.
+  function refreshCart() {
+    items = Cart.getItems();
+    if (items.length === 0) {
+      document.getElementById("emptyMsg").style.display = "";
+      document.getElementById("checkoutContent").style.display = "none";
+      return;
+    }
+    document.getElementById("emptyMsg").style.display = "none";
+    document.getElementById("checkoutContent").style.display = "";
+    itemsTotal = Cart.totalPrice();
+    hasUnpriced = Cart.hasUnpricedItems();
+    shipping = Cart.shippingInfo();
+    renderSummaryItems();
+    refreshFulfillment();
+  }
+
+  refreshCart();
 
   function getFulfillmentMethod() {
     const sel = document.querySelector('input[name="fulfillmentMethod"]:checked');
@@ -370,7 +396,6 @@
     document.getElementById("submitBtn").textContent = "שלם עכשיו " + total.toLocaleString("he-IL") + ' ש"ח ←';
   }
 
-  refreshFulfillment();
   // Bind both "change" and "click" — some mobile WebViews (in-app browsers
   // like WhatsApp/Instagram, certain Android WebViews) don't reliably fire
   // "change" for a tapped radio in a group, so "click" is a fallback that's
