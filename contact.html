@@ -119,6 +119,30 @@
           </div>
           <div class="form-group"><label for="c-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד) <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="c-address" type="text" name="address"></div>
 
+          <fieldset class="payment-fieldset" id="c-fulfillment-fieldset" style="display:none;">
+            <legend>אופן קבלת ההזמנה</legend>
+            <label class="payment-option">
+              <input type="radio" name="fulfillmentMethod" value="delivery" id="c-fulfillment-delivery" checked>
+              <div>
+                <div class="payment-option-title">🚚 משלוח עד הבית</div>
+                <div class="payment-option-desc">עלות המשלוח מחושבת לפי כמות ההזמנה ומתווספת לסה"כ.</div>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="fulfillmentMethod" value="pickup" id="c-fulfillment-pickup">
+              <div>
+                <div class="payment-option-title">🏭 איסוף עצמי מהמפעל</div>
+                <div class="payment-option-desc">ללא עלות. רחוב הירקון 39, בני ברק — יש לתאם מראש.</div>
+              </div>
+            </label>
+          </fieldset>
+
+          <div id="c-pickup-note" style="display:none;background:#FFF4D6;border-right:4px solid var(--orange);padding:12px 14px;border-radius:8px;margin-bottom:1.2rem;font-size:0.9rem;color:#7A4E00">
+            ⚠ <strong>יש לתאם מראש את מועד האיסוף</strong> בטלפון
+            <a href="tel:039600550" style="color:#7A4E00;font-weight:700">03-9600550</a>
+            לפני ההגעה למפעל. אין להגיע ללא תיאום מוקדם.
+          </div>
+
           <div style="font-weight:800;color:var(--ink);font-size:1.05rem;margin:10px 0 10px;">איך מכינים את הגרפיקה? שני שלבים פשוטים:</div>
           <div style="font-weight:700;color:var(--orange-deep);margin:0 0 8px;">שלב 1 — הורידו פריסה והכינו עליה את העיצוב:</div>
           <a href="cup-blank-165x83.pdf" download style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;box-sizing:border-box;margin:0 0 4px;padding:12px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;text-decoration:none;font-size:0.95rem;">
@@ -172,7 +196,7 @@
             כמות זו דורשת תיאום מחיר — נחזור אליכם עם הצעה מפורטת.
           </div>
 
-          <button class="btn btn-primary form-submit" id="submit-btn" type="button" style="width:100%;justify-content:center;font-size:1.05rem;">🛒 הוסף לעגלת הקניות <span class="arrow">←</span></button>
+          <button class="btn btn-primary form-submit" id="submit-btn" type="button" style="width:100%;justify-content:center;font-size:1.05rem;">שליחת ההזמנה <span class="arrow">←</span></button>
           <div id="quote-status" style="display:none;margin-top:0.8rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.9rem;background:#E6F4EA;color:#1F6638;border:1px solid #B8E0C2;">✓ ההזמנה נשלחה בהצלחה! נחזור אליכם בהקדם.</div>
         </form>
     </div>
@@ -500,14 +524,37 @@ if(window.location.search.indexOf('sent=ok')!==-1){
     label.textContent = required ? 'מספר ח.פ / ת.ז *' : 'מספר ח.פ / ת.ז (לא חובה מתחת ל-5,000 ש"ח)';
   }
 
-  // Show payment options when a fixed-price qty is chosen
+  function getFulfillmentMethod() {
+    var sel = document.querySelector('input[name="fulfillmentMethod"]:checked');
+    return sel ? sel.value : 'delivery';
+  }
+
+  function updateFulfillmentUI() {
+    var note = document.getElementById('c-pickup-note');
+    if (note) note.style.display = getFulfillmentMethod() === 'pickup' ? '' : 'none';
+  }
+  document.querySelectorAll('input[name="fulfillmentMethod"]').forEach(function(r) {
+    r.addEventListener('change', updateFulfillmentUI);
+    r.addEventListener('click', updateFulfillmentUI);
+  });
+
+  // Show payment/fulfillment options once a qty is chosen; label the submit
+  // button honestly — priced quantities go straight to payment, unpriced
+  // ones (50,000+) just send a quote request.
   if (qtySel) {
     qtySel.addEventListener('change', function() {
       var price = PRICE_MAP[this.value] || null;
       var fieldset = document.getElementById('payment-fieldset');
       var note = document.getElementById('payment-note');
+      var fulfillmentFieldset = document.getElementById('c-fulfillment-fieldset');
       if (fieldset) fieldset.style.display = price ? '' : 'none';
       if (note) note.style.display = (!price && this.value) ? '' : 'none';
+      if (fulfillmentFieldset) fulfillmentFieldset.style.display = this.value ? '' : 'none';
+      if (btn) {
+        btn.innerHTML = this.value
+          ? (price ? '💳 שלם עכשיו ←' : '📩 שליחת בקשה להצעת מחיר ←')
+          : 'שליחת ההזמנה <span class="arrow">←</span>';
+      }
       refreshTaxIdRequirement();
     });
   }
@@ -633,6 +680,8 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         }
       }
 
+      if (!window.Cart) throw new Error('שגיאה בטעינת מערכת ההזמנות. נסו לרענן את הדף.');
+
       // Build cart item
       var price    = PRICE_MAP[qty] || null;
       var priceStr = price ? price.toLocaleString('he-IL') + ' ש"ח' : 'לפי הצעה';
@@ -645,21 +694,90 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         category: 'cup'
       };
 
-      // Save form details for checkout pre-fill
+      var invoiceName = (document.getElementById('c-invoice-name') || {value:''}).value.trim();
+      var address     = (document.getElementById('c-address')      || {value:''}).value.trim();
+
+      // Saved so checkout.html can pre-fill if Sumit sends the customer back
+      // there after a cancelled/failed payment (see failureUrl below).
       var prefill = {
-        name:        name,
-        phone:       phone,
-        email:       email,
-        taxId:       taxId,
-        invoiceName: (document.getElementById('c-invoice-name') || {value:''}).value.trim(),
-        address:     (document.getElementById('c-address')      || {value:''}).value.trim(),
-        notes:       notes
+        name: name, phone: phone, email: email, taxId: taxId,
+        invoiceName: invoiceName, address: address, notes: notes
       };
       try { localStorage.setItem('aspagil-checkout-prefill', JSON.stringify(prefill)); } catch(ex){}
 
-      // Add to cart and go straight to checkout (no separate cart-review page)
-      if (window.Cart) Cart.addItem(cartItem);
-      window.location.href = 'checkout.html';
+      Cart.addItem(cartItem);
+
+      var fulfillmentMethod = getFulfillmentMethod();
+      var isPickup = fulfillmentMethod === 'pickup';
+      var orderItems   = Cart.getItems();
+      var itemsTotal    = Cart.totalPrice();
+      var hasUnpriced   = Cart.hasUnpricedItems();
+      var shipping      = Cart.shippingInfo();
+      var shippingForOrder = isPickup
+        ? { units: shipping.units, cost: 0, label: 'איסוף עצמי', needsArrangement: false }
+        : shipping;
+      var total = isPickup ? itemsTotal : itemsTotal + (shipping.needsArrangement ? 0 : shipping.cost);
+      var canPayOnline = total > 0 && !hasUnpriced;
+
+      var customer = {
+        name: name, phone: phone, email: email, taxId: taxId,
+        invoiceName: invoiceName, address: address, notes: notes
+      };
+
+      btn.innerHTML = '⏳ שולח הזמנה...';
+
+      var orderRes = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer: customer, items: orderItems, totalPrice: total,
+          hasUnpricedItems: hasUnpriced, paymentMethod: canPayOnline ? 'online' : 'quote',
+          fulfillmentMethod: fulfillmentMethod, shipping: shippingForOrder
+        })
+      });
+      if (!orderRes.ok) throw new Error('שליחת ההזמנה נכשלה. נסו שוב או התקשרו: 03-9600550.');
+      var orderData = await orderRes.json();
+      var orderId = orderData.orderId || ('ORD-' + Date.now());
+
+      if (canPayOnline) {
+        btn.innerHTML = '⏳ מעביר לתשלום מאובטח...';
+        try {
+          var payRes = await fetch('/api/create-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: total, orderId: orderId, shippingFee: shippingForOrder.cost || 0,
+              items: orderItems.map(function(i){ return { id: i.id, name: i.name, qty: i.qty, priceNumeric: i.priceNumeric || 0 }; }),
+              customer: { name: invoiceName || name, phone: phone, email: email, address: address, taxId: taxId, invoiceName: invoiceName },
+              successUrl: window.location.origin + '/order-success.html',
+              failureUrl: window.location.origin + '/checkout.html'
+            })
+          });
+          var payData = await payRes.json();
+          if (payData.ok && payData.paymentUrl) {
+            try { sessionStorage.setItem('aspagil-order-value', String(total)); } catch(e){}
+            Cart.clear();
+            window.location.href = payData.paymentUrl;
+            return;
+          }
+          throw new Error(payData.message || 'לא התקבל קישור לתשלום');
+        } catch (payErr) {
+          console.error('create-payment failed, falling back to direct Sumit link:', payErr);
+          var SUMIT_URL = 'https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/';
+          var p = new URLSearchParams({ amount: total, name: name });
+          if (email) p.set('email', email);
+          if (phone) p.set('phone', phone);
+          try { sessionStorage.setItem('aspagil-order-value', String(total)); } catch(e){}
+          Cart.clear();
+          window.location.href = SUMIT_URL + '?' + p.toString();
+          return;
+        }
+      }
+
+      // Unpriced (custom-quote) quantity — order sent, no online payment.
+      try { sessionStorage.setItem('aspagil-order-value', String(total)); } catch(e){}
+      Cart.clear();
+      window.location.href = 'order-success.html';
 
     } catch(err) {
       console.error(err);
