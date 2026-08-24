@@ -4,6 +4,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/index.php/testroute/subpath",
+      "destination": "/__test_indexphp_ascii__",
+      "permanent": true
+    },
+    {
+      "source": "/testroute/subpath",
+      "destination": "/__test_ascii_multiseg__",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
