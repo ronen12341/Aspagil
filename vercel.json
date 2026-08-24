@@ -486,11 +486,6 @@
       "permanent": true
     },
     {
-      "source": "/index.php/:path*",
-      "destination": "/__generic_marker__/:path*",
-      "permanent": true
-    },
-    {
       "source": "/index.php",
       "destination": "/",
       "permanent": true
