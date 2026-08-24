@@ -291,6 +291,11 @@
       "permanent": true
     },
     {
+      "source": "/digital-vs-offset-printing",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
       "source": "/כוסות-חד-פעמיות-מודפסות-החשיפה-שלכם",
       "destination": "/products/logo-print",
       "permanent": true
@@ -446,12 +451,27 @@
       "permanent": true
     },
     {
+      "source": "/index.php/מאמרים/כוסות-נייר-ממותגות",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
       "source": "/index.php/Papercups/כוסות-נייר-מעוצבות.html",
       "destination": "/paper-cups",
       "permanent": true
     },
     {
+      "source": "/index.php/Papercups/כוסות-נייר-מעוצבות",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
       "source": "/index.php/Papercups/כוסות-מעוצבות-לעסקים.html",
+      "destination": "/products/business-branded",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/Papercups/כוסות-מעוצבות-לעסקים",
       "destination": "/products/business-branded",
       "permanent": true
     },
