@@ -13,13 +13,13 @@
   gtag('config', 'AW-766413183');
 </script>
 
-<title>הצעת מחיר לכוסות נייר ממותגות | צור קשר | אספגיל</title>
-<meta name="description" content="הצעת מחיר וייעוץ חינם לכוסות נייר ממותגות וכוסות קרטון עם הדפסה דיגיטלית. מענה תוך 24 שעות. טלפון: 03-9600550, אימייל: salesaspagil@gmail.com. כתובת: רחוב הירקון 39, בני ברק.">
-<meta name="keywords" content="הצעת מחיר כוסות נייר, מחיר כוסות ממותגות, הזמנת כוסות נייר, צור קשר אספגיל, מחיר הדפסה על כוסות, כוסות נייר 500 יחידות, מפעל כוסות נייר, אספגיל בני ברק">
+<title>הזמנת כוסות נייר ממותגות | צור קשר | אספגיל</title>
+<meta name="description" content="הזמינו אונליין כוסות נייר ממותגות וכוסות קרטון עם הדפסה דיגיטלית. תשלום מאובטח, מענה תוך 24 שעות. טלפון: 03-9600550, אימייל: salesaspagil@gmail.com. כתובת: רחוב הירקון 39, בני ברק.">
+<meta name="keywords" content="הזמנת כוסות נייר, מחיר כוסות ממותגות, צור קשר אספגיל, מחיר הדפסה על כוסות, כוסות נייר 500 יחידות, מפעל כוסות נייר, אספגיל בני ברק">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.gilcups.com/contact">
-<meta property="og:title" content="הצעת מחיר לכוסות נייר ממותגות | אספגיל">
-<meta property="og:description" content="קבלו הצעת מחיר חינמית לכוסות ממותגות תוך 24 שעות. מינימום הזמנה 500 יחידות.">
+<meta property="og:title" content="הזמנת כוסות נייר ממותגות | אספגיל">
+<meta property="og:description" content="הזמינו כוסות ממותגות אונליין, הדמיה תוך 24 שעות. מינימום הזמנה 500 יחידות.">
 <meta property="og:locale" content="he_IL">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.gilcups.com/contact">
@@ -28,7 +28,7 @@
 {
   "@context":"https://schema.org",
   "@type":"ContactPage",
-  "name":"הצעת מחיר וצור קשר - אספגיל",
+  "name":"הזמנה וצור קשר - אספגיל",
   "url":"https://www.gilcups.com/contact.html",
   "mainEntity":{
     "@type":"LocalBusiness",
@@ -558,6 +558,18 @@ if(window.location.search.indexOf('sent=ok')!==-1){
       refreshTaxIdRequirement();
     });
   }
+
+  // Pre-select quantity when arriving from a pricing-table "להזמנה" link
+  // (e.g. paper-cups-9oz.html?qty=1000#quote), so the customer doesn't have
+  // to re-pick what they already chose.
+  if (qtySel) {
+    var urlQty = new URLSearchParams(window.location.search).get('qty');
+    if (urlQty && Array.prototype.some.call(qtySel.options, function(o) { return o.value === urlQty; })) {
+      qtySel.value = urlQty;
+      qtySel.dispatchEvent(new Event('change'));
+    }
+  }
+
   refreshTaxIdRequirement();
 
   if (!btn) return;

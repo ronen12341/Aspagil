@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>כוסות נייר ממותגות מ-500 יח׳ | אספגיל</title>
-<meta name="description" content="כוסות נייר ממותגות עם הלוגו שלכם — מ-500 יח׳, ללא הגבלת צבעים. הדמיה והצעת מחיר מהירה. ☎ 03-9600550">
+<meta name="description" content="כוסות נייר ממותגות עם הלוגו שלכם — מ-500 יח׳, ללא הגבלת צבעים. הזמנה אונליין מהירה, הדמיה תוך 24 שעות. ☎ 03-9600550">
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Google tag (gtag.js) — Google Ads -->
@@ -137,7 +137,7 @@
       <a class="logo" href="#">אספגיל<small>מאז 1995</small></a>
       <div class="top-actions">
         <a class="top-phone" href="tel:039600550">☎ <span>03-9600550</span></a>
-        <a class="btn btn-light" href="#quote">להצעת מחיר</a>
+        <a class="btn btn-light" href="#quote">להזמנה</a>
       </div>
     </div>
   </header>
@@ -148,38 +148,28 @@
       <h1 class="reveal d1">כל כוס היא<br><em>שלט פרסום</em> של המותג שלכם</h1>
       <p class="sub reveal d2">הדפסה דיגיטלית של הלוגו שלכם על כוסות נייר — מ-500 יחידות, ללא הגבלת צבעים.</p>
       <div class="hero-cta reveal d2">
-        <a class="btn btn-light btn-lg" href="#quote">קבלו הצעת מחיר ←</a>
+        <a class="btn btn-light btn-lg" href="#quote">הזמינו עכשיו ←</a>
         <a class="btn btn-wa btn-lg" href="https://api.whatsapp.com/send?phone=97239600550" target="_blank" rel="noopener">WhatsApp</a>
       </div>
       <div class="micro reveal d3"><span class="stars">★★★★★</span> 500+ עסקים מרוצים <span class="dot"></span> ייצור 2-14 יום + משלוח עד 6 ימים</div>
     </div>
 
     <div class="formcard reveal d1" id="quote">
-      <h2>קבלו הצעת מחיר</h2>
-      <p class="lead">משאירים פרטים — חוזרים אליכם עם הדמיה והצעה.</p>
-      <div class="msg" id="formMsg"></div>
-      <form id="lpForm">
-        <input type="text" class="hp" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <label for="f-name">שם מלא *</label>
-        <input type="text" id="f-name" name="name" required placeholder="ישראל ישראלי">
-        <div class="row2">
-          <div><label for="f-phone">טלפון *</label><input type="tel" id="f-phone" name="phone" required placeholder="050-0000000"></div>
-          <div><label for="f-qty">כמות</label>
-            <select id="f-qty" name="quantity">
-              <option value="">בחרו</option>
-              <option value="500">500 יח׳</option>
-              <option value="1000">1,000 יח׳</option>
-              <option value="5000">5,000 יח׳</option>
-              <option value="10000">10,000 יח׳</option>
-              <option value="10000+">10,000+ יח׳</option>
-            </select>
-          </div>
-        </div>
-        <label for="f-email">דוא"ל</label>
-        <input type="email" id="f-email" name="email" placeholder="name@example.com">
-        <button type="submit" class="btn btn-main btn-block btn-lg" id="lpSubmit">שלחו וקבלו הצעה ←</button>
-        <p class="formnote">או חייגו <a href="tel:039600550">03-9600550</a></p>
-      </form>
+      <h2>הזמינו עכשיו</h2>
+      <p class="lead">בחרו כמות ועברו ישר להזמנה — תשלום מאובטח, או הצעת מחיר לכמויות גדולות.</p>
+      <label for="f-qty">כמות</label>
+      <select id="f-qty" name="quantity">
+        <option value="">בחרו כמות</option>
+        <option value="500">500 יח׳ — 500 ש"ח</option>
+        <option value="1000">1,000 יח׳ — 800 ש"ח</option>
+        <option value="2000">2,000 יח׳ — 1,500 ש"ח</option>
+        <option value="3000">3,000 יח׳ — 2,100 ש"ח</option>
+        <option value="5000">5,000 יח׳ — 2,750 ש"ח</option>
+        <option value="10000">10,000 יח׳ — 4,500 ש"ח</option>
+        <option value="100000+">100,000+ יח׳ — הצעת מחיר אישית</option>
+      </select>
+      <button type="button" class="btn btn-main btn-block btn-lg" id="lpSubmit">להזמנה ←</button>
+      <p class="formnote">או חייגו <a href="tel:039600550">03-9600550</a></p>
     </div>
   </div>
 </section>
@@ -197,21 +187,11 @@
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-const form=document.getElementById('lpForm'),msg=document.getElementById('formMsg'),btn=document.getElementById('lpSubmit');
-form.addEventListener('submit',async(e)=>{
-  e.preventDefault();msg.className='msg';
-  const fd=new FormData(form),fields={};fd.forEach((v,k)=>fields[k]=v);
-  if(fields.botcheck)return;
-  btn.disabled=true;const o=btn.textContent;btn.textContent='שולח…';
-  try{
-    const r=await fetch('/api/submit-form',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({type:'quote',fields:Object.assign({subject:'📧 ליד מקמפיין Google Ads — כוסות נייר ממותגות'},fields),files:[]})});
-    const d=await r.json();
-    if(r.ok&&d.success){msg.className='msg ok';msg.textContent='תודה! נחזור אליכם בהקדם עם הדמיה והצעת מחיר.';form.reset();
-      if(typeof gtag_report_conversion==='function')gtag_report_conversion();}
-    else throw new Error();
-  }catch(_){msg.className='msg err';msg.textContent='אירעה שגיאה. נסו שוב או חייגו 03-9600550.';}
-  finally{btn.disabled=false;btn.textContent=o;msg.scrollIntoView({behavior:'smooth',block:'center'});}
+const qtySel=document.getElementById('f-qty'),lpBtn=document.getElementById('lpSubmit');
+lpBtn.addEventListener('click',()=>{
+  if(typeof gtag_report_conversion==='function')gtag_report_conversion();
+  const q=qtySel.value;
+  window.location.href='contact.html'+(q?('?qty='+encodeURIComponent(q)):'')+'#quote';
 });
 </script>
 </body>
