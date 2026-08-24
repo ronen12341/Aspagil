@@ -64,6 +64,7 @@
 
         <!-- Form -->
         <form id="checkoutForm" class="form-card" novalidate>
+          <input type="checkbox" id="botcheck" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
           <div class="form-row">
             <div class="form-group">
@@ -421,6 +422,15 @@
     const err = document.getElementById("formError");
     err.style.display = "none";
 
+    // Honeypot — real visitors never see or fill this field. A bot that
+    // fills it out gets sent straight to the success page with no email
+    // ever sent, so it doesn't learn it was caught and keep retrying.
+    if (document.getElementById("botcheck").checked) {
+      Cart.clear();
+      window.location.href = "order-success.html";
+      return;
+    }
+
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -461,6 +471,7 @@
         body: JSON.stringify({
           customer, items, totalPrice: total, hasUnpricedItems: hasUnpriced,
           paymentMethod, fulfillmentMethod, shipping: shippingForOrder,
+          botcheck: document.getElementById("botcheck").checked,
         }),
       });
 

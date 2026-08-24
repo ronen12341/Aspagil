@@ -153,10 +153,28 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body || {};
+
+    // Honeypot — a real visitor never sees or checks this field, so a
+    // filled-in value means a bot is posting straight to the API. Return a
+    // normal-looking success so it doesn't notice and keep retrying, but
+    // never send the notification email.
+    if (body.botcheck) {
+      return res.status(200).json({ ok: true, orderId: "ORD-" + Date.now() });
+    }
+
     const { customer, items, totalPrice, hasUnpricedItems, paymentMethod } = body;
 
     if (!customer?.name || !customer?.phone) {
       return res.status(400).json({ error: "missing fields" });
+    }
+    // Israeli phone numbers: 9-10 digits starting with 0 (mobile 05X, or a
+    // landline area code) — also accepts a +972 international prefix.
+    // Catches the garbage-data bot spam that's been hitting this endpoint
+    // directly with non-Israeli-looking numbers.
+    let phoneDigits = String(customer.phone).replace(/\D/g, "");
+    if (phoneDigits.startsWith("972")) phoneDigits = "0" + phoneDigits.slice(3);
+    if (!/^0\d{8,9}$/.test(phoneDigits)) {
+      return res.status(400).json({ error: "invalid phone", message: "מספר טלפון לא תקין. אנא הזינו מספר טלפון ישראלי תקני." });
     }
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "empty cart" });
