@@ -4,21 +4,6 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/testroute/כוסות-נייר-מעוצבות",
-      "destination": "/__test_hebrew_2ndseg__",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/testroute/subpath",
-      "destination": "/__test_indexphp_ascii__",
-      "permanent": true
-    },
-    {
-      "source": "/testroute/subpath",
-      "destination": "/__test_ascii_multiseg__",
-      "permanent": true
-    },
-    {
       "source": "/:path*",
       "has": [
         {
@@ -38,36 +23,6 @@
         }
       ],
       "destination": "https://www.gilcups.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/מאמרים/כוסות-נייר-ממותגות.html",
-      "destination": "/paper-cups",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/מאמרים/כוסות-נייר-ממותגות",
-      "destination": "/paper-cups",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/Papercups/כוסות-נייר-מעוצבות.html",
-      "destination": "/paper-cups",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/Papercups/כוסות-נייר-מעוצבות",
-      "destination": "/paper-cups",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/Papercups/כוסות-מעוצבות-לעסקים.html",
-      "destination": "/products/business-branded",
-      "permanent": true
-    },
-    {
-      "source": "/index.php/Papercups/כוסות-מעוצבות-לעסקים",
-      "destination": "/products/business-branded",
       "permanent": true
     },
     {
@@ -498,6 +453,11 @@
     {
       "source": "/author/ronen/:path*",
       "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/:path*",
+      "destination": "/",
       "permanent": true
     },
     {
