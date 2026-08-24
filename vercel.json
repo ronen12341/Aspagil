@@ -487,7 +487,7 @@
     },
     {
       "source": "/index.php/:path*",
-      "destination": "/",
+      "destination": "/__generic_marker__/:path*",
       "permanent": true
     },
     {
