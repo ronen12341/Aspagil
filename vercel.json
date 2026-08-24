@@ -147,11 +147,161 @@
     },
     {
       "source": "/category/:path*",
-      "destination": "/",
+      "destination": "/blog/",
       "permanent": true
     },
     {
       "source": "/old-home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/צור-קשר",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%A6%D7%95%D7%A8-%D7%A7%D7%A9%D7%A8",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוסות-חד-פעמיות/:path*",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA/:path*",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/eco-friendly-cups.html",
+      "destination": "/blog/eco-friendly-cups",
+      "permanent": true
+    },
+    {
+      "source": "/eco-friendly-cups",
+      "destination": "/blog/eco-friendly-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-לימי-הולדת",
+      "destination": "/products/birthdays",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%99%D7%9E%D7%99-%D7%94%D7%95%D7%9C%D7%93%D7%AA",
+      "destination": "/products/birthdays",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-לאירועים",
+      "destination": "/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D",
+      "destination": "/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-לדוכני-מזון",
+      "destination": "/products/food-stalls",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%93%D7%95%D7%9B%D7%A0%D7%99-%D7%9E%D7%96%D7%95%D7%9F",
+      "destination": "/products/food-stalls",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-למסעדות",
+      "destination": "/products/food-stalls",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%9E%D7%A1%D7%A2%D7%93%D7%95%D7%AA",
+      "destination": "/products/food-stalls",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-לעסקים",
+      "destination": "/products/business-branded",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%A2%D7%A1%D7%A7%D7%99%D7%9D",
+      "destination": "/products/business-branded",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-חד-פעמיות-עם-לוגו",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA-%D7%A2%D7%9D-%D7%9C%D7%95%D7%92%D7%95",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-מודפסות",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%95%D7%93%D7%A4%D7%A1%D7%95%D7%AA",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/עובדות-על-כוסות-נייר-מעוצבות",
+      "destination": "/designer",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%A2%D7%95%D7%91%D7%93%D7%95%D7%AA-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA",
+      "destination": "/designer",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוס-בחירת-בית-הדפוס",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1-%D7%91%D7%97%D7%99%D7%A8%D7%AA-%D7%91%D7%99%D7%AA-%D7%94%D7%93%D7%A4%D7%95%D7%A1",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוסות-בוחרים",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%91%D7%95%D7%97%D7%A8%D7%99%D7%9D",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/page/:path*",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/author/ronen/:path*",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/index.php",
       "destination": "/",
       "permanent": true
     }
