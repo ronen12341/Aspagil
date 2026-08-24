@@ -4,6 +4,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/testroute/כוסות-נייר-מעוצבות",
+      "destination": "/__test_hebrew_2ndseg__",
+      "permanent": true
+    },
+    {
       "source": "/index.php/testroute/subpath",
       "destination": "/__test_indexphp_ascii__",
       "permanent": true
