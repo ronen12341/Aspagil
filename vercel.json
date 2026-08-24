@@ -286,6 +286,176 @@
       "permanent": true
     },
     {
+      "source": "/digital-vs-offset-printing.html",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-חד-פעמיות-מודפסות-החשיפה-שלכם",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA-%D7%9E%D7%95%D7%93%D7%A4%D7%A1%D7%95%D7%AA-%D7%94%D7%97%D7%A9%D7%99%D7%A4%D7%94-%D7%A9%D7%9C%D7%9B%D7%9D",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-חד-פעמיות-עם-לוגו-שיווק-נכון",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA-%D7%A2%D7%9D-%D7%9C%D7%95%D7%92%D7%95-%D7%A9%D7%99%D7%95%D7%95%D7%A7-%D7%A0%D7%9B%D7%95%D7%9F",
+      "destination": "/products/logo-print",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-ממותגות-מחיר-והסיבות-למחיר",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9E%D7%97%D7%99%D7%A8-%D7%95%D7%94%D7%A1%D7%99%D7%91%D7%95%D7%AA-%D7%9C%D7%9E%D7%97%D7%99%D7%A8",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-לכנסים",
+      "destination": "/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%9B%D7%A0%D7%A1%D7%99%D7%9D",
+      "destination": "/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-מוצרים-כמקדמי-מכירות",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D-%D7%9B%D7%9E%D7%A7%D7%93%D7%9E%D7%99-%D7%9E%D7%9B%D7%99%D7%A8%D7%95%D7%AA",
+      "destination": "/printing",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-ממותגות-מחיר",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9E%D7%97%D7%99%D7%A8",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-ממותגות-מחיר-ואיכות",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9E%D7%97%D7%99%D7%A8-%D7%95%D7%90%D7%99%D7%9B%D7%95%D7%AA",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-חד-פעמיות",
+      "destination": "/products/disposable",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA",
+      "destination": "/products/disposable",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוסות-בוחרים-את-בית-הדפוס",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%91%D7%95%D7%97%D7%A8%D7%99%D7%9D-%D7%90%D7%AA-%D7%91%D7%99%D7%AA-%D7%94%D7%93%D7%A4%D7%95%D7%A1",
+      "destination": "/blog/digital-vs-offset-printing",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-לשתיה-חמה-סוגים-שונים-של-כ",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9C%D7%A9%D7%AA%D7%99%D7%94-%D7%97%D7%9E%D7%94-%D7%A1%D7%95%D7%92%D7%99%D7%9D-%D7%A9%D7%95%D7%A0%D7%99%D7%9D-%D7%A9%D7%9C-%D7%9B",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-ממותגות-דרך-יצירתית-לשיו",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%93%D7%A8%D7%9A-%D7%99%D7%A6%D7%99%D7%A8%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%99%D7%95",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-מעוצבות-לאירועים-אלו-כוסות-מת",
+      "destination": "/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D-%D7%90%D7%9C%D7%95-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%AA",
+      "destination": "/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-לשתייה-חמה-לא-להתפשר-על-אי",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9C%D7%A9%D7%AA%D7%99%D7%99%D7%94-%D7%97%D7%9E%D7%94-%D7%9C%D7%90-%D7%9C%D7%94%D7%AA%D7%A4%D7%A9%D7%A8-%D7%A2%D7%9C-%D7%90%D7%99",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-שימושים-פונקציונליים-ושי",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%A9%D7%99%D7%9E%D7%95%D7%A9%D7%99%D7%9D-%D7%A4%D7%95%D7%A0%D7%A7%D7%A6%D7%99%D7%95%D7%A0%D7%9C%D7%99%D7%99%D7%9D-%D7%95%D7%A9%D7%99",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/הצהרת-נגישות",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%A6%D7%94%D7%A8%D7%AA-%D7%A0%D7%92%D7%99%D7%A9%D7%95%D7%AA",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/מאמרים/כוסות-נייר-ממותגות.html",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/Papercups/כוסות-נייר-מעוצבות.html",
+      "destination": "/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/index.php/Papercups/כוסות-מעוצבות-לעסקים.html",
+      "destination": "/products/business-branded",
+      "permanent": true
+    },
+    {
       "source": "/page/:path*",
       "destination": "/blog/",
       "permanent": true
