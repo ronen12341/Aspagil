@@ -16,14 +16,14 @@
   const STORAGE_KEY = "gilcups-cart-v1";
 
   /* ─── Shipping tiers (by total unit count in cart) ───
-   * 500–1,000 יח' → 50 ש"ח | 2,000 → 100 ש"ח | 3,000 → 150 ש"ח | 5,000 → 200 ש"ח
+   * 500–1,000 יח' → 60 ש"ח | 2,000 → 120 ש"ח | 3,000 → 180 ש"ח | 5,000 → 250 ש"ח
    * מעל 5,000 יח' — עלות המשלוח מתואמת בנפרד מול הלקוח.
    */
   const SHIPPING_TIERS = [
-    { maxUnits: 1000, cost: 50 },
-    { maxUnits: 2000, cost: 100 },
-    { maxUnits: 3000, cost: 150 },
-    { maxUnits: 5000, cost: 200 },
+    { maxUnits: 1000, cost: 60 },
+    { maxUnits: 2000, cost: 120 },
+    { maxUnits: 3000, cost: 180 },
+    { maxUnits: 5000, cost: 250 },
   ];
 
   function parseUnits(item) {
