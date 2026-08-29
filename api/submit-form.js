@@ -28,10 +28,12 @@ export const config = {
 };
 
 const BUSINESS_EMAIL = 'salesaspagil@gmail.com';
-const RESEND_FROM    = 'Aspagil <onboarding@resend.dev>'; // safe default; switch to a verified domain later for better deliverability
-// gilcups.com is now verified in Resend — required for the customer-facing
-// auto-replies below, since onboarding@resend.dev can only send to the
-// account's own verified address, not to arbitrary customer addresses.
+// gilcups.com is the only domain verified in this Resend account — a "from"
+// on any other domain (including the shared onboarding@resend.dev sender)
+// gets rejected with 403. This route (the contact/quote form) was sending
+// from onboarding@resend.dev and had its business notifications silently
+// dropped as a result.
+const RESEND_FROM    = 'Aspagil <noreply@gilcups.com>';
 const RESEND_FROM_CUSTOMER = 'אספגיל <orders@gilcups.com>';
 const SITE_URL       = 'https://aspagil.vercel.app';
 

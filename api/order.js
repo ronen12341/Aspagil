@@ -12,10 +12,10 @@
 import { getCatalogPrice } from "./_pricing.js";
 
 const BUSINESS_EMAIL = "salesaspagil@gmail.com";
-const RESEND_FROM    = "Aspagil <onboarding@resend.dev>";
-// Verified gilcups.com domain — required for the customer-facing auto-reply,
-// since Resend's shared onboarding@resend.dev sender can only send to the
-// account's own verified address, not to arbitrary customer addresses.
+// gilcups.com is the only domain verified in this Resend account — a "from"
+// on any other domain (including the shared onboarding@resend.dev sender)
+// gets rejected with 403.
+const RESEND_FROM    = "Aspagil <noreply@gilcups.com>";
 const RESEND_FROM_CUSTOMER = "אספגיל <orders@gilcups.com>";
 
 function toIsraeliE164(raw) {
