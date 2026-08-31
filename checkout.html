@@ -480,7 +480,14 @@
       const orderId = data.orderId || ("ORD-" + Date.now());
 
       if (paymentMethod === "online" && canPayOnline()) {
-        // Try Sumit
+        // Try Sumit. On any failure here (network error, or the server
+        // rejecting the request — e.g. a price it couldn't verify against
+        // the catalog) we do NOT fall back to a generic, unitemized Sumit
+        // payment link built from client-side numbers: that link bypasses
+        // every server-side price check this endpoint exists to enforce.
+        // The order notification email has already been sent at this point
+        // (via /api/order above), so surface the failure and let the
+        // customer retry or the business follow up on the emailed order.
         try {
           const payRes = await fetch("/api/create-payment", {
             method: "POST",
@@ -489,6 +496,7 @@
               amount: total,
               orderId,
               shippingFee: shippingForOrder.cost || 0,
+              fulfillmentMethod,
               items: items.map((i) => ({ id: i.id, name: i.name, qty: i.qty, priceNumeric: i.priceNumeric || 0 })),
               customer: { name: customer.invoiceName || customer.name, phone: customer.phone, email: customer.email, address: customer.address, city: customer.city, taxId: customer.taxId, invoiceName: customer.invoiceName },
               successUrl: window.location.origin + "/order-success.html",
@@ -503,22 +511,11 @@
             window.location.href = payData.paymentUrl;
             return;
           }
-          // Fallback to direct Sumit URL
-          const SUMIT_URL = "https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/";
-          const p = new URLSearchParams({ amount: total, name: customer.name });
-          if (customer.email) p.set("email", customer.email);
-          if (customer.phone) p.set("phone", customer.phone);
-          try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
-          Cart.clear();
-          window.location.href = SUMIT_URL + "?" + p.toString();
-          return;
+          throw new Error(payData.message || "יצירת קישור התשלום נכשלה");
         } catch (ex) {
-          // Same fallback
-          const SUMIT_URL = "https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/";
-          const p = new URLSearchParams({ amount: total, name: customer.name });
-          try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
-          Cart.clear();
-          window.location.href = SUMIT_URL + "?" + p.toString();
+          showError("ההזמנה נקלטה (מספר הזמנה " + orderId + ") אך אירעה תקלה ביצירת קישור התשלום. אנא התקשרו אלינו להשלמת התשלום: 03-9600550.");
+          btn.disabled = false;
+          updateHowItWorks();
           return;
         }
       }

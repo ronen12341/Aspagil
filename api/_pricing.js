@@ -32,3 +32,42 @@ export function getCatalogPrice(id) {
     ? CATALOG_PRICES[id]
     : undefined;
 }
+
+/**
+ * Server-side mirror of assets/js/cart.js's SHIPPING_TIERS / parseUnits /
+ * shippingInfo(). The client sends its own computed shipping.cost /
+ * shippingFee, which — like priceNumeric — travels as plain JSON and can be
+ * edited directly, so anything that charges money must recompute it here
+ * from the actual items instead of trusting the request.
+ *
+ * Keep the tiers below in sync with assets/js/cart.js.
+ */
+const SHIPPING_TIERS = [
+  { maxUnits: 1000, cost: 60 },
+  { maxUnits: 2000, cost: 120 },
+  { maxUnits: 3000, cost: 180 },
+  { maxUnits: 5000, cost: 250 },
+];
+
+function parseUnits(item) {
+  const fromNote = String(item?.note || "").replace(/[^\d]/g, "");
+  if (fromNote) return parseInt(fromNote, 10);
+  const fromId = String(item?.id || "").match(/(\d+)\s*$/);
+  return fromId ? parseInt(fromId[1], 10) : 0;
+}
+
+/**
+ * Returns { units, cost, needsArrangement }. Self-pickup is always
+ * shipping-free — that's an intentional fulfillment choice, not something
+ * to re-derive from the item count.
+ */
+export function computeShipping(items, fulfillmentMethod) {
+  if (fulfillmentMethod === "pickup") {
+    return { units: 0, cost: 0, needsArrangement: false };
+  }
+  const units = (items || []).reduce((s, i) => s + parseUnits(i) * (Number(i.qty) || 0), 0);
+  if (units <= 0) return { units, cost: 0, needsArrangement: false };
+  const tier = SHIPPING_TIERS.find((t) => units <= t.maxUnits);
+  if (tier) return { units, cost: tier.cost, needsArrangement: false };
+  return { units, cost: 0, needsArrangement: true };
+}

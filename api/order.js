@@ -9,7 +9,7 @@
  * Body: { customer, items, totalPrice, hasUnpricedItems, paymentMethod }
  */
 
-import { getCatalogPrice } from "./_pricing.js";
+import { getCatalogPrice, computeShipping } from "./_pricing.js";
 
 const BUSINESS_EMAIL = "salesaspagil@gmail.com";
 // gilcups.com is the only domain verified in this Resend account — a "from"
@@ -162,7 +162,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, orderId: "ORD-" + Date.now() });
     }
 
-    const { customer, items, totalPrice, hasUnpricedItems, paymentMethod } = body;
+    const { customer, items, paymentMethod } = body;
 
     if (!customer?.name || !customer?.phone) {
       return res.status(400).json({ error: "missing fields" });
@@ -182,22 +182,37 @@ export default async function handler(req, res) {
 
     // Re-price from the catalog wherever possible — the cart's priceNumeric
     // is only a client-side snapshot (stale cache, or an edited request),
-    // and this email is what drives fulfillment/charging the order.
+    // and this email is what drives fulfillment/charging the order. An item
+    // whose id isn't in the catalog is a legitimate custom-quote line (no
+    // preset price) as often as it's a tampered request — either way its
+    // client-supplied priceNumeric is never trustworthy, so it's dropped
+    // rather than kept: the item still appears in the email ("לפי הצעה")
+    // but no longer contributes a fabricated number to the total.
     body.items = items.map((item) => {
       const catalogPrice = getCatalogPrice(item.id);
-      return catalogPrice !== undefined ? { ...item, priceNumeric: catalogPrice } : item;
+      return catalogPrice !== undefined
+        ? { ...item, priceNumeric: catalogPrice }
+        : { ...item, priceNumeric: undefined };
     });
     const itemsTotal = body.items.reduce(
       (sum, i) => sum + (i.priceNumeric ? i.priceNumeric * i.qty : 0),
       0
     );
     // Shipping cost isn't a cart item — fold it in separately, matching the
-    // Sumit charge and the checkout page's displayed total. Skip it when the
-    // shipping cost still needs manual arrangement (not a fixed fee yet).
-    const shippingCost = body.shipping && !body.shipping.needsArrangement
-      ? Number(body.shipping.cost) || 0
-      : 0;
+    // Sumit charge and the checkout page's displayed total. Recomputed from
+    // the actual items server-side (like priceNumeric above) rather than
+    // trusting body.shipping.cost, which is just a client-computed number
+    // that travels as plain JSON. Skipped when it still needs manual
+    // arrangement (not a fixed fee yet).
+    body.shipping = computeShipping(body.items, body.fulfillmentMethod);
+    const shippingCost = body.shipping.needsArrangement ? 0 : body.shipping.cost;
     body.totalPrice = itemsTotal + shippingCost;
+    // Recomputed server-side rather than trusting the client's own flag —
+    // matching cart.js's own definition (an item with no priceNumeric).
+    // Otherwise a request could pair a fabricated priceNumeric with
+    // hasUnpricedItems:false and land in the business's inbox looking like
+    // a normal, price-verified order.
+    body.hasUnpricedItems = body.items.some((i) => !i.priceNumeric);
 
     const orderId = generateOrderId();
     const html = buildEmailHtml(orderId, body);

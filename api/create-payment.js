@@ -10,7 +10,7 @@
  * Body: { amount, orderId, customer, successUrl, failureUrl }
  */
 
-import { getCatalogPrice } from "./_pricing.js";
+import { getCatalogPrice, computeShipping } from "./_pricing.js";
 
 // SUMIT_API_KEY must come ONLY from the environment (this repo is public on
 // GitHub) — set it in Vercel project settings. No hardcoded fallback here.
@@ -31,62 +31,59 @@ export default async function handler(req, res) {
   try {
     const body = req.body || {};
     const { amount, orderId, customer, successUrl, failureUrl, items } = body;
-    const shippingFee = Math.max(0, Number(body.shippingFee) || 0);
 
     if (!amount || !orderId || !customer) {
       return res.status(400).json({ ok: false, error: "missing fields" });
     }
 
-    // Itemize by cart line (falls back to one lump-sum line if the caller
-    // didn't send items) so the Sumit document — and the eventual
+    // Itemize by cart line so the Sumit document — and the eventual
     // Hashavshevet invoice — shows each product instead of one generic line.
     // Every line is re-priced from the server-side catalog — never trust the
-    // client-supplied priceNumeric for an actual charge. A stale cart or a
-    // directly-edited request body would otherwise let a customer pay
-    // whatever they choose. If any line's id doesn't resolve to a known
-    // catalog price, refuse the whole charge instead of silently falling
-    // back to what the client sent.
-    let lineItems;
-    if (Array.isArray(items) && items.length > 0) {
-      const unresolved = [];
-      lineItems = items.map((line) => {
-        const catalogPrice = getCatalogPrice(line.id);
-        if (catalogPrice === undefined) unresolved.push(`${line.name} (${line.id})`);
-        return {
-          Item: {
-            Name: line.name,
-            Description: `הזמנה ${orderId}`,
-          },
-          Quantity: line.qty,
-          UnitPrice: catalogPrice ?? 0,
-          Description: `הזמנה ${orderId}`,
-        };
+    // client-supplied priceNumeric (or the top-level `amount`) for an actual
+    // charge. A missing/empty `items` array is refused rather than falling
+    // back to a single line billed at the client-supplied `amount`, which
+    // let a request with no items bypass catalog pricing entirely and
+    // charge whatever amount it sent.
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        ok: false,
+        error: "missing_items",
+        message: "לא נשלחו פריטי הזמנה. רענן/י את העמוד ונסה/י שוב.",
       });
-      if (unresolved.length > 0) {
-        console.error("create-payment: unresolved catalog price for line(s):", unresolved);
-        return res.status(400).json({
-          ok: false,
-          error: "price_lookup_failed",
-          message: "לא ניתן לאמת את המחיר עבור אחד או יותר מהפריטים בעגלה. רענן/י את העמוד ונסה/י שוב.",
-        });
-      }
-    } else {
-      lineItems = [
-        {
-          Item: {
-            Name: "הזמנה מאתר אספגיל – גילקאפס",
-            Description: `מספר הזמנה: ${orderId}`,
-          },
-          Quantity: 1,
-          UnitPrice: amount,
+    }
+    const unresolved = [];
+    const lineItems = items.map((line) => {
+      const catalogPrice = getCatalogPrice(line.id);
+      if (catalogPrice === undefined) unresolved.push(`${line.name} (${line.id})`);
+      return {
+        Item: {
+          Name: line.name,
+          Description: `הזמנה ${orderId}`,
         },
-      ];
+        Quantity: line.qty,
+        UnitPrice: catalogPrice ?? 0,
+        Description: `הזמנה ${orderId}`,
+      };
+    });
+    if (unresolved.length > 0) {
+      console.error("create-payment: unresolved catalog price for line(s):", unresolved);
+      return res.status(400).json({
+        ok: false,
+        error: "price_lookup_failed",
+        message: "לא ניתן לאמת את המחיר עבור אחד או יותר מהפריטים בעגלה. רענן/י את העמוד ונסה/י שוב.",
+      });
     }
 
     // Shipping isn't in the catalog-priced product lines above — add it as
     // its own line so the charged total (and the Hashavshevet invoice)
     // actually includes it instead of silently undercharging by the
-    // shipping fee.
+    // shipping fee. Recomputed from the actual items server-side (like the
+    // catalog prices above) rather than trusting body.shippingFee, which is
+    // just a client-computed number that travels as plain JSON — otherwise
+    // a request could charge ₪0 shipping while claiming a big order's item
+    // total.
+    const shippingInfo = computeShipping(items, body.fulfillmentMethod);
+    const shippingFee = shippingInfo.needsArrangement ? 0 : shippingInfo.cost;
     if (shippingFee > 0) {
       lineItems.push({
         Item: {

@@ -759,6 +759,7 @@ if(window.location.search.indexOf('sent=ok')!==-1){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               amount: total, orderId: orderId, shippingFee: shippingForOrder.cost || 0,
+              fulfillmentMethod: fulfillmentMethod,
               items: orderItems.map(function(i){ return { id: i.id, name: i.name, qty: i.qty, priceNumeric: i.priceNumeric || 0 }; }),
               customer: { name: invoiceName || name, phone: phone, email: email, address: address, taxId: taxId, invoiceName: invoiceName },
               successUrl: window.location.origin + '/order-success.html',
@@ -774,14 +775,15 @@ if(window.location.search.indexOf('sent=ok')!==-1){
           }
           throw new Error(payData.message || 'לא התקבל קישור לתשלום');
         } catch (payErr) {
-          console.error('create-payment failed, falling back to direct Sumit link:', payErr);
-          var SUMIT_URL = 'https://pay.sumit.co.il/w7pfxb/waf7oo/c/payment/';
-          var p = new URLSearchParams({ amount: total, name: name });
-          if (email) p.set('email', email);
-          if (phone) p.set('phone', phone);
-          try { sessionStorage.setItem('aspagil-order-value', String(total)); } catch(e){}
-          Cart.clear();
-          window.location.href = SUMIT_URL + '?' + p.toString();
+          // Do NOT fall back to a generic, unitemized Sumit payment link
+          // built from client-side numbers — it bypasses every server-side
+          // price check /api/create-payment exists to enforce. The order
+          // notification email has already been sent above, so surface the
+          // failure and let the customer retry or the business follow up.
+          console.error('create-payment failed:', payErr);
+          showErr('ההזמנה נקלטה (מספר הזמנה ' + orderId + ') אך אירעה תקלה ביצירת קישור התשלום. אנא התקשרו אלינו להשלמת התשלום: 03-9600550.');
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
           return;
         }
       }
