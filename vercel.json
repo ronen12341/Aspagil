@@ -177,12 +177,12 @@
     },
     {
       "source": "/eco-friendly-cups.html",
-      "destination": "/blog/eco-friendly-cups",
+      "destination": "/blog",
       "permanent": true
     },
     {
       "source": "/eco-friendly-cups",
-      "destination": "/blog/eco-friendly-cups",
+      "destination": "/blog",
       "permanent": true
     },
     {
@@ -257,12 +257,12 @@
     },
     {
       "source": "/עובדות-על-כוסות-נייר-מעוצבות",
-      "destination": "/designer",
+      "destination": "/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%A2%D7%95%D7%91%D7%93%D7%95%D7%AA-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA",
-      "destination": "/designer",
+      "destination": "/paper-cups",
       "permanent": true
     },
     {

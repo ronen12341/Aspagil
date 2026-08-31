@@ -35,7 +35,7 @@ const BUSINESS_EMAIL = 'salesaspagil@gmail.com';
 // dropped as a result.
 const RESEND_FROM    = 'Aspagil <noreply@gilcups.com>';
 const RESEND_FROM_CUSTOMER = 'אספגיל <orders@gilcups.com>';
-const SITE_URL       = 'https://aspagil.vercel.app';
+const SITE_URL       = 'https://www.gilcups.com';
 
 const FIELD_LABELS = {
   name:          'שם',
