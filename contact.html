@@ -677,7 +677,8 @@ if(window.location.search.indexOf('sent=ok')!==-1){
                   quantity: qty,
                   artwork_url: artworkUrl,
                   artwork_name: file.name,
-                  notes: notes || '—'
+                  notes: notes || '—',
+                  gclid: typeof window.getGclid === 'function' ? window.getGclid() : undefined
                 }
               })
             });
@@ -744,7 +745,8 @@ if(window.location.search.indexOf('sent=ok')!==-1){
         body: JSON.stringify({
           customer: customer, items: orderItems, totalPrice: total,
           hasUnpricedItems: hasUnpriced, paymentMethod: canPayOnline ? 'online' : 'quote',
-          fulfillmentMethod: fulfillmentMethod, shipping: shippingForOrder
+          fulfillmentMethod: fulfillmentMethod, shipping: shippingForOrder,
+          gclid: typeof window.getGclid === 'function' ? window.getGclid() : undefined
         })
       });
       if (!orderRes.ok) throw new Error('שליחת ההזמנה נכשלה. נסו שוב או התקשרו: 03-9600550.');

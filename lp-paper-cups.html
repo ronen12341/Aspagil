@@ -22,6 +22,22 @@
   }
 </script>
 
+<!-- Captures ?gclid= from the landing URL so a later order can be linked back
+     to the ad click that produced it — Google Ads reporting never exposes who
+     clicked, so this is the only way to match a real order to a specific
+     campaign/keyword. Must run here (not just in cart.js) since this page is
+     where paid clicks actually land and cart.js isn't loaded on it. -->
+<script>
+  (function(){
+    try {
+      var gclid = new URLSearchParams(window.location.search).get('gclid');
+      if (gclid) {
+        localStorage.setItem('gilcups-gclid', JSON.stringify({ value: gclid, ts: Date.now() }));
+      }
+    } catch (e) {}
+  })();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">

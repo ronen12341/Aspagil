@@ -465,6 +465,7 @@
       : shipping;
 
     try {
+      const gclid = typeof window.getGclid === "function" ? window.getGclid() : undefined;
       const res = await fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -472,6 +473,7 @@
           customer, items, totalPrice: total, hasUnpricedItems: hasUnpriced,
           paymentMethod, fulfillmentMethod, shipping: shippingForOrder,
           botcheck: document.getElementById("botcheck").checked,
+          gclid,
         }),
       });
 

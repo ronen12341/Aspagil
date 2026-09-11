@@ -44,6 +44,7 @@ function buildEmailHtml(orderId, body) {
   const waLink = `https://wa.me/${toIsraeliE164(customer.phone)}`;
   const isPickup = fulfillmentMethod === "pickup";
 
+  const gclid = body.gclid;
   const paymentBadge = paymentMethod === "online"
     ? `<span style="display:inline-block;background:#16a34a;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">💳 תשלום אונליין — הלקוח מועבר לסומיט</span>`
     : `<span style="display:inline-block;background:#C8922A;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">📞 הצעת מחיר — יש ליצור קשר עם הלקוח</span>`;
@@ -70,6 +71,7 @@ function buildEmailHtml(orderId, body) {
   <p style="color:#666;margin:4px 0;">מספר הזמנה: <strong style="color:#3B1F0A;">${orderId}</strong></p>
   <p style="color:#666;margin:4px 0;">${new Date().toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}</p>
   <p style="margin:12px 0;">${paymentBadge} ${fulfillmentBadge}</p>
+  ${gclid ? `<p style="color:#666;margin:4px 0;font-size:12px;">מקור: Google Ads (gclid: <span style="direction:ltr;display:inline-block;">${escapeHtml(gclid)}</span>)</p>` : ""}
 
   ${isPickup ? `<div style="background:#7A4E00;color:#fff;padding:14px 16px;border-radius:8px;margin:12px 0;font-size:15px;font-weight:bold;">
     ⚠️ איסוף עצמי — יש ליצור קשר עם הלקוח ולתאם מראש מועד איסוף מהמפעל. אין לאפשר הגעה ללא תיאום.

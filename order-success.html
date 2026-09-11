@@ -69,10 +69,17 @@
 
 <script>
 (function(){
+  // Only a real order that just passed through checkout.html (or the
+  // contact.html quote flow) sets this value before redirecting here — a
+  // direct visit, a crawler, or someone reloading this page must NOT count
+  // as a conversion. Removing it immediately after reading doubles as the
+  // dedupe guard: a refresh of this exact page finds nothing left to read,
+  // so it can't fire a second time for the same order.
   var value = sessionStorage.getItem('aspagil-order-value');
+  if (!value) return;
   sessionStorage.removeItem('aspagil-order-value');
   var params = {'send_to': 'AW-766413183/57OGCOyn0KcBEP-Suu0C'};
-  if (value && !isNaN(parseFloat(value))) {
+  if (!isNaN(parseFloat(value))) {
     params.value = parseFloat(value);
     params.currency = 'ILS';
   }
