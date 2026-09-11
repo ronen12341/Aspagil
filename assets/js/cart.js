@@ -10,6 +10,38 @@
  *   Cart.addItem({ id, name, priceNumeric, price, note })
  */
 
+/**
+ * Captures ?gclid= from the landing URL into localStorage so a later order
+ * submission can carry it — the only way to link a real order back to the ad
+ * click that produced it, since Google Ads reporting is aggregate-only and
+ * never exposes who clicked. Runs on every page that loads this file; the
+ * main ad landing page (lp-paper-cups.html) doesn't load cart.js, so it has
+ * its own copy of this same snippet.
+ */
+(function () {
+  "use strict";
+  var GCLID_KEY = "gilcups-gclid";
+  var GCLID_MAX_AGE_MS = 90 * 24 * 60 * 60 * 1000; // Google Ads' own click-through conversion window ceiling
+  try {
+    var gclid = new URLSearchParams(window.location.search).get("gclid");
+    if (gclid) {
+      localStorage.setItem(GCLID_KEY, JSON.stringify({ value: gclid, ts: Date.now() }));
+    }
+  } catch (e) {}
+
+  window.getGclid = function () {
+    try {
+      var raw = localStorage.getItem(GCLID_KEY);
+      if (!raw) return undefined;
+      var parsed = JSON.parse(raw);
+      if (!parsed.value || Date.now() - parsed.ts > GCLID_MAX_AGE_MS) return undefined;
+      return parsed.value;
+    } catch (e) {
+      return undefined;
+    }
+  };
+})();
+
 (function () {
   "use strict";
 

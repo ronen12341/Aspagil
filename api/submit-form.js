@@ -48,7 +48,8 @@ const FIELD_LABELS = {
   quantity:      'כמות יחידות',
   usage:         'סוג שימוש',
   notes:         'הערות / פרטים נוספים',
-  user_description: 'תיאור העיצוב (למעצב AI)'
+  user_description: 'תיאור העיצוב (למעצב AI)',
+  gclid:         'מקור (Google Ads gclid)'
 };
 
 function escapeHtml(str) {
