@@ -14,12 +14,6 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'AW-766413183');
-
-  // Fires the "ליד כוסות" conversion when the lead form is submitted successfully.
-  function gtag_report_conversion(){
-    gtag('event', 'conversion', {'send_to': 'AW-766413183/57OGCOyn0KcBEP-Suu0C'});
-    return false;
-  }
 </script>
 
 <!-- Captures ?gclid= from the landing URL so a later order can be linked back
@@ -205,7 +199,6 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 const qtySel=document.getElementById('f-qty'),lpBtn=document.getElementById('lpSubmit');
 lpBtn.addEventListener('click',()=>{
-  if(typeof gtag_report_conversion==='function')gtag_report_conversion();
   const q=qtySel.value;
   window.location.href='contact.html'+(q?('?qty='+encodeURIComponent(q)):'')+'#quote';
 });
