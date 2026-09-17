@@ -263,7 +263,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-right:0.5rem">
           <div style="font-weight:600;white-space:nowrap">
-            ${i.priceNumeric
+            ${i.priceNumeric !== undefined && i.priceNumeric !== null
               ? (i.priceNumeric * i.qty).toLocaleString("he-IL") + ' ש"ח'
               : "לפי הצעה"}
           </div>

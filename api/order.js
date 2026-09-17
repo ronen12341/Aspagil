@@ -210,11 +210,12 @@ export default async function handler(req, res) {
     const shippingCost = body.shipping.needsArrangement ? 0 : body.shipping.cost;
     body.totalPrice = itemsTotal + shippingCost;
     // Recomputed server-side rather than trusting the client's own flag —
-    // matching cart.js's own definition (an item with no priceNumeric).
+    // matching cart.js's own definition (an item with no priceNumeric,
+    // strictly — not "priced at 0", which is a real price, not falsy-zero).
     // Otherwise a request could pair a fabricated priceNumeric with
     // hasUnpricedItems:false and land in the business's inbox looking like
     // a normal, price-verified order.
-    body.hasUnpricedItems = body.items.some((i) => !i.priceNumeric);
+    body.hasUnpricedItems = body.items.some((i) => i.priceNumeric === undefined || i.priceNumeric === null);
 
     const orderId = generateOrderId();
     const html = buildEmailHtml(orderId, body);

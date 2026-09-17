@@ -89,7 +89,7 @@
       <form id="quote-form" action="/api/submit-form" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
           <input type="hidden" name="subject" value="🛒 הזמנה חדשה מהאתר">
           <!-- Honeypot for bot protection (must stay empty) -->
-          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="checkbox" id="botcheck" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
           <h3>פרטי הזמנה</h3>
           <div class="form-group">
@@ -628,6 +628,13 @@ if(window.location.search.indexOf('sent=ok')!==-1){
   btn.addEventListener('click', async function() {
     errBox.style.display = 'none';
 
+    // Honeypot — real visitors never see or check this field, so a checked
+    // value means a bot is driving the form. The server-side check in
+    // /api/order is the one that actually matters (a direct API POST skips
+    // this handler entirely), but bailing out here too avoids wasting a
+    // Cloudinary upload and the rest of this flow on a bot hit.
+    if (document.getElementById('botcheck').checked) return;
+
     var name  = (document.getElementById('c-name')   || {value:''}).value.trim();
     var phone = (document.getElementById('c-phone')  || {value:''}).value.trim();
     var email = (document.getElementById('c-email')  || {value:''}).value.trim();
@@ -746,7 +753,8 @@ if(window.location.search.indexOf('sent=ok')!==-1){
           customer: customer, items: orderItems, totalPrice: total,
           hasUnpricedItems: hasUnpriced, paymentMethod: canPayOnline ? 'online' : 'quote',
           fulfillmentMethod: fulfillmentMethod, shipping: shippingForOrder,
-          gclid: typeof window.getGclid === 'function' ? window.getGclid() : undefined
+          gclid: typeof window.getGclid === 'function' ? window.getGclid() : undefined,
+          botcheck: document.getElementById('botcheck').checked
         })
       });
       if (!orderRes.ok) throw new Error('שליחת ההזמנה נכשלה. נסו שוב או התקשרו: 03-9600550.');

@@ -98,7 +98,10 @@
 
     totalPrice: () => items.reduce((s, i) => s + (i.priceNumeric ? i.priceNumeric * i.qty : 0), 0),
 
-    hasUnpricedItems: () => items.some(i => !i.priceNumeric),
+    // Strictly "no catalog price", not "priced at 0" — a falsy check here
+    // would treat a legitimately free (₪0) item as unpriced and hide the
+    // online-payment option for the whole cart.
+    hasUnpricedItems: () => items.some(i => i.priceNumeric === undefined || i.priceNumeric === null),
 
     totalUnits: () => items.reduce((s, i) => s + parseUnits(i) * i.qty, 0),
 
