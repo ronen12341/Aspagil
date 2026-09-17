@@ -98,12 +98,6 @@ async function callGen(apiKey, prompt, size) {
   }
 }
 
-// Convert b64_json string to a Blob (for using as input to step 2)
-function b64ToBlob(b64) {
-  const bin = Buffer.from(b64, 'base64');
-  return new Blob([bin], { type: 'image/png' });
-}
-
 // Visual text verifier: send the generated image + the expected text to
 // GPT-4o-vision and ask it to OCR-check whether the printed text matches.
 // Returns { matches: boolean, foundText: string, issues: string }.

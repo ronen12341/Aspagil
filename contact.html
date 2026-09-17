@@ -304,15 +304,6 @@
 document.getElementById('year').textContent=new Date().getFullYear();
 const t=document.getElementById('menuToggle'),n=document.getElementById('mainNav');
 t.addEventListener('click',()=>{n.classList.toggle('is-open');});
-if(window.location.search.indexOf('sent=ok')!==-1){
-  document.getElementById('quote-status').style.display='block';
-  // Google Ads conversion — order submitted successfully (cups lead)
-  if(typeof gtag==='function'){
-    gtag('event','conversion',{'send_to':'AW-766413183/57OGCOyn0KcBEP-Suu0C'});
-  }
-  setTimeout(()=>{document.getElementById('quote').scrollIntoView({behavior:'smooth'});},200);
-  if(window.history.replaceState)window.history.replaceState({},'',window.location.pathname);
-}
 
 /* ============================================================
    FILE UPLOAD UX + ANDROID ERR_UPLOAD_FILE_CHANGED FIX

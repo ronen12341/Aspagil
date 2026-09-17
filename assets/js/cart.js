@@ -189,29 +189,6 @@
     }
   }
 
-  /* ─── "Add to cart" button feedback ─── */
-  document.addEventListener("click", function (e) {
-    const btn = e.target.closest("[data-add-to-cart]");
-    if (!btn) return;
-
-    try {
-      const item = JSON.parse(btn.getAttribute("data-add-to-cart"));
-      Cart.addItem(item);
-
-      const orig = btn.innerHTML;
-      btn.innerHTML = "✓ נוסף לסל";
-      btn.disabled = true;
-      btn.classList.add("cart-btn-added");
-      setTimeout(() => {
-        btn.innerHTML = orig;
-        btn.disabled = false;
-        btn.classList.remove("cart-btn-added");
-      }, 1800);
-    } catch (ex) {
-      console.error("cart: invalid data-add-to-cart", ex);
-    }
-  });
-
   /* ─── Init ─── */
   load();
 
