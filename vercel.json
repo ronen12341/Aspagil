@@ -444,6 +444,50 @@
       "permanent": true
     },
     {
+      "source": "/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.+).html",
+      "has": [
+        {
+          "type": "host",
+          "value": "gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/:path",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.+).html",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/:path",
+      "permanent": true
+    },
+    {
       "source": "/",
       "has": [
         {
