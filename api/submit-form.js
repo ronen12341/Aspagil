@@ -28,13 +28,14 @@ export const config = {
 };
 
 const BUSINESS_EMAIL = 'salesaspagil@gmail.com';
-// gilcups.com is the only domain verified in this Resend account — a "from"
+// Send from aspagil.com, verified in this Resend account (gilcups.com is
+// being retired and must not be used as a sender). A "from"
 // on any other domain (including the shared onboarding@resend.dev sender)
 // gets rejected with 403. This route (the contact/quote form) was sending
 // from onboarding@resend.dev and had its business notifications silently
 // dropped as a result.
-const RESEND_FROM    = 'Aspagil <noreply@gilcups.com>';
-const RESEND_FROM_CUSTOMER = 'אספגיל <orders@gilcups.com>';
+const RESEND_FROM    = 'Aspagil <noreply@aspagil.com>';
+const RESEND_FROM_CUSTOMER = 'אספגיל <orders@aspagil.com>';
 const SITE_URL       = 'https://www.aspagil.com';
 
 const FIELD_LABELS = {

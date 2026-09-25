@@ -12,11 +12,12 @@
 import { getCatalogPrice, computeShipping } from "./_pricing.js";
 
 const BUSINESS_EMAIL = "salesaspagil@gmail.com";
-// gilcups.com is the only domain verified in this Resend account — a "from"
+// Send from aspagil.com, verified in this Resend account (gilcups.com is
+// being retired and must not be used as a sender). A "from"
 // on any other domain (including the shared onboarding@resend.dev sender)
 // gets rejected with 403.
-const RESEND_FROM    = "Aspagil <noreply@gilcups.com>";
-const RESEND_FROM_CUSTOMER = "אספגיל <orders@gilcups.com>";
+const RESEND_FROM    = "Aspagil <noreply@aspagil.com>";
+const RESEND_FROM_CUSTOMER = "אספגיל <orders@aspagil.com>";
 
 function toIsraeliE164(raw) {
   const digits = (raw || "").replace(/\D/g, "");
