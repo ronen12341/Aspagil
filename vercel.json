@@ -4,465 +4,465 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.aspagil.com"
-        }
-      ],
-      "destination": "https://www.gilcups.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "aspagil.com"
-        }
-      ],
-      "destination": "https://www.gilcups.com/:path*",
-      "permanent": true
-    },
-    {
       "source": "/שכפול-דיסקים",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7%D7%99%D7%9D",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/שכפול-dvd",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-dvd",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/שכפול-דיסק-און-קי",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7-%D7%90%D7%95%D7%9F-%D7%A7%D7%99",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/הדפסת-משי",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%AA-%D7%9E%D7%A9%D7%99",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/גרפיקה-לקופסה-dvd",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/%D7%92%D7%A8%D7%A4%D7%99%D7%A7%D7%94-%D7%9C%D7%A7%D7%95%D7%A4%D7%A1%D7%94-dvd",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/שכפול-דיסקים-לצרכי-לימודים-והעשרה",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/%D7%A9%D7%9B%D7%A4%D7%95%D7%9C-%D7%93%D7%99%D7%A1%D7%A7%D7%99%D7%9D-%D7%9C%D7%A6%D7%A8%D7%9B%D7%99-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%9D-%D7%95%D7%94%D7%A2%D7%A9%D7%A8%D7%94",
-      "destination": "/disc-duplication",
+      "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
     },
     {
       "source": "/בונדי",
-      "destination": "/",
+      "destination": "https://www.aspagil.com/",
       "permanent": true
     },
     {
       "source": "/%D7%91%D7%95%D7%A0%D7%93%D7%99",
-      "destination": "/",
+      "destination": "https://www.aspagil.com/",
       "permanent": true
     },
     {
       "source": "/אודות",
-      "destination": "/about",
+      "destination": "https://www.aspagil.com/about",
       "permanent": true
     },
     {
       "source": "/%D7%90%D7%95%D7%93%D7%95%D7%AA",
-      "destination": "/about",
+      "destination": "https://www.aspagil.com/about",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-מעוצבות/:path*",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA/:path*",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/הדפסה-על-כוסות-נייר/:path*",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8/:path*",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-ממותגות-לכל-הזדמנות-אפשר",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9C%D7%9B%D7%9C-%D7%94%D7%96%D7%93%D7%9E%D7%A0%D7%95%D7%AA-%D7%90%D7%A4%D7%A9%D7%A8",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-מודפסות-מיתוג-נכון-ועיצוב",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%95%D7%93%D7%A4%D7%A1%D7%95%D7%AA-%D7%9E%D7%99%D7%AA%D7%95%D7%92-%D7%A0%D7%9B%D7%95%D7%9F-%D7%95%D7%A2%D7%99%D7%A6%D7%95%D7%91",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/category/:path*",
-      "destination": "/blog/",
+      "destination": "https://www.aspagil.com/blog",
       "permanent": true
     },
     {
       "source": "/old-home",
-      "destination": "/",
+      "destination": "https://www.aspagil.com/",
       "permanent": true
     },
     {
       "source": "/צור-קשר",
-      "destination": "/contact",
+      "destination": "https://www.aspagil.com/contact",
       "permanent": true
     },
     {
       "source": "/%D7%A6%D7%95%D7%A8-%D7%A7%D7%A9%D7%A8",
-      "destination": "/contact",
+      "destination": "https://www.aspagil.com/contact",
       "permanent": true
     },
     {
       "source": "/הדפסה-על-כוסות-חד-פעמיות/:path*",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA/:path*",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/eco-friendly-cups.html",
-      "destination": "/blog",
+      "destination": "https://www.aspagil.com/blog",
       "permanent": true
     },
     {
       "source": "/eco-friendly-cups",
-      "destination": "/blog",
+      "destination": "https://www.aspagil.com/blog",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-לימי-הולדת",
-      "destination": "/products/birthdays",
+      "destination": "https://www.aspagil.com/products/birthdays",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%99%D7%9E%D7%99-%D7%94%D7%95%D7%9C%D7%93%D7%AA",
-      "destination": "/products/birthdays",
+      "destination": "https://www.aspagil.com/products/birthdays",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-לאירועים",
-      "destination": "/products/events",
+      "destination": "https://www.aspagil.com/products/events",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D",
-      "destination": "/products/events",
+      "destination": "https://www.aspagil.com/products/events",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-לדוכני-מזון",
-      "destination": "/products/food-stalls",
+      "destination": "https://www.aspagil.com/products/food-stalls",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%93%D7%95%D7%9B%D7%A0%D7%99-%D7%9E%D7%96%D7%95%D7%9F",
-      "destination": "/products/food-stalls",
+      "destination": "https://www.aspagil.com/products/food-stalls",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-למסעדות",
-      "destination": "/products/food-stalls",
+      "destination": "https://www.aspagil.com/products/food-stalls",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%9E%D7%A1%D7%A2%D7%93%D7%95%D7%AA",
-      "destination": "/products/food-stalls",
+      "destination": "https://www.aspagil.com/products/food-stalls",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-לעסקים",
-      "destination": "/products/business-branded",
+      "destination": "https://www.aspagil.com/products/business-branded",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%A2%D7%A1%D7%A7%D7%99%D7%9D",
-      "destination": "/products/business-branded",
+      "destination": "https://www.aspagil.com/products/business-branded",
       "permanent": true
     },
     {
       "source": "/כוסות-חד-פעמיות-עם-לוגו",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA-%D7%A2%D7%9D-%D7%9C%D7%95%D7%92%D7%95",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-מודפסות",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%95%D7%93%D7%A4%D7%A1%D7%95%D7%AA",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/עובדות-על-כוסות-נייר-מעוצבות",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%A2%D7%95%D7%91%D7%93%D7%95%D7%AA-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/הדפסה-על-כוס-בחירת-בית-הדפוס",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1-%D7%91%D7%97%D7%99%D7%A8%D7%AA-%D7%91%D7%99%D7%AA-%D7%94%D7%93%D7%A4%D7%95%D7%A1",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/הדפסה-על-כוסות-בוחרים",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%91%D7%95%D7%97%D7%A8%D7%99%D7%9D",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/digital-vs-offset-printing.html",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/digital-vs-offset-printing",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/כוסות-חד-פעמיות-מודפסות-החשיפה-שלכם",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA-%D7%9E%D7%95%D7%93%D7%A4%D7%A1%D7%95%D7%AA-%D7%94%D7%97%D7%A9%D7%99%D7%A4%D7%94-%D7%A9%D7%9C%D7%9B%D7%9D",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/כוסות-חד-פעמיות-עם-לוגו-שיווק-נכון",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA-%D7%A2%D7%9D-%D7%9C%D7%95%D7%92%D7%95-%D7%A9%D7%99%D7%95%D7%95%D7%A7-%D7%A0%D7%9B%D7%95%D7%9F",
-      "destination": "/products/logo-print",
+      "destination": "https://www.aspagil.com/products/logo-print",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-ממותגות-מחיר-והסיבות-למחיר",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9E%D7%97%D7%99%D7%A8-%D7%95%D7%94%D7%A1%D7%99%D7%91%D7%95%D7%AA-%D7%9C%D7%9E%D7%97%D7%99%D7%A8",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-לכנסים",
-      "destination": "/products/events",
+      "destination": "https://www.aspagil.com/products/events",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%9B%D7%A0%D7%A1%D7%99%D7%9D",
-      "destination": "/products/events",
+      "destination": "https://www.aspagil.com/products/events",
       "permanent": true
     },
     {
       "source": "/הדפסה-על-מוצרים-כמקדמי-מכירות",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D-%D7%9B%D7%9E%D7%A7%D7%93%D7%9E%D7%99-%D7%9E%D7%9B%D7%99%D7%A8%D7%95%D7%AA",
-      "destination": "/printing",
+      "destination": "https://www.aspagil.com/printing",
       "permanent": true
     },
     {
       "source": "/כוסות-ממותגות-מחיר",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9E%D7%97%D7%99%D7%A8",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-ממותגות-מחיר-ואיכות",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%9E%D7%97%D7%99%D7%A8-%D7%95%D7%90%D7%99%D7%9B%D7%95%D7%AA",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-חד-פעמיות",
-      "destination": "/products/disposable",
+      "destination": "https://www.aspagil.com/products/disposable",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%95%D7%AA",
-      "destination": "/products/disposable",
+      "destination": "https://www.aspagil.com/products/disposable",
       "permanent": true
     },
     {
       "source": "/הדפסה-על-כוסות-בוחרים-את-בית-הדפוס",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%91%D7%95%D7%97%D7%A8%D7%99%D7%9D-%D7%90%D7%AA-%D7%91%D7%99%D7%AA-%D7%94%D7%93%D7%A4%D7%95%D7%A1",
-      "destination": "/blog/digital-vs-offset-printing",
+      "destination": "https://www.aspagil.com/blog/digital-vs-offset-printing",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-לשתיה-חמה-סוגים-שונים-של-כ",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9C%D7%A9%D7%AA%D7%99%D7%94-%D7%97%D7%9E%D7%94-%D7%A1%D7%95%D7%92%D7%99%D7%9D-%D7%A9%D7%95%D7%A0%D7%99%D7%9D-%D7%A9%D7%9C-%D7%9B",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-ממותגות-דרך-יצירתית-לשיו",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA-%D7%93%D7%A8%D7%9A-%D7%99%D7%A6%D7%99%D7%A8%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%99%D7%95",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-מעוצבות-לאירועים-אלו-כוסות-מת",
-      "destination": "/products/events",
+      "destination": "https://www.aspagil.com/products/events",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D-%D7%90%D7%9C%D7%95-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%AA",
-      "destination": "/products/events",
+      "destination": "https://www.aspagil.com/products/events",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-לשתייה-חמה-לא-להתפשר-על-אי",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9C%D7%A9%D7%AA%D7%99%D7%99%D7%94-%D7%97%D7%9E%D7%94-%D7%9C%D7%90-%D7%9C%D7%94%D7%AA%D7%A4%D7%A9%D7%A8-%D7%A2%D7%9C-%D7%90%D7%99",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/כוסות-נייר-שימושים-פונקציונליים-ושי",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%A9%D7%99%D7%9E%D7%95%D7%A9%D7%99%D7%9D-%D7%A4%D7%95%D7%A0%D7%A7%D7%A6%D7%99%D7%95%D7%A0%D7%9C%D7%99%D7%99%D7%9D-%D7%95%D7%A9%D7%99",
-      "destination": "/paper-cups",
+      "destination": "https://www.aspagil.com/paper-cups",
       "permanent": true
     },
     {
       "source": "/הצהרת-נגישות",
-      "destination": "/about#accessibility",
+      "destination": "https://www.aspagil.com/about#accessibility",
       "permanent": true
     },
     {
       "source": "/%D7%94%D7%A6%D7%94%D7%A8%D7%AA-%D7%A0%D7%92%D7%99%D7%A9%D7%95%D7%AA",
-      "destination": "/about#accessibility",
+      "destination": "https://www.aspagil.com/about#accessibility",
       "permanent": true
     },
     {
       "source": "/page/:path*",
-      "destination": "/blog/",
+      "destination": "https://www.aspagil.com/blog",
       "permanent": true
     },
     {
       "source": "/author/ronen/:path*",
-      "destination": "/blog/",
+      "destination": "https://www.aspagil.com/blog",
       "permanent": true
     },
     {
       "source": "/index.php/:path*",
-      "destination": "/",
+      "destination": "https://www.aspagil.com/",
       "permanent": true
     },
     {
       "source": "/index.php",
-      "destination": "/",
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gilcups.com"
+        }
+      ],
+      "destination": "https://www.aspagil.com/:path*",
       "permanent": true
     }
   ],

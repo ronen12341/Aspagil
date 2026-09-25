@@ -125,7 +125,7 @@ function buildEmailHtml(orderId, body) {
     <a href="${waLink}" style="display:inline-block;background:#25D366;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;margin:4px;">💬 וואטסאפ</a>
   </div>
 
-  <p style="margin-top:24px;font-size:12px;color:#999;text-align:center;">נשלח מאתר אספגיל · gilcups.com</p>
+  <p style="margin-top:24px;font-size:12px;color:#999;text-align:center;">נשלח מאתר אספגיל · aspagil.com</p>
 </div>`;
 }
 
