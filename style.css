@@ -75,6 +75,7 @@ p{margin:0 0 1em}
 .main-nav a::after{content:'';position:absolute;bottom:-2px;right:0;height:2px;width:0;background:var(--orange);transition:width .25s}
 .main-nav a:hover::after,.main-nav a.is-active::after{width:100%}
 .header-cta{display:flex;align-items:center;gap:12px}
+.header-cta .btn{white-space:nowrap}
 .phone-link{font-weight:800;color:var(--orange);font-size:1.05rem;direction:ltr;unicode-bidi:embed}
 .menu-toggle{display:none;padding:10px}
 .menu-toggle span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;transition:.2s}
