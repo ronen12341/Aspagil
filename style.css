@@ -105,10 +105,7 @@ p{margin:0 0 1em}
 .hero-content{position:relative;z-index:2}
 .hero-content h1{max-width:680px;text-wrap:balance}
 .hero-content h1 span.highlight{color:var(--orange);position:relative;display:inline-block;white-space:nowrap}
-.hero-content h1 span.highlight::after{
-  content:'';position:absolute;right:0;bottom:-2px;width:100%;height:8px;
-  background:rgba(0,0,0,0.18);border-radius:4px;z-index:-1;
-}
+.hero-content h1 span.highlight::after{content:none}
 .hero-content p.lead{font-size:1.16rem;color:var(--gray-700);max-width:610px;margin-bottom:1.5rem;line-height:1.85}
 .hero-bullets li{background:rgba(255,255,255,.68);border:1px solid rgba(142,145,151,.18);border-radius:100px;padding:5px 10px;box-shadow:0 4px 16px rgba(0,0,0,.035)}
 .hero-actions{display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center}
@@ -554,3 +551,24 @@ details.more-info>div{padding-bottom:1.2rem}
 .perks div{text-align:center;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.1rem .6rem}
 .perks b{display:block;font-size:1rem}.perks span{color:var(--gray-700);font-size:.9rem}
 @media (max-width:640px){.perks{grid-template-columns:1fr 1fr;gap:.6rem}}
+
+/* ===== Mobile hero cleanup (v7, 2026-09) ===== */
+@media (max-width:640px){
+ .hero{padding-top:1.2rem}
+ .hero-cups{aspect-ratio:auto;margin:0 auto .2rem;max-width:360px}
+ .hero-cups::before{display:none}
+ .cup-collage{aspect-ratio:auto;height:170px;display:flex;align-items:flex-end;justify-content:center;gap:4px;position:relative}
+ .cup-collage::after{content:'';position:absolute;left:12%;right:12%;bottom:-4px;height:14px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.18),transparent);z-index:0}
+ .cup-img,.cup-img.cup-main,.cup-img.cup-front-left,.cup-img.cup-front-right{position:relative;left:auto;right:auto;top:auto;bottom:auto;transform:none;filter:drop-shadow(0 8px 10px rgba(0,0,0,.14));z-index:1}
+ .cup-img.cup-back-left,.cup-img.cup-back-right{display:none}
+ .cup-img.cup-front-left,.cup-img.cup-front-right{height:122px;width:auto}
+ .cup-img.cup-main{height:160px;width:auto;order:0}
+ .cup-img.cup-front-left{order:1}.cup-img.cup-front-right{order:-1}
+ .hero-content .eyebrow{margin-top:.4rem}
+ .hero-content h1{font-size:clamp(2rem,8.6vw,2.6rem);line-height:1.15}
+ .hero-content p.lead{font-size:1.02rem!important;line-height:1.6;margin-bottom:1rem}
+ .price-chip{margin-bottom:1rem}
+ .hero-actions .btn{padding:14px 10px;font-size:1.05rem}
+ .mbar-auto .mbar{transform:translateY(110%);transition:transform .25s ease}
+ .mbar-auto.mbar-on .mbar{transform:none}
+}

@@ -382,5 +382,9 @@ const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 <script src="assets/js/cart.js?v=3"></script>
+<script>
+(function(){var a=document.querySelector('.hero-actions'),b=document.body;if(!a||!('IntersectionObserver'in window))return;b.classList.add('mbar-auto');
+new IntersectionObserver(function(e){b.classList.toggle('mbar-on',!e[0].isIntersecting)}).observe(a);})();
+</script>
 </body>
 </html>
