@@ -116,7 +116,6 @@
             <div class="form-group"><label for="c-invoice-name">שם לחשבונית</label><input id="c-invoice-name" type="text" name="invoice_name" required></div>
             <div class="form-group"><label for="c-tax-id" id="c-tax-id-label">מספר ח.פ / ת.ז (לא חובה מתחת ל-5,000 ש"ח)</label><input id="c-tax-id" type="text" name="tax_id" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" placeholder="9 ספרות" title="מספר ח.פ או ת.ז — 9 ספרות"></div>
           </div>
-          <div class="form-group"><label for="c-address">כתובת מלאה (רחוב, מספר, עיר, מיקוד) <span style="font-weight:400;color:var(--gray-500);font-size:0.85em;">(אופציונלי)</span></label><input id="c-address" type="text" name="address"></div>
 
           <fieldset class="payment-fieldset" id="c-fulfillment-fieldset" style="display:none;">
             <legend>אופן קבלת ההזמנה</legend>
@@ -136,6 +135,20 @@
             </label>
           </fieldset>
 
+
+          <div id="c-address-block" style="margin-bottom:1.2rem">
+            <input type="hidden" id="c-address" name="address">
+            <div style="font-weight:700;margin-bottom:.5rem">כתובת למשלוח</div>
+            <div class="form-row">
+              <div class="form-group"><label for="c-city">עיר</label><input id="c-city" type="text" autocomplete="address-level2" required></div>
+              <div class="form-group"><label for="c-street">רחוב</label><input id="c-street" type="text" autocomplete="address-line1" required></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem">
+              <div class="form-group"><label for="c-house">מס' בית</label><input id="c-house" type="text" inputmode="numeric" required></div>
+              <div class="form-group"><label for="c-floor">קומה</label><input id="c-floor" type="text" inputmode="numeric"></div>
+              <div class="form-group"><label for="c-apt">דירה</label><input id="c-apt" type="text" inputmode="numeric"></div>
+            </div>
+          </div>
           <div id="c-pickup-note" style="display:none;background:#F1F2F4;border-right:4px solid var(--orange);padding:12px 14px;border-radius:8px;margin-bottom:1.2rem;font-size:0.9rem;color:#111111">
             ⚠ <strong>יש לתאם מראש את מועד האיסוף</strong> בטלפון
             <a href="tel:039600550" style="color:#111111;font-weight:700">03-9600550</a>
@@ -519,9 +532,27 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
     return sel ? sel.value : 'delivery';
   }
 
+  var ADDR_IDS = ['c-city','c-street','c-house','c-floor','c-apt'];
+  function addrVal(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function composeAddress() {
+    var parts = [], street = [addrVal('c-street'), addrVal('c-house')].filter(Boolean).join(' ');
+    if (street) parts.push(street);
+    if (addrVal('c-floor')) parts.push('קומה ' + addrVal('c-floor'));
+    if (addrVal('c-apt')) parts.push('דירה ' + addrVal('c-apt'));
+    if (addrVal('c-city')) parts.push(addrVal('c-city'));
+    var h = document.getElementById('c-address');
+    if (h) h.value = getFulfillmentMethod() === 'pickup' ? '' : parts.join(', ');
+  }
+  ADDR_IDS.forEach(function(id) { var el = document.getElementById(id); if (el) el.addEventListener('input', composeAddress); });
+
   function updateFulfillmentUI() {
+    var isPickup = getFulfillmentMethod() === 'pickup';
     var note = document.getElementById('c-pickup-note');
-    if (note) note.style.display = getFulfillmentMethod() === 'pickup' ? '' : 'none';
+    if (note) note.style.display = isPickup ? '' : 'none';
+    var block = document.getElementById('c-address-block');
+    if (block) block.style.display = isPickup ? 'none' : '';
+    ['c-city','c-street','c-house'].forEach(function(id) { var el = document.getElementById(id); if (el) el.required = !isPickup; });
+    composeAddress();
   }
   document.querySelectorAll('input[name="fulfillmentMethod"]').forEach(function(r) {
     r.addEventListener('change', updateFulfillmentUI);
@@ -634,6 +665,8 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
     if (!name || !phone)         { showErr('נא למלא שם וטלפון.'); return; }
     if (!email)                  { showErr('נא למלא כתובת אימייל.'); return; }
     if (!qty)                    { showErr('נא לבחור כמות יחידות.'); return; }
+    composeAddress();
+    if (getFulfillmentMethod() !== 'pickup' && (!addrVal('c-city') || !addrVal('c-street') || !addrVal('c-house'))) { showErr('נא למלא כתובת למשלוח: עיר, רחוב ומספר בית.'); return; }
     if (taxIdRequired() && !taxId) { showErr('נא למלא ח.פ או ת.ז (חובה בחוק בהזמנות מעל 5,000 ש"ח).'); return; }
     if ((taxIdRequired() || taxId) && !/^\d{9}$/.test(taxId)) { showErr('ח.פ / ת.ז חייבים להכיל 9 ספרות בדיוק.'); return; }
 
