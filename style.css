@@ -595,3 +595,7 @@ details.more-info>div{padding-bottom:1.2rem}
  .showcase figure .sc-img,.showcase .sc-cta{height:190px}
  .sc-hint{display:block;text-align:center;font-size:.85rem;color:var(--gray-500);margin:.4rem 0 0}
 }
+
+/* ===== Center all button labels (v9) ===== */
+.btn,.btn-mini,.btn-add,.btn-cart,.btn-remove,.mbar a,.sc-cta,button.btn,a.btn{justify-content:center!important;text-align:center!important;align-items:center}
+.btn{display:inline-flex}
