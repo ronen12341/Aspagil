@@ -599,3 +599,12 @@ details.more-info>div{padding-bottom:1.2rem}
 /* ===== Center all button labels (v9) ===== */
 .btn,.btn-mini,.btn-add,.btn-cart,.btn-remove,.mbar a,.sc-cta,button.btn,a.btn{justify-content:center!important;text-align:center!important;align-items:center}
 .btn{display:inline-flex}
+
+/* ===== Mobile overflow fix (v10) ===== */
+html,body{overflow-x:clip;max-width:100%}
+@media (max-width:640px){
+ .header-cta .btn{padding:9px 14px;font-size:.85rem}
+}
+@media (max-width:480px){
+ .header-cta .btn{display:none!important}
+}
