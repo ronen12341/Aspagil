@@ -572,3 +572,26 @@ details.more-info>div{padding-bottom:1.2rem}
  .mbar-auto .mbar{transform:translateY(110%);transition:transform .25s ease}
  .mbar-auto.mbar-on .mbar{transform:none}
 }
+
+/* ===== Customer cups showcase (v8) ===== */
+.gallery.showcase{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem;margin-top:2rem}
+.showcase figure,.showcase .sc-cta{margin:0;aspect-ratio:auto;overflow:visible;background:none;border-radius:0}
+.showcase figure .sc-img{position:relative;height:210px;display:flex;align-items:flex-end;justify-content:center;padding:18px 10px 16px;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#f1f2f4 100%);border:1px solid #e7e8eb;transition:transform .25s,box-shadow .25s}
+.showcase figure .sc-img::after{content:'';position:absolute;left:22%;right:22%;bottom:12px;height:10px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.16),transparent)}
+.showcase figure img{position:relative;z-index:1;width:auto;height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.10))}
+.showcase figure:hover .sc-img{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.08)}
+.showcase figcaption{margin-top:.55rem;text-align:center;font-size:.86rem;color:var(--gray-500);font-weight:600}
+.showcase .sc-cta{height:210px;border-radius:18px;border:1.5px dashed #c9cbd0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;text-align:center;color:var(--ink);padding:1rem;transition:border-color .2s,background .2s}
+.showcase .sc-cta:hover{border-color:var(--ink);background:#fafafa}
+.showcase .sc-plus{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.6rem;line-height:1}
+.showcase .sc-cta b{font-size:1rem}.showcase .sc-cta span:last-child{font-size:.8rem;color:var(--gray-500)}
+.sc-hint{display:none}
+@media (max-width:1100px){.gallery.showcase{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:900px){
+ .gallery.showcase{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.75rem;padding:0 0 .6rem;scrollbar-width:none}
+ .gallery.showcase::-webkit-scrollbar{display:none}
+ .showcase figure,.showcase .sc-cta{flex:0 0 42%;scroll-snap-align:start}
+ .gallery.showcase figure:nth-child(n+7){display:block}
+ .showcase figure .sc-img,.showcase .sc-cta{height:190px}
+ .sc-hint{display:block;text-align:center;font-size:.85rem;color:var(--gray-500);margin:.4rem 0 0}
+}
