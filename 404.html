@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) — Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-766413183"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-766413183');
+</script>
+<!-- Save gclid from paid clicks so a later order can be attributed -->
+<script>
+  (function(){
+    try {
+      var gclid = new URLSearchParams(window.location.search).get('gclid');
+      if (gclid) {
+        localStorage.setItem('gilcups-gclid', JSON.stringify({ value: gclid, ts: Date.now() }));
+      }
+    } catch (e) {}
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>העמוד לא נמצא | אספגיל</title>
+<meta name="robots" content="noindex, follow">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/index.html"><div><div class="brand-name">אספגיל</div><div class="brand-tag">כוסות נייר מעוצבות · מאז 1995</div></div></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="/index.html">בית</a>
+      <a href="/paper-cups.html">כוסות נייר ממותגות</a>
+      <a href="/cardboard-cups.html">כוסות קרטון</a>
+      <a href="/printing.html">הדפסה</a>
+      <a href="/disc-duplication.html">שכפול דיסקים</a>
+      <a href="/about.html">אודות</a>
+      <a href="/customers.html">לקוחות</a>
+      <a href="/blog" class="is-active">בלוג</a>
+      <a href="/faq.html">שאלות נפוצות</a>
+      <a href="/contact.html">צור קשר</a>
+    </nav>
+    <div class="header-cta">
+      <a class="phone-link" href="tel:039600550">03-9600550</a>
+      <a class="btn btn-primary" href="/contact.html#quote">לקבלת מחיר והזמנה</a>
+      <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<section class="subhero"><div class="container">
+  <h1>העמוד שחיפשתם לא נמצא</h1>
+  <p>ייתכן שהעמוד עבר כתובת במעבר לאתר החדש. הנה הדפים המבוקשים ביותר:</p>
+</div></section>
+<section class="section"><div class="container" style="max-width:760px;">
+  <ul class="feature-list">
+    <li><a href="/paper-cups">כוסות נייר ממותגות</a></li>
+    <li><a href="/cardboard-cups">כוסות קרטון ממותגות</a></li>
+    <li><a href="/products/logo-print">הדפסת לוגו על כוסות חד פעמיות</a></li>
+    <li><a href="/blog/branded-cups-price">מחירון כוסות ממותגות</a></li>
+    <li><a href="/faq">שאלות נפוצות</a></li>
+    <li><a href="/contact#quote">לקבלת מחיר והזמנה</a></li>
+  </ul>
+  <p style="margin-top:1.5rem;">או פשוט התקשרו: <a href="tel:039600550"><strong>03-9600550</strong></a></p>
+</div></section>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">אספגיל</div><p class="footer-tag">מפעל ישראלי להדפסה על כוסות נייר וכוסות קרטון. מאז 1995.</p><p><a href="tel:039600550" style="color:var(--orange-light);font-weight:700;">03-9600550</a></p></div>
+      <div><h4>שירותים</h4><ul><li><a href="/paper-cups.html">כוסות נייר ממותגות</a></li><li><a href="/cardboard-cups.html">כוסות קרטון</a></li></ul></div>
+      <div><h4>החברה</h4><ul><li><a href="/about.html">אודות</a></li><li><a href="/customers.html">לקוחות</a></li><li><a href="/faq.html">שאלות נפוצות</a></li><li><a href="/contact.html">צור קשר</a></li></ul></div>
+      <div><h4>יצירת קשר</h4><ul><li>רחוב הירקון 39, בני ברק</li><li><a href="mailto:sales@aspagil.com">sales@aspagil.com</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> אספגיל — כל הזכויות שמורות</div>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent=new Date().getFullYear();const mt=document.getElementById('menuToggle'),mn=document.getElementById('mainNav');if(mt&&mn)mt.addEventListener('click',()=>mn.classList.toggle('is-open'));</script>
+</body>
+</html>

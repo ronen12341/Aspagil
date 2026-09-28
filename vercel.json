@@ -155,12 +155,12 @@
     },
     {
       "source": "/eco-friendly-cups.html",
-      "destination": "https://www.aspagil.com/blog",
+      "destination": "https://www.aspagil.com/blog/paper-vs-plastic-cups",
       "permanent": true
     },
     {
       "source": "/eco-friendly-cups",
-      "destination": "https://www.aspagil.com/blog",
+      "destination": "https://www.aspagil.com/blog/paper-vs-plastic-cups",
       "permanent": true
     },
     {
@@ -441,6 +441,116 @@
     {
       "source": "/index.php",
       "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוסות-קרטון",
+      "destination": "https://www.aspagil.com/cardboard-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A7%D7%A8%D7%98%D7%95%D7%9F",
+      "destination": "https://www.aspagil.com/cardboard-cups",
+      "permanent": true
+    },
+    {
+      "source": "/הדפסה-על-כוסות-קרטון/:path*",
+      "destination": "https://www.aspagil.com/cardboard-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%A2%D7%9C-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A7%D7%A8%D7%98%D7%95%D7%9F/:path*",
+      "destination": "https://www.aspagil.com/cardboard-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-קרטון-ממותגות",
+      "destination": "https://www.aspagil.com/cardboard-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A7%D7%A8%D7%98%D7%95%D7%9F-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA",
+      "destination": "https://www.aspagil.com/cardboard-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-לשתייה-חמה",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9C%D7%A9%D7%AA%D7%99%D7%99%D7%94-%D7%97%D7%9E%D7%94",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-לשתיה-חמה",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9C%D7%A9%D7%AA%D7%99%D7%94-%D7%97%D7%9E%D7%94",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-עם-הדפסה-כוסות-חד-פעמיים",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%A2%D7%9D-%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99%D7%99%D7%9D",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/כוסות-נייר-ממותגות",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%A0%D7%99%D7%99%D7%A8-%D7%9E%D7%9E%D7%95%D7%AA%D7%92%D7%95%D7%AA",
+      "destination": "https://www.aspagil.com/paper-cups",
+      "permanent": true
+    },
+    {
+      "source": "/מגוון-כוסות-מעוצבות-לאירועים",
+      "destination": "https://www.aspagil.com/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%9E%D7%92%D7%95%D7%95%D7%9F-%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D",
+      "destination": "https://www.aspagil.com/products/events",
+      "permanent": true
+    },
+    {
+      "source": "/בית-דפוס-כל-שירותי-ההדפסה",
+      "destination": "https://www.aspagil.com/printing",
+      "permanent": true
+    },
+    {
+      "source": "/%D7%91%D7%99%D7%AA-%D7%93%D7%A4%D7%95%D7%A1-%D7%9B%D7%9C-%D7%A9%D7%99%D7%A8%D7%95%D7%AA%D7%99-%D7%94%D7%94%D7%93%D7%A4%D7%A1%D7%94",
+      "destination": "https://www.aspagil.com/printing",
+      "permanent": true
+    },
+    {
+      "source": "/blog/eco-friendly-cups",
+      "destination": "https://www.aspagil.com/blog/paper-vs-plastic-cups",
+      "permanent": true
+    },
+    {
+      "source": "/blog/eco-friendly-cups.html",
+      "destination": "https://www.aspagil.com/blog/paper-vs-plastic-cups",
+      "permanent": true
+    },
+    {
+      "source": "/blog/cup-size-guide",
+      "destination": "https://www.aspagil.com/paper-cups-9oz",
+      "permanent": true
+    },
+    {
+      "source": "/blog/index.html",
+      "destination": "https://www.aspagil.com/blog",
       "permanent": true
     },
     {
