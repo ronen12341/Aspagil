@@ -78,7 +78,10 @@
   var value = sessionStorage.getItem('aspagil-order-value');
   if (!value) return;
   sessionStorage.removeItem('aspagil-order-value');
+  var orderId = sessionStorage.getItem('aspagil-order-id');
+  sessionStorage.removeItem('aspagil-order-id');
   var params = {'send_to': 'AW-766413183/57OGCOyn0KcBEP-Suu0C'};
+  if (orderId) { params.transaction_id = orderId; }
   if (!isNaN(parseFloat(value))) {
     params.value = parseFloat(value);
     params.currency = 'ILS';

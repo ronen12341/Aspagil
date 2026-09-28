@@ -510,8 +510,26 @@
           const payData = await payRes.json();
           if (payData.ok && payData.paymentUrl) {
             try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
+            try{sessionStorage.setItem('aspagil-order-id', String(orderId));}catch(e){}
             Cart.clear();
-            window.location.href = payData.paymentUrl;
+            // Fire the Google Ads conversion NOW, before leaving for Sumit.
+            // Many customers pay and never come back from Sumit to
+            // order-success.html, so relying on that page alone lost the
+            // conversion. transaction_id = orderId lets Google dedupe it if
+            // order-success.html fires again for the same order.
+            var go = function(){ window.location.href = payData.paymentUrl; };
+            if (typeof gtag === 'function') {
+              var done = false, finish = function(){ if (!done) { done = true; go(); } };
+              gtag('event', 'conversion', {
+                send_to: 'AW-766413183/57OGCOyn0KcBEP-Suu0C',
+                value: parseFloat(total) || undefined,
+                currency: 'ILS',
+                transaction_id: String(orderId),
+                transport_type: 'beacon',
+                event_callback: finish
+              });
+              setTimeout(finish, 1200);
+            } else { go(); }
             return;
           }
           throw new Error(payData.message || "יצירת קישור התשלום נכשלה");
@@ -524,6 +542,7 @@
       }
 
       try{sessionStorage.setItem('aspagil-order-value', String(total));}catch(e){}
+      try{sessionStorage.setItem('aspagil-order-id', String(orderId));}catch(e){}
       Cart.clear();
       window.location.href = "order-success.html";
     } catch (ex) {
