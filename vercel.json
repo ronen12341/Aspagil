@@ -654,5 +654,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/order",
+      "destination": "/contact.html"
+    }
   ]
 }
