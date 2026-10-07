@@ -207,6 +207,8 @@
             </label>
           </fieldset>
 
+          <div id="c-total" style="display:none;background:#F7F7F8;border:1px solid #E5E5E8;border-radius:10px;padding:12px 14px;margin:12px 0;font-size:0.95rem;color:#111"></div>
+
           <div id="payment-note" class="how-it-works" style="display:none;">
             כמות זו דורשת תיאום מחיר — נחזור אליכם עם הצעה מפורטת.
           </div>
@@ -297,7 +299,7 @@
         <li><a href="/contact">צור קשר</a></li>
         <li><a href="/about#accessibility">הצהרת נגישות</a></li>
       
-        <li><a href="blog/">בלוג</a></li>
+        <li><a href="/blog">בלוג</a></li>
       </ul></div>
       <div><h4>יצירת קשר</h4><ul>
         <li>רחוב הירקון 39, בני ברק</li>
@@ -498,6 +500,27 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
     '100000':'100,000 יח׳','100000+':'100,000+ יח׳'
   };
 
+
+  // Live order total (price + shipping) — mirrors SHIPPING_TIERS in assets/js/cart.js / api/_pricing.js
+  var SHIP_TIERS = [{max:1000,cost:60},{max:2000,cost:120},{max:3000,cost:180},{max:5000,cost:250}];
+  function updateTotal() {
+    var box = document.getElementById('c-total');
+    if (!box || !qtySel) return;
+    var price = PRICE_MAP[qtySel.value] || null;
+    if (!price) { box.style.display = 'none'; return; }
+    var units = parseInt(qtySel.value, 10) || 0;
+    var sel = document.querySelector('input[name="fulfillmentMethod"]:checked');
+    var pickup = sel && sel.value === 'pickup';
+    var tier = SHIP_TIERS.filter(function(t){ return units <= t.max; })[0];
+    var ship = pickup ? 0 : (tier ? tier.cost : null);
+    var fmt = function(n){ return n.toLocaleString('he-IL') + ' ש"ח'; };
+    var shipTxt = pickup ? 'איסוף עצמי — ללא עלות' : (ship === null ? 'בתיאום' : fmt(ship));
+    box.innerHTML = '<div style="display:flex;justify-content:space-between"><span>כוסות (' + units.toLocaleString('he-IL') + ' יח׳)</span><span>' + fmt(price) + '</span></div>'
+      + '<div style="display:flex;justify-content:space-between"><span>משלוח</span><span>' + shipTxt + '</span></div>'
+      + '<div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.15rem;border-top:1px solid #ddd;margin-top:6px;padding-top:6px"><span>סה"כ לתשלום (כולל מע"מ)</span><span>' + fmt(price + (ship || 0)) + '</span></div>';
+    box.style.display = '';
+  }
+
   var form    = document.getElementById('quote-form');
   var btn     = document.getElementById('submit-btn');
   var errBox  = document.getElementById('quote-status');
@@ -556,6 +579,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
     if (block) block.style.display = isPickup ? 'none' : '';
     ['c-city','c-street','c-house'].forEach(function(id) { var el = document.getElementById(id); if (el) el.required = !isPickup; });
     composeAddress();
+    updateTotal();
   }
   document.querySelectorAll('input[name="fulfillmentMethod"]').forEach(function(r) {
     r.addEventListener('change', updateFulfillmentUI);
@@ -580,6 +604,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
           : 'שליחת ההזמנה <span class="arrow">←</span>';
       }
       refreshTaxIdRequirement();
+      updateTotal();
     });
   }
 
