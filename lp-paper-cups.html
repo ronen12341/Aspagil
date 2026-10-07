@@ -200,7 +200,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 const qtySel=document.getElementById('f-qty'),lpBtn=document.getElementById('lpSubmit');
 lpBtn.addEventListener('click',()=>{
   const q=qtySel.value;
-  window.location.href='contact.html'+(q?('?qty='+encodeURIComponent(q)):'')+'#quote';
+  window.location.href='/contact'+(q?('?qty='+encodeURIComponent(q)):'')+'#quote';
 });
 </script>
 </body>

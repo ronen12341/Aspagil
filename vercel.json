@@ -4,6 +4,26 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/paper-cups-8oz",
+      "destination": "https://www.aspagil.com/paper-cups-9oz",
+      "permanent": true
+    },
+    {
+      "source": "/paper-cups-8oz.html",
+      "destination": "https://www.aspagil.com/paper-cups-9oz",
+      "permanent": true
+    },
+    {
+      "source": "/paper-cups-12oz",
+      "destination": "https://www.aspagil.com/paper-cups-9oz",
+      "permanent": true
+    },
+    {
+      "source": "/paper-cups-12oz.html",
+      "destination": "https://www.aspagil.com/paper-cups-9oz",
+      "permanent": true
+    },
+    {
       "source": "/שכפול-דיסקים",
       "destination": "https://www.aspagil.com/disc-duplication",
       "permanent": true
