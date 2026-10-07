@@ -632,3 +632,26 @@ div.feature,
 .price-chip b{font-size:1.6rem;color:var(--ink)}
 .usp div,.perks div,.step{padding:.6rem .4rem}
 .usp div:hover,.perks div:hover,.step:hover,div.feature:hover,.testimonial:hover{transform:none !important;box-shadow:none !important}
+
+/* ===== v13: darker gray backgrounds + visible frame on every clickable element ===== */
+:root{--bg-gray:#E4E7EB;--bg-gray-2:#EDEFF2;--frame:#6B6E73}
+.section--gray,.section--orange{background:var(--bg-gray)!important}
+.hero{background:linear-gradient(180deg,var(--bg-gray) 0%,var(--bg-gray-2) 100%)!important}
+.subhero{background:linear-gradient(180deg,var(--bg-gray) 0%,var(--bg-gray-2) 100%)!important}
+.cta-section{background:linear-gradient(135deg,#D9DDE2 0%,var(--bg-gray-2) 50%,#D2D6DB 100%)!important}
+.cart-summary-box,.order-summary-card{background:var(--bg-gray-2)!important}
+
+/* Buttons — every button gets a visible frame */
+.btn,a.btn,button.btn{border:2px solid var(--ink)!important}
+.btn-wa,.btn-whatsapp{border-color:#128C4A!important}
+.btn-cart,.btn-add,.qty-btn,.style-btn,.layer-btn,.template-card{border:1.5px solid var(--frame)!important}
+.btn-remove{border:1.5px solid #C73838!important}
+
+/* Clickable cards (price tiers, product cards, showcase CTA) */
+.tier,.product-card,.sc-cta{border:2px solid var(--frame)!important;background:#fff!important}
+.tier.hot{border:2.5px solid var(--ink)!important}
+.tier:hover,.product-card:hover{border-color:var(--ink)!important}
+
+/* Mobile bottom bar */
+.mbar a{border:2px solid var(--ink)}
+.mbar a:last-child{border-color:#128C4A}
