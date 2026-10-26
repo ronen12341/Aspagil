@@ -830,8 +830,25 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
           var payData = await payRes.json();
           if (payData.ok && payData.paymentUrl) {
             try { sessionStorage.setItem('aspagil-order-value', String(total)); } catch(e){}
+            try { sessionStorage.setItem('aspagil-order-id', String(orderId)); } catch(e){}
             Cart.clear();
-            window.location.href = payData.paymentUrl;
+            // Fire the Google Ads conversion NOW, before leaving for Sumit —
+            // same as checkout.html. Customers who pay and never return from
+            // Sumit to order-success.html were never counted. transaction_id
+            // lets Google dedupe if order-success.html fires again.
+            var go = function(){ window.location.href = payData.paymentUrl; };
+            if (typeof gtag === 'function') {
+              var done = false, finish = function(){ if (!done) { done = true; go(); } };
+              gtag('event', 'conversion', {
+                send_to: 'AW-766413183/57OGCOyn0KcBEP-Suu0C',
+                value: parseFloat(total) || undefined,
+                currency: 'ILS',
+                transaction_id: String(orderId),
+                transport_type: 'beacon',
+                event_callback: finish
+              });
+              setTimeout(finish, 1200);
+            } else { go(); }
             return;
           }
           throw new Error(payData.message || 'לא התקבל קישור לתשלום');
@@ -851,6 +868,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
 
       // Unpriced (custom-quote) quantity — order sent, no online payment.
       try { sessionStorage.setItem('aspagil-order-value', String(total)); } catch(e){}
+      try { sessionStorage.setItem('aspagil-order-id', String(orderId)); } catch(e){}
       Cart.clear();
       window.location.href = '/order-success';
 
