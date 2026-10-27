@@ -12,6 +12,15 @@
   gtag('js', new Date());
   gtag('config', 'AW-766413183');
 </script>
+<!-- Phone + WhatsApp click tracking -> Google Ads conversion "קליק וואטסאפ/טלפון באתר".
+     Most cup leads call or WhatsApp instead of filling a form; these were invisible. -->
+<script>
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me/"], a[href*="api.whatsapp.com"], a[href*="whatsapp://"]');
+    if (!a || typeof gtag !== 'function') return;
+    gtag('event', 'conversion', { send_to: 'AW-766413183/wQNKCLTq5qsdEP-Suu0C', transport_type: 'beacon' });
+  }, true);
+</script>
 <title>כוסות נייר ממותגות עם לוגו – מ-500 יח׳, מחירון באתר | אספגיל</title>
 <meta name="description" content="כוסות נייר ממותגות עם הלוגו שלכם, מ-500 יחידות ומ-1 ש״ח לכוס. מחירון מלא כולל מע״מ, ללא הגבלת צבעים, הדמיה תוך 24 שעות. מיוצר בישראל מאז 1995.">
 <meta name="keywords" content="כוסות נייר ממותגות, מיתוג כוסות נייר, הדפסה על כוסות נייר, הדפסה דיגיטלית על כוסות, כוסות נייר עם לוגו, כוסות חד פעמיות ממותגות, כוסות נייר חד פעמיות מודפסות, כוסות קפה ממותגות, כוסות נייר 9oz, כוסות 250 מל, כוסות נייר לבתי קפה, כוסות נייר לאירועים, ללא הגבלת צבעים, מיוצר בישראל, אספגיל">

@@ -12,6 +12,15 @@
   gtag('js', new Date());
   gtag('config', 'AW-766413183');
 </script>
+<!-- Phone + WhatsApp click tracking -> Google Ads conversion "קליק וואטסאפ/טלפון באתר".
+     Most cup leads call or WhatsApp instead of filling a form; these were invisible. -->
+<script>
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me/"], a[href*="api.whatsapp.com"], a[href*="whatsapp://"]');
+    if (!a || typeof gtag !== 'function') return;
+    gtag('event', 'conversion', { send_to: 'AW-766413183/wQNKCLTq5qsdEP-Suu0C', transport_type: 'beacon' });
+  }, true);
+</script>
 
 <title>כוסות נייר או כוסות פלסטיק — מה עדיף לעסק שלכם? | אספגיל</title>
 <meta name="description" content="השוואה מלאה בין כוסות נייר לכוסות פלסטיק לעסק - עלות, סביבה, מיתוג ותפיסת הלקוח. מתי כדאי לעבור לנייר ומתי פלסטיק עדיין הבחירה הנכונה.">

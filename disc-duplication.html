@@ -12,6 +12,15 @@
   gtag('js', new Date());
   gtag('config', 'AW-766413183');
 </script>
+<!-- Phone + WhatsApp click tracking -> Google Ads conversion "קליק וואטסאפ/טלפון באתר".
+     Most cup leads call or WhatsApp instead of filling a form; these were invisible. -->
+<script>
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me/"], a[href*="api.whatsapp.com"], a[href*="whatsapp://"]');
+    if (!a || typeof gtag !== 'function') return;
+    gtag('event', 'conversion', { send_to: 'AW-766413183/wQNKCLTq5qsdEP-Suu0C', transport_type: 'beacon' });
+  }, true);
+</script>
 <title>שכפול דיסקים | שכפול CD ו-DVD עם הדפסה | אספגיל</title>
 <meta name="description" content="שכפול דיסקים מקצועי - CD ו-DVD. שכפול דיסקים בכמויות קטנות וגדולות, עם הדפסה איכותית על הדיסק. ייצור 2-14 ימי עסקים + משלוח עד 6 ימים. ☎ 03-9600550">
 <meta name="keywords" content="שכפול דיסקים, שכפול CD, שכפול DVD, הדפסה על דיסקים, שכפול דיסקים זול, אספגיל">
