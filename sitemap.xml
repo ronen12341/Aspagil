@@ -3,14 +3,14 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.aspagil.com/</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
     <xhtml:link rel="alternate" hreflang="he" href="https://www.aspagil.com/"/>
   </url>
   <url>
     <loc>https://www.aspagil.com/paper-cups</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <priority>0.95</priority>
     <changefreq>weekly</changefreq>
   </url>
@@ -76,13 +76,13 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/products/food-stalls</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://www.aspagil.com/products/birthdays</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -130,7 +130,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/blog/branded-cups-price</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
   </url>
