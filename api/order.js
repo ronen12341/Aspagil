@@ -225,7 +225,7 @@ export default async function handler(req, res) {
     const result = await sendViaResend(apiKey, {
       from: RESEND_FROM,
       to: [BUSINESS_EMAIL],
-      reply_to: customer.email || undefined,
+      reply_to: (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(customer.email || "").trim()) ? String(customer.email).trim() : undefined),
       subject,
       html,
     });
