@@ -449,6 +449,7 @@
 
     if (!name || !phone) { showError("נא למלא שם וטלפון."); return; }
     if (!email) { showError("נא למלא כתובת אימייל."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError("כתובת האימייל לא תקינה. בדקו שהיא בפורמט name@example.com"); return; }
     if (taxIdRequired() && !taxId) { showError('נא למלא ח.פ או ת.ז (חובה בחוק בהזמנות מעל 5,000 ש"ח).'); return; }
     if ((taxIdRequired() || taxId) && !/^\d{9}$/.test(taxId)) { showError("ח.פ או ת.ז חייבים להכיל 9 ספרות בדיוק."); return; }
 
@@ -488,7 +489,7 @@
         }),
       });
 
-      if (!res.ok) throw new Error("send failed");
+      if (!res.ok) { let msg = ""; try { msg = (await res.json()).message || ""; } catch (_) {} const er = new Error("send failed"); er.userMsg = msg; throw er; }
       const data = await res.json();
       const orderId = data.orderId || ("ORD-" + Date.now());
 
@@ -557,7 +558,7 @@
       Cart.clear();
       window.location.href = "/order-success";
     } catch (ex) {
-      showError("אירעה שגיאה בשליחת ההזמנה. נסו שוב או התקשרו אלינו: 03-9600550.");
+      showError((ex && ex.userMsg) || "אירעה שגיאה בשליחת ההזמנה. נסו שוב או התקשרו אלינו: 03-9600550.");
       btn.disabled = false;
       updateHowItWorks();
     }
