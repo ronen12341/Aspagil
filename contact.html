@@ -702,6 +702,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
 
     if (!name || !phone)         { showErr('נא למלא שם וטלפון.'); return; }
     if (!email)                  { showErr('נא למלא כתובת אימייל.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('כתובת האימייל לא תקינה. בדקו שהיא בפורמט name@example.com'); return; }
     if (!qty)                    { showErr('נא לבחור כמות יחידות.'); return; }
     composeAddress();
     if (getFulfillmentMethod() !== 'pickup' && (!addrVal('c-city') || !addrVal('c-street') || !addrVal('c-house'))) { showErr('נא למלא כתובת למשלוח: עיר, רחוב ומספר בית.'); return; }
@@ -818,7 +819,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
           botcheck: document.getElementById('botcheck').checked
         })
       });
-      if (!orderRes.ok) throw new Error('שליחת ההזמנה נכשלה. נסו שוב או התקשרו: 03-9600550.');
+      if (!orderRes.ok) { var orderErr = {}; try { orderErr = await orderRes.json(); } catch (x) {} throw new Error(orderErr.message || 'שליחת ההזמנה נכשלה. נסו שוב או התקשרו: 03-9600550.'); }
       var orderData = await orderRes.json();
       var orderId = orderData.orderId || ('ORD-' + Date.now());
 
