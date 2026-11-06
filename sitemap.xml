@@ -140,4 +140,10 @@
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://www.aspagil.com/branded-cups</loc>
+    <lastmod>2026-11-06</lastmod>
+    <priority>0.95</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
