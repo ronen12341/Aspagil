@@ -27,6 +27,8 @@ export const config = {
   },
 };
 
+import { attributionHtml, shortSource, normalizeAttribution } from './_attribution.js';
+
 const BUSINESS_EMAIL = 'salesaspagil@gmail.com';
 // Send from aspagil.com, verified in this Resend account (gilcups.com is
 // being retired and must not be used as a sender). A "from"
@@ -62,7 +64,7 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function buildEmailHtml(type, fields, attachmentNames, orderId) {
+function buildEmailHtml(type, fields, attachmentNames, orderId, attribution) {
   const title = type === 'design'
     ? 'בקשת עיצוב AI חדשה מהאתר'
     : 'בקשת הצעת מחיר חדשה מהאתר';
@@ -122,6 +124,7 @@ function buildEmailHtml(type, fields, attachmentNames, orderId) {
 <div style="font-size:13px;margin-top:6px;color:#ffe8d0;">מספר הזמנה: ${escapeHtml(orderId)} · נשלח מ-${SITE_URL}</div>
 </td></tr>
 <tr><td style="padding:20px 24px;" align="right">
+${attributionHtml(attribution, escapeHtml)}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;direction:rtl;">
 ${rows.join('')}
 </table>
@@ -247,10 +250,11 @@ export default async function handler(req, res) {
     const orderId = 'ORD-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + (Math.floor(Math.random()*9000)+1000);
 
     // 1. Send notification to the business
-    const businessHtml = buildEmailHtml(type, fields, attachmentNames, orderId);
-    const subject = fields.subject || (type === 'design'
+    const attribution = normalizeAttribution(body.attribution, fields.gclid);
+    const businessHtml = buildEmailHtml(type, fields, attachmentNames, orderId, attribution);
+    const subject = (fields.subject || (type === 'design'
       ? `🎨 בקשת עיצוב AI חדשה מהאתר ${orderId}`
-      : `📧 בקשת הצעת מחיר חדשה מהאתר ${orderId}`);
+      : `📧 בקשת הצעת מחיר חדשה מהאתר ${orderId}`)) + ` [${shortSource(attribution)}]`;
 
     const replyTo = (fields.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) ? fields.email : undefined;
 

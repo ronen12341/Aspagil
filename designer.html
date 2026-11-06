@@ -134,6 +134,7 @@ textarea.ai-input{min-height:120px;resize:vertical;line-height:1.6}
 .info-box{background:#F0F8FF;border-right:3px solid #2169C8;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;color:#08274D;margin-top:1.2rem;line-height:1.55}
 .info-box strong{color:#04132A}
 </style>
+<script src="/assets/js/attribution.js"></script>
 </head>
 <body>
 
@@ -675,7 +676,7 @@ mt.addEventListener('click',()=>{mn.classList.toggle('is-open');});
 
       sessionStorage.setItem('aspagilLastSubmit',JSON.stringify({name:fields.name||'',time:Date.now()}));
 
-      const payload=JSON.stringify({type:'design',fields:fields,files:files});
+      const payload=JSON.stringify({type:'design',fields:fields,files:files,attribution:(typeof window.getAttribution==='function'?window.getAttribution():undefined)});
       console.log('[submit] payload size:', (payload.length/1024/1024).toFixed(2), 'MB, files:', files.length);
 
       const resp=await fetch('/api/submit-form',{

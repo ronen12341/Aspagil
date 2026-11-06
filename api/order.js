@@ -10,6 +10,7 @@
  */
 
 import { getCatalogPrice, computeShipping } from "./_pricing.js";
+import { attributionHtml, shortSource, normalizeAttribution } from "./_attribution.js";
 
 const BUSINESS_EMAIL = "salesaspagil@gmail.com";
 // Send from aspagil.com, verified in this Resend account (gilcups.com is
@@ -72,7 +73,7 @@ function buildEmailHtml(orderId, body) {
   <p style="color:#666;margin:4px 0;">מספר הזמנה: <strong style="color:#3B1F0A;">${orderId}</strong></p>
   <p style="color:#666;margin:4px 0;">${new Date().toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}</p>
   <p style="margin:12px 0;">${paymentBadge} ${fulfillmentBadge}</p>
-  ${gclid ? `<p style="color:#666;margin:4px 0;font-size:12px;">מקור: Google Ads (gclid: <span style="direction:ltr;display:inline-block;">${escapeHtml(gclid)}</span>)</p>` : ""}
+  ${attributionHtml(normalizeAttribution(body.attribution, gclid), escapeHtml)}
 
   ${isPickup ? `<div style="background:#7A4E00;color:#fff;padding:14px 16px;border-radius:8px;margin:12px 0;font-size:15px;font-weight:bold;">
     ⚠️ איסוף עצמי — יש ליצור קשר עם הלקוח ולתאם מראש מועד איסוף מהמפעל. אין לאפשר הגעה ללא תיאום.
@@ -220,7 +221,7 @@ export default async function handler(req, res) {
 
     const orderId = generateOrderId();
     const html = buildEmailHtml(orderId, body);
-    const subject = `🛒 הזמנה חדשה ${orderId} — ${customer.name}`;
+    const subject = `🛒 הזמנה חדשה ${orderId} — ${customer.name} [${shortSource(normalizeAttribution(body.attribution, body.gclid))}]`;
 
     const result = await sendViaResend(apiKey, {
       from: RESEND_FROM,

@@ -67,6 +67,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css?v=13">
+<script src="/assets/js/attribution.js"></script>
 </head>
 <body>
 
@@ -738,6 +739,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 type: 'quote',
+                attribution: typeof window.getAttribution === 'function' ? window.getAttribution() : undefined,
                 fields: {
                   subject: '📎 קובץ גרפיקה להזמנה מהאתר',
                   name: name, phone: phone, email: email,
@@ -817,6 +819,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
           hasUnpricedItems: hasUnpriced, paymentMethod: canPayOnline ? 'online' : 'quote',
           fulfillmentMethod: fulfillmentMethod, shipping: shippingForOrder,
           gclid: typeof window.getGclid === 'function' ? window.getGclid() : undefined,
+          attribution: typeof window.getAttribution === 'function' ? window.getAttribution() : undefined,
           botcheck: document.getElementById('botcheck').checked
         })
       });
