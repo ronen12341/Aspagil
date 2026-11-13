@@ -68,6 +68,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css?v=13">
 <script src="/assets/js/attribution.js"></script>
+<script>if(/^\/order/.test(location.pathname))document.documentElement.classList.add("is-order");</script>
+<style>.is-order .order-hide,.is-order .float-wa{display:none!important}</style>
 </head>
 <body>
 
@@ -94,7 +96,7 @@
     <div id="quote" class="quote-col" style="max-width:720px;margin:0 auto;">
       <div class="quote-col-head">
         <h1>הזמנה ותשלום</h1>
-        <p style="color:var(--gray-700);margin:0;">מלאו את הפרטים, צרפו קובץ גרפיקה אם יש.</p>
+        <p style="color:var(--gray-700);margin:0;">בחרו כמות, צרפו לוגו ושלמו. הדמיה לאישור לפני ההדפסה.</p>
       </div>
 
       <form id="quote-form" action="/api/submit-form" method="POST" enctype="multipart/form-data" class="quote-form" style="margin-top:1rem;">
@@ -104,7 +106,7 @@
 
           <h3>פרטי הזמנה</h3>
           <div class="form-group">
-            <label for="c-qty" style="color:var(--orange);font-weight:700;">💰 בחרו כמות — המחיר סופי וכולל מע"מ</label>
+            <label for="c-qty" style="font-weight:700;">כמות (מחיר סופי כולל מע"מ)</label>
             <select id="c-qty" name="quantity" required style="border-color:var(--orange);">
               <option value="">בחרו כמות</option>
               <option value="500">500 יח׳ — 500 ש"ח</option>
@@ -113,12 +115,32 @@
               <option value="3000">3,000 יח׳ — 2,100 ש"ח</option>
               <option value="5000">5,000 יח׳ — 2,750 ש"ח</option>
               <option value="10000">10,000 יח׳ — 4,500 ש"ח</option>
-              <option value="50000">50,000 יח׳ — 11,500 ש"ח + 600 ש"ח לכל צבע</option>
-              <option value="100000">100,000 יח׳ — 21,000 ש"ח + 600 ש"ח לכל צבע</option>
-              <option value="100000+">100,000+ — הצעת מחיר אישית</option>
+              <option value="10000+">מעל 10,000 יח׳ — הצעת מחיר</option>
             </select>
-            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">משלוח: עד 1,000 יח' 60 ש"ח · עד 2,000 יח' 120 ש"ח · עד 3,000 יח' 180 ש"ח · עד 5,000 יח' 250 ש"ח · איסוף עצמי מבני ברק חינם</small>
           </div>
+          <div class="form-group">
+            <label style="font-weight:700;">הלוגו או העיצוב שלכם</label>
+            <div id="c-artwork-dropzone" style="margin-top:6px;cursor:pointer;">
+              <input id="c-artwork" type="file" name="artwork_file" accept=".pdf,.ai,.psd,.eps,.svg,.png,.jpg,.jpeg,.tif,.tiff" style="display:none;">
+              <div id="c-artwork-empty">
+                <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;font-size:0.95rem;transition:all 0.2s;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  צרפו לוגו או עיצוב
+                </div>
+                <div style="font-size:0.85rem;color:var(--gray-700);margin-top:6px;text-align:center;">גם צילום מהטלפון מתאים · עד 10MB</div>
+              </div>
+              <div id="c-artwork-selected" style="display:none;padding:18px;border:2px solid #1F6638;border-radius:10px;background:#E6F4EA;text-align:center;">
+                <img id="c-artwork-preview" alt="תצוגה מקדימה" style="display:none;max-width:160px;max-height:160px;border-radius:8px;margin:0 auto 8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                <div style="font-size:1.5rem;line-height:1;margin-bottom:6px;color:#1F6638;">✓</div>
+                <div style="font-weight:700;color:#1F6638;" id="c-artwork-filename">קובץ נבחר</div>
+                <div id="c-artwork-filesize" style="font-size:0.85rem;color:var(--gray-700);margin-top:4px;"></div>
+                <div id="c-artwork-progress" style="display:none;margin-top:8px;font-size:0.9rem;color:var(--orange);font-weight:700;"></div>
+                <button type="button" id="c-artwork-remove" style="margin-top:8px;background:transparent;border:none;color:#C03;font-size:0.85rem;cursor:pointer;text-decoration:underline;">הסר קובץ</button>
+              </div>
+            </div>
+            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">אין עיצוב? נעצב בשבילכם ונשלח הדמיה לאישור תוך 24 שעות, חינם. מדפיסים רק אחרי שתאשרו.<br>לגרפיקאים: <a href="cup-template.pdf" download>תבנית מקצועית</a> · <a href="cup-blank-165x83.pdf" download>מלבן 165×83 מ"מ</a></small>
+          </div>
+
           <div class="form-row">
             <div class="form-group"><label for="c-name">שם</label><input id="c-name" type="text" name="name" required></div>
             <div class="form-group"><label for="c-phone">טלפון</label><input id="c-phone" type="tel" name="phone" required></div>
@@ -162,60 +184,15 @@
             </div>
           </div>
           <div id="c-pickup-note" style="display:none;background:#F1F2F4;border-right:4px solid var(--orange);padding:12px 14px;border-radius:8px;margin-bottom:1.2rem;font-size:0.9rem;color:#111111">
-            ⚠ <strong>יש לתאם מראש את מועד האיסוף</strong> בטלפון
-            <a href="tel:039600550" style="color:#111111;font-weight:700">03-9600550</a>
-            לפני ההגעה למפעל. אין להגיע ללא תיאום מוקדם.
+            איסוף בתיאום מראש: <a href="tel:039600550" style="color:#111111;font-weight:700">03-9600550</a>
           </div>
 
-          <div style="background:#FFF4E5;border-right:4px solid var(--orange);padding:12px 14px;border-radius:8px;margin:10px 0 14px;font-size:0.95rem;color:#111;"><strong>אין לכם קובץ מוכן? לא צריך מעצב.</strong> צרפו רק את הלוגו (גם צילום מהטלפון מתאים) — אנחנו נעצב ונשלח הדמיה לאישור תוך 24 שעות, בחינם. ההדפסה מתחילה רק אחרי שתאשרו.</div>
-<div style="font-weight:800;color:var(--ink);font-size:1.05rem;margin:10px 0 10px;">יש לכם מעצב? כך מכינים את הגרפיקה:</div>
-          <div style="font-weight:700;color:var(--orange-deep);margin:0 0 8px;">שלב 1 — הורידו פריסה והכינו עליה את העיצוב:</div>
-          <a href="cup-blank-165x83.pdf" download style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;box-sizing:border-box;margin:0 0 4px;padding:12px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;text-decoration:none;font-size:0.95rem;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2.5" y="6.5" width="19" height="11" rx="1"/></svg>
-            הורדת מלבן ריק 165×83 מ"מ
-          </a>
-          <div style="font-size:0.85rem;color:var(--gray-700);margin:0 0 14px;">מתאים לכולם — עצבו בתוך המלבן את הלוגו/הטקסט ושלחו לנו, ואנחנו נייצר ממנו את הכוסות.</div>
-          <a href="cup-template.pdf" download style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;box-sizing:border-box;margin:0 0 4px;padding:12px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;text-decoration:none;font-size:0.95rem;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            הורדת פריסה מקצועית (לגרפיקאי)
-          </a>
-          <div style="font-size:0.85rem;color:var(--gray-700);margin:0 0 18px;">מיועד לגרפיקאי מקצועי — הפריסה כוללת את צורת החרוט של הכוס. יש לקשת (לעקם) את כל הטקסטים כדי שייצאו ישרים על הכוס.</div>
-
-          <div style="font-weight:700;color:var(--orange-deep);margin:0 0 8px;">שלב 2 — שלחו לנו את הקובץ המוכן להדפסה:</div>
-          <div class="form-group">
-            <label>צרפו כאן את הקובץ (אופציונלי)</label>
-            <div id="c-artwork-dropzone" style="margin-top:6px;cursor:pointer;">
-              <input id="c-artwork" type="file" name="artwork_file" accept=".pdf,.ai,.psd,.eps,.svg,.png,.jpg,.jpeg,.tif,.tiff" style="display:none;">
-              <div id="c-artwork-empty">
-                <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;background:#FFF;border:2px solid var(--orange);color:var(--orange-deep);border-radius:10px;font-weight:700;font-size:0.95rem;transition:all 0.2s;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  לחצו כאן לבחירת קובץ
-                </div>
-                <div style="font-size:0.85rem;color:var(--gray-700);margin-top:6px;text-align:center;">PDF, AI, PSD, EPS, SVG, PNG, JPG, TIFF — עד 10MB</div>
-              </div>
-              <div id="c-artwork-selected" style="display:none;padding:18px;border:2px solid #1F6638;border-radius:10px;background:#E6F4EA;text-align:center;">
-                <img id="c-artwork-preview" alt="תצוגה מקדימה" style="display:none;max-width:160px;max-height:160px;border-radius:8px;margin:0 auto 8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
-                <div style="font-size:1.5rem;line-height:1;margin-bottom:6px;color:#1F6638;">✓</div>
-                <div style="font-weight:700;color:#1F6638;" id="c-artwork-filename">קובץ נבחר</div>
-                <div id="c-artwork-filesize" style="font-size:0.85rem;color:var(--gray-700);margin-top:4px;"></div>
-                <div id="c-artwork-progress" style="display:none;margin-top:8px;font-size:0.9rem;color:var(--orange);font-weight:700;"></div>
-                <button type="button" id="c-artwork-remove" style="margin-top:8px;background:transparent;border:none;color:#C03;font-size:0.85rem;cursor:pointer;text-decoration:underline;">הסר קובץ</button>
-              </div>
-            </div>
-            <small style="display:block;margin-top:6px;color:var(--gray-700);font-size:0.85rem;">אם יש לכם עיצוב מוכן — צרפו אותו כאן (עד 10MB). קובץ גדול יותר? שלחו בוואטסאפ ל-03-9600550.</small>
-          </div>
+          
 
           <!-- Payment method — shown only when a fixed-price quantity is selected -->
-          <fieldset id="payment-fieldset" class="payment-fieldset" style="display:none;">
-            <legend>בחרו אופן תשלום</legend>
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="online" id="pay-online" checked>
-              <div>
-                <div class="payment-option-title">💳 תשלום מאובטח באשראי עכשיו</div>
-                <div class="payment-option-desc">חיוב מיידי באתר מאובטח של Sumit. תקבלו חשבונית במייל.</div>
-                <div class="pay-note"><span class="pay-note-ic">i</span><span>שימו לב: <b>לא ניתן לשלם בכרטיס דיינרס (Diners).</b> ניתן לשלם בכל כרטיס אשראי אחר.</span></div>
-              </div>
-            </label>
+          <fieldset id="payment-fieldset" style="display:none;border:0;padding:0;margin:0 0 10px;">
+            <input type="radio" name="paymentMethod" value="online" id="pay-online" checked style="display:none">
+            <div style="font-size:0.85rem;color:var(--gray-700);">🔒 תשלום מאובטח באשראי (Sumit) · חשבונית במייל · לא ניתן לשלם בדיינרס</div>
           </fieldset>
 
           <div id="c-total" style="display:none;background:#F7F7F8;border:1px solid #E5E5E8;border-radius:10px;padding:12px 14px;margin:12px 0;font-size:0.95rem;color:#111"></div>
@@ -231,7 +208,7 @@
   </div>
 </section>
 
-<section class="section section--gray">
+<section class="section section--gray order-hide">
   <div class="container">
     <div class="contact-info-card" style="max-width:640px;margin:0 auto;">
       <h2>פרטי התקשרות</h2>
@@ -509,7 +486,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
   var QTY_LABELS = {
     '500':'500 יח׳','1000':'1,000 יח׳','2000':'2,000 יח׳','3000':'3,000 יח׳',
     '5000':'5,000 יח׳','10000':'10,000 יח׳','50000':'50,000 יח׳',
-    '100000':'100,000 יח׳','100000+':'100,000+ יח׳'
+    '100000':'100,000 יח׳','100000+':'100,000+ יח׳','10000+':'מעל 10,000 יח׳'
   };
 
 
@@ -625,6 +602,7 @@ t.addEventListener('click',()=>{n.classList.toggle('is-open');});
   // to re-pick what they already chose.
   if (qtySel) {
     var urlQty = new URLSearchParams(window.location.search).get('qty');
+    if (urlQty && parseInt(urlQty,10) > 10000) urlQty = '10000+';
     if (urlQty && Array.prototype.some.call(qtySel.options, function(o) { return o.value === urlQty; })) {
       qtySel.value = urlQty;
       qtySel.dispatchEvent(new Event('change'));
