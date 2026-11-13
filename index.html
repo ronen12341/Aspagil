@@ -71,6 +71,8 @@
   "makesOffer": [
     {"@type":"Offer","name":"כוסות נייר ממותגות 500 יחידות","price":"500","priceCurrency":"ILS","description":"500 כוסות נייר ממותגות עם הדפסה דיגיטלית, כולל מע\"מ"},
     {"@type":"Offer","name":"כוסות נייר ממותגות 1,000 יחידות","price":"800","priceCurrency":"ILS"},
+    {"@type":"Offer","name":"כוסות נייר ממותגות 2,000 יחידות","price":"1500","priceCurrency":"ILS"},
+    {"@type":"Offer","name":"כוסות נייר ממותגות 3,000 יחידות","price":"2100","priceCurrency":"ILS"},
     {"@type":"Offer","name":"כוסות נייר ממותגות 5,000 יחידות","price":"2750","priceCurrency":"ILS"},
     {"@type":"Offer","name":"כוסות נייר ממותגות 10,000 יחידות","price":"4500","priceCurrency":"ILS"}
   ]
@@ -168,6 +170,19 @@
 <link rel="stylesheet" href="style.css?v=13">
 <script src="/assets/js/attribution.js"></script>
 <style>.section-head h1{font-size:clamp(1.8rem,7vw,2.8rem);text-wrap:balance}.section-head h1 .highlight{color:var(--orange)}</style>
+<style id="tiers3d">
+#prices .tiers{grid-template-columns:repeat(3,1fr);gap:1rem .6rem;max-width:760px;margin-top:1.4rem}
+#prices .tier{display:flex;flex-direction:column;align-items:center;padding:.9rem .3rem .8rem;border-radius:16px;border:2px solid var(--ink)!important;background:linear-gradient(180deg,#fff,#eef0f3)!important;box-shadow:0 6px 0 var(--ink),0 10px 18px rgba(0,0,0,.18);text-decoration:none;color:inherit;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent}
+#prices .tier:hover{transform:translateY(-2px);box-shadow:0 8px 0 var(--ink),0 14px 22px rgba(0,0,0,.2)}
+#prices .tier:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink),0 2px 4px rgba(0,0,0,.2)}
+#prices .tier.hot{background:linear-gradient(180deg,#fff8ee,#ffe6c4)!important}
+#prices .tier .q{font-size:.9rem;white-space:nowrap}
+#prices .tier .p{font-size:1.55rem;margin:.15rem 0;white-space:nowrap}
+#prices .tier .u{font-size:.75rem}
+#prices .tier .go{margin-top:.55rem;background:var(--ink);color:#fff;border-radius:100px;padding:4px 10px;font-size:.75rem;font-weight:800;white-space:nowrap}
+#prices .tier .tag{top:-11px;font-size:.7rem;padding:2px 9px}
+@media (max-width:380px){#prices .tier .p{font-size:1.3rem}#prices .tier .q{font-size:.8rem}}
+</style>
 </head>
 <body>
 
@@ -210,10 +225,12 @@
       <p class="h2-sub">מ־500 יח׳ · כל הצבעים · הדמיה חינם תוך 24 שעות · מחיר סופי כולל מע"מ</p>
     </div>
     <div class="tiers">
-      <a class="tier" href="/order?qty=500"><div class="q">500 כוסות</div><div class="p">₪500</div><div class="u">₪1.00 לכוס</div></a>
-      <a class="tier hot" href="/order?qty=1000"><span class="tag">מומלץ</span><div class="q">1,000 כוסות</div><div class="p">₪800</div><div class="u">₪0.80 לכוס</div></a>
-      <a class="tier" href="/order?qty=5000"><div class="q">5,000 כוסות</div><div class="p">₪2,750</div><div class="u">₪0.55 לכוס</div></a>
-      <a class="tier" href="/order?qty=10000"><div class="q">10,000 כוסות</div><div class="p">₪4,500</div><div class="u">₪0.45 לכוס</div></a>
+      <a class="tier" href="/order?qty=500"><div class="q">500 כוסות</div><div class="p">₪500</div><div class="u">₪1.00 לכוס</div><span class="go">להזמנה ←</span></a>
+      <a class="tier hot" href="/order?qty=1000"><span class="tag">מומלץ</span><div class="q">1,000 כוסות</div><div class="p">₪800</div><div class="u">₪0.80 לכוס</div><span class="go">להזמנה ←</span></a>
+      <a class="tier" href="/order?qty=2000"><div class="q">2,000 כוסות</div><div class="p">₪1,500</div><div class="u">₪0.75 לכוס</div><span class="go">להזמנה ←</span></a>
+      <a class="tier" href="/order?qty=3000"><div class="q">3,000 כוסות</div><div class="p">₪2,100</div><div class="u">₪0.70 לכוס</div><span class="go">להזמנה ←</span></a>
+      <a class="tier" href="/order?qty=5000"><div class="q">5,000 כוסות</div><div class="p">₪2,750</div><div class="u">₪0.55 לכוס</div><span class="go">להזמנה ←</span></a>
+      <a class="tier" href="/order?qty=10000"><div class="q">10,000 כוסות</div><div class="p">₪4,500</div><div class="u">₪0.45 לכוס</div><span class="go">להזמנה ←</span></a>
     </div>
     <p class="note">מחיר סופי כולל מע"מ · משלוח מ-60 ש"ח · איסוף עצמי חינם</p>
     <div class="center mt"><a class="btn btn-primary btn-large" href="/order">להזמנה ←</a></div>
