@@ -145,6 +145,20 @@ async function sendViaResend(apiKey, payload) {
   return { ok: true, id: j.id };
 }
 
+// WhatsApp notification to the owner via CallMeBot (free). Needs CALLMEBOT_PHONE
+// (e.g. 972501234567) and CALLMEBOT_APIKEY env vars; silently skipped if missing.
+async function sendWhatsAppViaCallMeBot(text) {
+  const phone = process.env.CALLMEBOT_PHONE;
+  const apikey = process.env.CALLMEBOT_APIKEY;
+  if (!phone || !apikey) return;
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(text)}&apikey=${apikey}`;
+  try {
+    await fetch(url, { method: "GET" });
+  } catch (err) {
+    console.error("CallMeBot WhatsApp send failed:", err);
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -261,6 +275,15 @@ export default async function handler(req, res) {
       } catch (err) {
         console.error("auto-reply failed:", err);
       }
+    }
+
+    try {
+      const itemsTxt = (items || []).map((it) => `• ${it.name || it.title || it.product || "פריט"}${it.quantity || it.qty ? " x" + (it.quantity || it.qty) : ""}`).join("\n");
+      const waText = `🛒 הזמנה חדשה באספגיל (כוסות)\nמספר: ${orderId}\nשם: ${customer.name}\nטלפון: ${customer.phone}\n${itemsTxt}\nסה"כ: ${body.totalPrice ? body.totalPrice + " ש\"ח" : "לפי הצעה"}`;
+      // await so the serverless function isn't frozen before the request leaves
+      await sendWhatsAppViaCallMeBot(waText);
+    } catch (err) {
+      console.error("whatsapp notify failed:", err);
     }
 
     return res.status(200).json({ ok: true, orderId });
