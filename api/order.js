@@ -147,6 +147,35 @@ async function sendViaResend(apiKey, payload) {
 
 // WhatsApp notification to the owner via CallMeBot (free). Needs CALLMEBOT_PHONE
 // (e.g. 972501234567) and CALLMEBOT_APIKEY env vars; silently skipped if missing.
+async function sendWhatsApp(text) {
+  // Preferred: WhatsMCP (linked device). Needs WHATSMCP_KEY, WHATSMCP_ACCOUNT_ID, WHATSMCP_TO.
+  const key = process.env.WHATSMCP_KEY;
+  const account = process.env.WHATSMCP_ACCOUNT_ID;
+  const to = process.env.WHATSMCP_TO;
+  if (key && account && to) {
+    try {
+      await fetch("https://api.whatsmcp.com/mcp", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+          Accept: "application/json, text/event-stream",
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "tools/call",
+          params: { name: "wa_send_message", arguments: { account_id: account, to, text } },
+        }),
+      });
+      return;
+    } catch (err) {
+      console.error("WhatsMCP send failed:", err);
+    }
+  }
+  await sendWhatsAppViaCallMeBot(text);
+}
+
 async function sendWhatsAppViaCallMeBot(text) {
   const phone = process.env.CALLMEBOT_PHONE;
   const apikey = process.env.CALLMEBOT_APIKEY;
@@ -281,7 +310,7 @@ export default async function handler(req, res) {
       const itemsTxt = (items || []).map((it) => `• ${it.name || it.title || it.product || "פריט"}${it.quantity || it.qty ? " x" + (it.quantity || it.qty) : ""}`).join("\n");
       const waText = `🛒 הזמנה חדשה באספגיל (כוסות)\nמספר: ${orderId}\nשם: ${customer.name}\nטלפון: ${customer.phone}\n${itemsTxt}\nסה"כ: ${body.totalPrice ? body.totalPrice + " ש\"ח" : "לפי הצעה"}`;
       // await so the serverless function isn't frozen before the request leaves
-      await sendWhatsAppViaCallMeBot(waText);
+      await sendWhatsApp(waText);
     } catch (err) {
       console.error("whatsapp notify failed:", err);
     }
