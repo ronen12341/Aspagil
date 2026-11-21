@@ -94,7 +94,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/blog</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
   </url>
@@ -132,6 +132,24 @@
     <loc>https://www.aspagil.com/blog/cups-as-advertising</loc>
     <lastmod>2026-09-28</lastmod>
     <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.aspagil.com/blog/cardboard-cups-guide</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.aspagil.com/blog/branded-coffee-cups-cafe</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.aspagil.com/blog/branded-disposables-business</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
 </urlset>
