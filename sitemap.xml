@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.aspagil.com/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
     <xhtml:link rel="alternate" hreflang="he" href="https://www.aspagil.com/"/>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/cardboard-cups</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>0.95</priority>
     <changefreq>weekly</changefreq>
   </url>
@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/disc-duplication</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -51,12 +51,6 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.aspagil.com/products/business-branded</loc>
-    <lastmod>2026-10-07</lastmod>
-    <priority>0.85</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
     <loc>https://www.aspagil.com/products/logo-print</loc>
     <lastmod>2026-09-28</lastmod>
     <priority>0.85</priority>
@@ -64,7 +58,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/products/disposable</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -76,7 +70,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/products/food-stalls</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -130,7 +124,7 @@
   </url>
   <url>
     <loc>https://www.aspagil.com/blog/branded-cups-price</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <priority>0.85</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -138,12 +132,6 @@
     <loc>https://www.aspagil.com/blog/cups-as-advertising</loc>
     <lastmod>2026-09-28</lastmod>
     <priority>0.85</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.aspagil.com/branded-cups</loc>
-    <lastmod>2026-11-06</lastmod>
-    <priority>0.95</priority>
     <changefreq>monthly</changefreq>
   </url>
 </urlset>

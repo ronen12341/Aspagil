@@ -4,6 +4,26 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/branded-cups",
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/branded-cups.html",
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/products/business-branded",
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
+      "source": "/products/business-branded.html",
+      "destination": "https://www.aspagil.com/",
+      "permanent": true
+    },
+    {
       "source": "/paper-cups-8oz",
       "destination": "https://www.aspagil.com/paper-cups-9oz",
       "permanent": true
@@ -225,12 +245,12 @@
     },
     {
       "source": "/כוסות-מעוצבות-לעסקים",
-      "destination": "https://www.aspagil.com/products/business-branded",
+      "destination": "https://www.aspagil.com/",
       "permanent": true
     },
     {
       "source": "/%D7%9B%D7%95%D7%A1%D7%95%D7%AA-%D7%9E%D7%A2%D7%95%D7%A6%D7%91%D7%95%D7%AA-%D7%9C%D7%A2%D7%A1%D7%A7%D7%99%D7%9D",
-      "destination": "https://www.aspagil.com/products/business-branded",
+      "destination": "https://www.aspagil.com/",
       "permanent": true
     },
     {
