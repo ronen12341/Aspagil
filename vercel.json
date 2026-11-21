@@ -4,6 +4,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/review",
+      "destination": "https://search.google.com/local/writereview?placeid=ChIJfzIHwde0AhURs3c_jaqkuqc",
+      "permanent": false
+    },
+    {
       "source": "/branded-cups",
       "destination": "https://www.aspagil.com/",
       "permanent": true
