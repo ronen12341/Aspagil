@@ -536,6 +536,7 @@ p{margin:0 0 1em}
  .product-card .body{padding:.9rem}.product-card h3{font-size:1rem}
  body:has(.mbar) .header-cta .btn{display:none}
  .hero-actions .btn{flex:1}
+ body:has(.mbar) .subhero .hero-actions{display:none}
  .mbar{display:grid;grid-template-columns:1fr 1fr;position:fixed;bottom:0;left:0;right:0;z-index:60;box-shadow:0 -4px 18px rgba(0,0,0,.15)}
  .mbar a{padding:15px;text-align:center;font-weight:800;color:#fff;font-size:1.05rem}
  .mbar a:first-child{background:var(--orange)}.mbar a:last-child{background:#25D366}
