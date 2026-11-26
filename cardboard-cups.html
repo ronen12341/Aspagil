@@ -39,23 +39,74 @@
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"Product",
+  "@context": "https://schema.org",
+  "@type": "Product",
   "image": "https://www.aspagil.com/assets/cups/real-klein.webp",
-  "name":"כוסות קרטון ממותגות עם הדפסה דיגיטלית",
-  "description":"כוסות קרטון חד פעמיות עמידות לחום עם הדפסת לוגו ועיצוב אישי. מתאימות למשקאות חמים בלבד (קפה, תה), עד 95°C. שימוש בעסקים, מסעדות ואירועים. מיוצר בישראל מאז 1995.",
-  "brand":{"@type":"Brand","name":"אספגיל"},
-  "manufacturer":{"@type":"Organization","name":"אספגיל","url":"https://www.aspagil.com/"},
-  "countryOfOrigin":"IL",
-  "category":"כוסות קרטון חד פעמיות",
-  "offers":{
-    "@type":"AggregateOffer",
-    "priceCurrency":"ILS",
-    "lowPrice":"500",
-    "highPrice":"21000",
-    "offerCount":"7",
-    "availability":"https://schema.org/InStock",
-    "seller":{"@type":"Organization","name":"אספגיל","url":"https://www.aspagil.com/","image":"https://www.aspagil.com/assets/cups/real-barhoom-blue.webp","telephone":"+972-3-9600550","address":{"@type":"PostalAddress","streetAddress":"רחוב הירקון 39, קומה 3","addressLocality":"בני ברק","addressCountry":"IL"}}
+  "name": "כוסות קרטון ממותגות עם הדפסה דיגיטלית",
+  "description": "כוסות קרטון חד פעמיות עמידות לחום עם הדפסת לוגו ועיצוב אישי. מתאימות למשקאות חמים בלבד (קפה, תה), עד 95°C. שימוש בעסקים, מסעדות ואירועים. מיוצר בישראל מאז 1995.",
+  "brand": {
+    "@type": "Brand",
+    "name": "אספגיל"
+  },
+  "manufacturer": {
+    "@type": "Organization",
+    "name": "אספגיל",
+    "url": "https://www.aspagil.com/"
+  },
+  "countryOfOrigin": "IL",
+  "category": "כוסות קרטון חד פעמיות",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "ILS",
+    "lowPrice": "500",
+    "highPrice": "21000",
+    "offerCount": "7",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "אספגיל",
+      "url": "https://www.aspagil.com/",
+      "image": "https://www.aspagil.com/assets/cups/real-barhoom-blue.webp",
+      "telephone": "+972-3-9600550",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "רחוב הירקון 39, קומה 3",
+        "addressLocality": "בני ברק",
+        "addressCountry": "IL"
+      }
+    },
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "60",
+        "currency": "ILS"
+      },
+      "shippingDestination": {
+        "@type": "DefinedRegion",
+        "addressCountry": "IL"
+      },
+      "deliveryTime": {
+        "@type": "ShippingDeliveryTime",
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 2,
+          "maxValue": 14,
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 1,
+          "maxValue": 6,
+          "unitCode": "DAY"
+        }
+      }
+    },
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "IL",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+    }
   }
 }
 </script>
