@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.aspagil.com/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-28</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
     <xhtml:link rel="alternate" hreflang="he" href="https://www.aspagil.com/"/>
@@ -167,6 +167,12 @@
   <url>
     <loc>https://www.aspagil.com/blog/cups-for-events</loc>
     <lastmod>2026-11-23</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.aspagil.com/blog/where-to-order-branded-cups</loc>
+    <lastmod>2026-11-28</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
